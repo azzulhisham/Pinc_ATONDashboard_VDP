@@ -69,18 +69,30 @@
     border-radius: 50%;
   }
 
-  .aton-error {
-    border: 1px solid var(--color-danger) !important;
+  .beacon-ok {
+    border: 1px solid #10B981 !important;
   }
 
-  .aton-ok {
-    border: 1px solid var(--color-success) !important;
+  .buoy-ok {
+    border: 1px solid #06B6D4 !important;
   }
 
-  .aton-warn {
-    border: 1px solid var(--color-warning) !important;
+  .lighthouse-ok {
+    border: 1px solid #D006D4 !important;
   }
 
+
+  .beacon-ng {
+    border: 1px solid #F59E0B !important;
+  }
+
+  .buoy-ng {
+    border: 1px solid #F97316 !important;
+  }
+
+  .lighthouse-ng {
+    border: 1px solid #EF4444 !important;
+  }
 
 /***********************/
 /* Info Panel for ATON */

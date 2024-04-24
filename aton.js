@@ -422,6 +422,7 @@ function init_WebSocket2(){
                 atonName = obj['atonname']
                 region = obj['region']
                 type = obj['type']
+                aton_status = obj['status']
                 cog = type.toLowerCase() == 'lighthouse' ? 0 : 45;            
 
                 var size = Object.keys(lst_vessel).length;
@@ -436,6 +437,35 @@ function init_WebSocket2(){
     
                         if (type.toLowerCase() == 'buoy'){
                             el.className = 'buoyClass'
+                        }
+
+                        // setting ATON display color according to legend
+                        if (type.toLowerCase() == 'beacon'){
+                            if (aton_status == 1) {
+                                el.classList.add('beacon-ok')
+                            }
+                            else {
+                                el.classList.add('beacon-ng')
+                            }
+                        }
+
+
+                        if (type.toLowerCase() == 'buoy'){
+                            if (aton_status == 1) {
+                                el.classList.add('buoy-ok')
+                            }
+                            else {
+                                el.classList.add('buoy-ng')
+                            }
+                        }
+
+                        if (type.toLowerCase() == 'lighthouse'){
+                            if (aton_status == 1) {
+                                el.classList.add('lighthouse-ok')
+                            }
+                            else {
+                                el.classList.add('lighthouse-ng')
+                            }
                         }
     
                         el.setAttribute('style', '--mmsi:' + mmsi);
