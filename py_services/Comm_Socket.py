@@ -87,13 +87,8 @@ async def handler(websocket, path):
                         aton_info = {
                             'atonname': aton.iloc[0]['name'],
                             'region': aton.iloc[0]['region'],
-                            'type': aton.iloc[0]['type']
-                        }
-
-                        i.update(aton_info)
-
-                        data = {
-                            'payload': 'getallaton'
+                            'type': aton.iloc[0]['type'],
+                            'status': 1
                         }
 
                         # generate counting summary
@@ -101,19 +96,30 @@ async def handler(websocket, path):
 
                         if i['light'] == 3:
                             light_err_cnt += 1
+                            aton_info['status'] = 0
                         elif i['volt_int'] < 12.5:
                             battAton_cnt += 1
+                            aton_info['status'] = 0
                         elif i['volt_ex1'] < 12.5:
                             battLant_cnt += 1
+                            aton_info['status'] = 0
                         elif i['off_pos'] != 0:
                             offpos_cnt += 1
+                            aton_info['status'] = 0
                         elif i['ambient'] == 0:
                             ldr_cnt += 1
+                            aton_info['status'] = 0
+
+                        i.update(aton_info)
+
+                        data = {
+                            'payload': 'getallaton'
+                        }
 
                         data.update(i)
                         await websocket.send(json.dumps(data))    
 
-                print(ldr_cnt)
+                
                 aton_summary['aton_cnt'] = atons_cnt
                 aton_summary['no_msg6_cnt'] = df.shape[0] - atons_cnt
                 aton_summary['no_msg6_cnt_p'] = "{:.2f}%".format(((df.shape[0] - atons_cnt) / df.shape[0]) * 100)
