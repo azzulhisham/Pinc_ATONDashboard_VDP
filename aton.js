@@ -5,6 +5,10 @@ lst_atonData = {};
 
 
 // DOM Objects
+const search_mmsi = document.getElementById("search_mmsi")
+const meas_dist_func = document.getElementById("distance")
+const meas_dist = document.getElementById('meas_dist')
+
 const cnt_in_aton = document.getElementById('cnt_in_aton')
 const cnt_in_msg6 = document.getElementById('cnt_in_msg6')
 const cnt_in_msg21 = document.getElementById('cnt_in_msg21')
@@ -16,8 +20,39 @@ const cnt_in_light = document.getElementById('cnt_in_light')
 const cnt_in_ldr = document.getElementById('cnt_in_ldr')
 const cnt_in_battAton = document.getElementById('cnt_in_battAton')
 const cnt_in_battLant = document.getElementById('cnt_in_battLant')
+const dashboard_date = document.getElementById('dashboard-date')
 
 
+var today = new Date();
+var dd = String(today.getDate()).padStart(2, '0');
+var mm = String(today.getMonth() + 1).padStart(2, '0'); // January is 0!
+var yyyy = today.getFullYear();
+today = '(' + dd + '/' + mm + '/' + yyyy + ')';
+dashboard_date.innerText = today
+
+
+//////////////////////
+//     DOM Event
+//////////////////////
+// closeVesselInfo.addEventListener('click', () => {
+//     if (vesselInfo.classList.contains('open')){
+//         vesselInfo.classList.remove('open')
+//     }
+    
+//     if (vesselInfo.classList.contains('openwide')){
+//         vesselInfo.classList.remove('openwide')
+//     }
+// })
+
+search_mmsi.addEventListener('focusout', () => {
+    searchVessel(search_mmsi.value)
+})
+
+search_mmsi.addEventListener('keypress', (e) => {
+    if (e.which === 13){
+        searchVessel(search_mmsi.value)
+    }  
+})
 
 ///////////////////
 //     mapbox
@@ -98,6 +133,143 @@ map.on('load', ()=> {
 /////////////////////////////////////////////////////////
 // General Purpose Functions
 /////////////////////////////////////////////////////////
+meas_dist_func.addEventListener('click', () => {
+    // trigger distance measurement
+    if (meas_dist_func.classList.contains('distance-bar-deactive')){
+        meas_dist_func.classList.remove('distance-bar-deactive')
+        meas_dist_func.classList.add('distance-bar-active')
+
+        // distance measurement - data source
+        map.addSource('geojson', {
+            'type': 'geojson',
+            'data': geojson
+        });
+
+        // distance measurement - add styles to the map
+        map.addLayer({
+            id: 'measure-points',
+            type: 'circle',
+            source: 'geojson',
+            paint: {
+                'circle-radius': 3,
+                'circle-color': '#ffff66'
+            },
+            filter: ['in', '$type', 'Point']
+        });   
+
+        map.addLayer({
+            id: 'measure-lines',
+            type: 'line',
+            source: 'geojson',
+            layout: {
+                'line-cap': 'round',
+                'line-join': 'round'
+            },
+            paint: {
+                'line-color': '#ffff66',
+                'line-width': 1.5
+            },
+            filter: ['in', '$type', 'LineString']
+        });        
+        
+        map.on('mousemove', measurementMousemove); 
+        map.on('click', measurementVesselDistance);
+    }
+    else {
+        meas_dist_func.classList.remove('distance-bar-active')
+        meas_dist_func.classList.add('distance-bar-deactive')
+
+        map.off('click', measurementVesselDistance);
+        map.off('mousemove', measurementMousemove); 
+
+        // distance measurement - add styles to the map
+        map.removeLayer('measure-lines');  
+        map.removeLayer('measure-points');  
+
+        // distance measurement - data source
+        map.removeSource('geojson');  
+        geojson.features = []
+
+        meas_dist.value = "Meas. Distance:       "  + " km /       " + " NM"
+        map.getCanvas().style.cursor = 'grab'
+    }
+})
+
+
+function measurementVesselDistance(e) {
+    const features = map.queryRenderedFeatures(e.point, {
+        layers: ['measure-points']
+    });
+         
+    // Remove the linestring from the group
+    // so we can redraw it based on the points collection.
+    if (geojson.features.length > 1) geojson.features.pop();
+         
+    // If a feature was clicked, remove it from the map.
+    if (features.length) {
+        const id = features[0].properties.id;
+        geojson.features = geojson.features.filter(
+            (point) => point.properties.id !== id
+        );
+    } 
+    else {
+        const point = {
+            'type': 'Feature',
+            'geometry': {
+                'type': 'Point',
+                'coordinates': [e.lngLat.lng, e.lngLat.lat]
+            },
+            'properties': {
+                'id': String(new Date().getTime())
+            }
+        };
+         
+        geojson.features.push(point);
+    }
+         
+    if (geojson.features.length > 1) {
+        linestring.geometry.coordinates = geojson.features.map(
+            (point) => point.geometry.coordinates
+        );
+         
+        geojson.features.push(linestring);
+         
+        // Populate the distanceContainer with total distance
+        const value = document.createElement('pre');
+        const distance = turf.length(linestring);
+
+        nm = distance.toLocaleString() * 0.54
+        meas_dist.value = "Meas. Distance: " + distance.toLocaleString() + " km / " + nm.toFixed(5) + " NM"
+    }
+         
+    map.getSource('geojson').setData(geojson);    
+}
+
+function measurementMousemove(e) {
+    const features = map.queryRenderedFeatures(e.point, {
+        layers: ['measure-points']
+    });
+    // Change the cursor to a pointer when hovering over a point on the map.
+    // Otherwise cursor is a crosshair.
+    map.getCanvas().style.cursor = features.length ? 'pointer' : 'crosshair';
+}
+
+function searchVessel(mmsi){
+    get_mmsi = lst_vessel[mmsi]
+
+    if (get_mmsi != undefined){
+        setFocusVessel(mmsi)
+
+        posData = get_mmsi.getLngLat()
+        map.flyTo({
+            center: posData,
+            zoom: 10,
+            duration: 3000,
+            essential: true // this animation is considered essential with respect to prefers-reduced-motion
+        });
+    }
+}
+
 // Radical Menu
 function addVesselRadicalPopupMenu(mmsi){
 
@@ -619,7 +791,7 @@ function init_WebSocket2(){
     // Add an event listener for when an error occurs
     ws2.addEventListener("error", function(event) {
         // Log the error
-        console.log("Error: " + event.message);
+        console.log("Error: " + event);
     });
 
     // Add an event listener for when the connection is closed

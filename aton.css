@@ -125,6 +125,71 @@
 
 
 /* ********************** */
+/*     vessel zoomer      */
+/* ********************** */
+.vessels-on-sea {
+    position: relative;
+    top: 1px;
+    left: -3px;
+    height: 26px;
+    width: 26px;
+    border-radius: 5px;
+  }
+  
+  .corner {
+    position: absolute;
+    background: none;
+    height: 6px;
+    width: 6px;
+  }
+  
+  #top-left {
+    top: 0;
+    left: 0;
+    border-radius: 5px 0 0 0;
+  }
+  
+  .focus-top-left {
+    border-top: 2px solid #ff7777;
+    border-left: 2px solid #ff7777;
+  }
+  
+  #top-right {
+    top: 0;
+    right: 0;
+    border-radius: 0 5px 0 0;
+  
+  }
+  
+  .focus-top-right {
+    border-top: 2px solid #ff7777;
+    border-right: 2px solid #ff7777;
+  }
+  
+  #bottom-right {
+    bottom: 0;
+    right: 0;
+    border-radius: 0 0 5px 0;
+  }
+  
+  .focus-bottom-right {
+    border-bottom: 2px solid #ff7777;
+    border-right: 2px solid #ff7777;
+  }
+  
+  #bottom-left {
+    bottom: 0;
+    left: 0;
+    border-radius: 0 0 0 5px;
+  }
+  
+  .focus-bottom-left {
+    border-bottom: 2px solid #ff7777;
+    border-left: 2px solid #ff7777;
+  }
+  
+
+/* ********************** */
 /*     aton zoomer      */
 /* ********************** */
 .atons-on-sea {
@@ -211,3 +276,81 @@ nav .nav-content {
   .nav-content span:hover {
     box-shadow: 0px 0px 30px rgba(255,255,255,1.0);
   }
+
+  /********************
+      Search Bar   
+/*******************/
+.container {
+    padding: 1rem 0;
+    display: flex;
+    justify-content: flex-end;
+    align-items:center;
+    position: relative;
+    width: 100%;
+    z-index: 1;
+  }
+  
+  .container .distance-bar {
+    background: var(--color-light);
+    padding: var(--padding-2) var(--card-padding);
+    border-radius: var(--border-radius-3);
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    position: absolute;
+    margin-right: 230px;
+    /* margin-top: 1px;
+    height: 18px; */
+    top: -14px;
+    cursor: pointer;
+    transition: all 300ms ease;
+  }
+  
+  .container .distance-bar input[type="text"] {
+    color: var(--color-dark);
+    background: transparent;
+    width: 100%;
+    outline: none;
+    border: transparent;
+  }
+  
+  .distance-bar-deactive {
+    width: 40px;
+    color: var(--color-gray-light);
+  }
+  
+  .distance-bar-active {
+    width: 280px;
+    color: var(--color-primary);
+  }
+  
+  .container .search-bar input[type="text"]::placeholder {
+    color: var(--color-primary);
+  }
+  
+  .container .search-bar {
+    background: var(--color-light);
+    padding: var(--padding-2) var(--card-padding);
+    border-radius: var(--border-radius-3);
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    color: var(--color-gray-light);
+    position: absolute;
+    margin-right: 30px;
+    top: -14px
+  }
+  
+  .container .search-bar input[type="search"] {
+    color: var(--color-dark);
+    background: transparent;
+    width: 100%;
+    outline: none;
+    border: transparent;
+  }
+  
+  .container .search-bar input[type="search"]::placeholder {
+    color: var(--color-gray-dark);
+  }
+  
+  
