@@ -5,6 +5,9 @@ lst_atonData = {};
 
 
 // DOM Objects
+const closeVesselInfo = document.getElementById("closeVesselInfo")
+const vesselInfo = document.querySelector('.vessel-info')
+
 const search_mmsi = document.getElementById("search_mmsi")
 const meas_dist_func = document.getElementById("distance")
 const meas_dist = document.getElementById('meas_dist')
@@ -22,7 +25,9 @@ const cnt_in_battAton = document.getElementById('cnt_in_battAton')
 const cnt_in_battLant = document.getElementById('cnt_in_battLant')
 const dashboard_date = document.getElementById('dashboard-date')
 
+const btn_test = document.getElementById('btn-test')
 
+var test_flg = 0
 var today = new Date();
 var dd = String(today.getDate()).padStart(2, '0');
 var mm = String(today.getMonth() + 1).padStart(2, '0'); // January is 0!
@@ -34,15 +39,15 @@ dashboard_date.innerText = today
 //////////////////////
 //     DOM Event
 //////////////////////
-// closeVesselInfo.addEventListener('click', () => {
-//     if (vesselInfo.classList.contains('open')){
-//         vesselInfo.classList.remove('open')
-//     }
+closeVesselInfo.addEventListener('click', () => {
+    if (vesselInfo.classList.contains('open')){
+        vesselInfo.classList.remove('open')
+    }
     
-//     if (vesselInfo.classList.contains('openwide')){
-//         vesselInfo.classList.remove('openwide')
-//     }
-// })
+    if (vesselInfo.classList.contains('openwide')){
+        vesselInfo.classList.remove('openwide')
+    }
+})
 
 search_mmsi.addEventListener('focusout', () => {
     searchVessel(search_mmsi.value)
@@ -53,6 +58,20 @@ search_mmsi.addEventListener('keypress', (e) => {
         searchVessel(search_mmsi.value)
     }  
 })
+
+btn_test.addEventListener('click', (e) => {
+    marker = lst_vessel[995331105]
+
+    if (test_flg == 0){
+        marker.remove()
+        test_flg = 1
+    }
+    else
+    {
+        marker.addTo(map)
+        test_flg = 0
+    }
+} )
 
 ///////////////////
 //     mapbox
@@ -538,6 +557,255 @@ function showVesselPopup(e) {
 
 function removeVesselPopup(e) {
     popup.remove();
+}
+
+function vessel_info_panel(mmsi){
+    const ambient = ["No LDR", "Dark", "Dim", "Bright"]
+    const lantern = ["No Light", "Primary", "secandary", "Emergency"]
+    const lantern_batt = ["Unknown", "Bad", "Low", "Good"]
+    const racon = ["Not Installed", "Not Monitor", "Operating", "Error"]
+    const light = ["Not Installed", "Light ON", "Light OFF", "Error"]
+
+    get_atoninfo = lst_atoninfo[mmsi]   // data from message 21
+    //get_atonData = lst_atonData[mmsi]   // data from message 6
+
+    rms = false;
+    elems = document.querySelectorAll('.aton-detail-info')
+
+    elems.forEach((item) => {
+        if (!item.classList.contains('hide-container')){
+            item.classList.add('hide-container')
+        }
+    })
+
+    const detMMSI_title = document.getElementById('det-mmsi-title')
+    detMMSI_title.innerText = ": " + get_atoninfo['mmsi'] 
+
+    if (rms){
+        const panelId = document.getElementById('aton-info')
+        panelId.classList.remove('hide-container')
+
+        const detShiptype = document.getElementById('det-atontype')
+        const detShipname = document.getElementById('det-atonname')
+        const detMMSI = document.getElementById('det-atonmmsi')
+        const detRegion = document.getElementById('det-atonregion')
+
+        const det_aidType = document.getElementById('det-aidType')
+        const det_aidTypeDesc = document.getElementById('det-aidTypeDesc')
+        const det_aidName = document.getElementById('det-aidName')
+        const det_positionAccuracyDesc = document.getElementById('det-positionAccuracyDesc')
+        const det_longitude = document.getElementById('det-longitude')
+        const det_latitude = document.getElementById('det-latitude')
+        const det_to_bow = document.getElementById('det-to-bow')
+        const det_to_stern = document.getElementById('det-to-stern')
+        const det_to_port = document.getElementById('det-to-port')
+        const det_to_starboard = document.getElementById('det-to-starboard')
+        const det_epfdDesc = document.getElementById('det-epfdDesc')
+        const det_utc_second = document.getElementById('det-utc-second')
+        const det_off_position = document.getElementById('det-off-position')
+        const det_regional = document.getElementById('det-regional')
+        const det_raimFlag = document.getElementById('det-raimFlag')
+        const det_virtualAid = document.getElementById('det-virtualAid')
+        const det_assigned = document.getElementById('det-assigned')
+
+        detShiptype.innerText = ": " + get_atoninfo['type']
+        detShipname.innerText = ": " + get_atoninfo['atonname']
+        detMMSI.innerText = ": " + get_atoninfo['mmsi']  
+        detRegion.innerText = ": " + get_atoninfo['region']  
+
+        det_aidType.innerText = ": " + get_atoninfo['aidType']  
+        det_aidTypeDesc.innerText = ": " + get_atoninfo['aidTypeDesc']  
+        det_aidName.innerText = ": " + get_atoninfo['aidName']  
+        det_positionAccuracyDesc.innerText = ": " + get_atoninfo['positionAccuracyDesc']  
+        det_longitude.innerText = ": " + get_atoninfo['longitude']  
+        det_latitude.innerText = ": " + get_atoninfo['latitude']  
+        det_to_bow.innerText = ": " + get_atoninfo['to_bow']  
+        det_to_stern.innerText = ": " + get_atoninfo['to_stern']  
+        det_to_port.innerText = ": " + get_atoninfo['to_port']  
+        det_to_starboard.innerText = ": " + get_atoninfo['to_starboard']  
+        det_epfdDesc.innerText = ": " + get_atoninfo['epfdDesc']  
+        det_utc_second.innerText = ": " + get_atoninfo['utc_second']  
+        det_off_position.innerText = ": " + get_atoninfo['off_position']  
+        det_regional.innerText = ": " + get_atoninfo['regional']  
+        det_raimFlag.innerText = ": " + get_atoninfo['raimFlag']  
+        det_virtualAid.innerText = ": " + get_atoninfo['virtualAid']  
+        det_assigned.innerText = ": " + get_atoninfo['assigned']  
+    }
+    else {
+        dac = get_atoninfo['dac']
+        fid = get_atoninfo['fid'] 
+
+        if ((dac == 533 && fid == 1) || (dac == 235 && fid == 10)){
+            const panelId = document.getElementById('dac533-fid1')
+            panelId.classList.remove('hide-container')
+
+            const detShiptype = document.getElementById('det-shiptype-fid1')
+            const detShipname = document.getElementById('det-shipname-fid1')
+            const detMMSI = document.getElementById('det-mmsi-fid2')
+
+            const det_voltage_int = document.getElementById('det-voltage-int-fid1')
+            const det_voltage_ext1 = document.getElementById('det-voltage-ext1-fid1')
+            const det_thermal_temp = document.getElementById('det-thermal-temp-fid1')
+
+            const det_racon = document.getElementById('det-racon-fid1')
+            const det_light = document.getElementById('det-light-fid1')
+            const det_health = document.getElementById('det-health-fid1')
+        
+            const det_beat = document.getElementById('det-beat-fid1')
+            const det_alarm_active = document.getElementById('det-alarm-active-fid1')
+            const det_buoy_led_power = document.getElementById('det-buoy-led-power-fid1')
+            const det_buoy_low_vin = document.getElementById('det-buoy-low-vin-fid1')
+            const det_buoy_photocell = document.getElementById('det-buoy-photocell-fid1')
+            const det_buoy_temp = document.getElementById('det-buoy-temp-fid1')
+
+            detShiptype.innerText = ": " + get_atoninfo['type']
+            detShipname.innerText = ": " + get_atoninfo['atonname']
+            detMMSI.innerText = ": " + get_atoninfo['mmsi']  
+
+            det_voltage_int.innerText = ": " + get_atoninfo['volt_int'].toFixed(6)
+            det_voltage_ext1.innerText = ": " + get_atoninfo['volt_ex1'].toFixed(6)
+            det_thermal_temp.innerText = ": " + get_atoninfo['volt_ex2'].toFixed(6)
+
+            det_racon.innerText = ": " + racon[get_atoninfo['racon']]
+            det_light.innerText = ": " + light[get_atoninfo['light']]
+            det_health.innerText = ": " + (get_atoninfo['health'] == 0 ? "Good" : "Alarm")
+        
+            det_beat.innerText = ": " + (get_atoninfo['beat'] == 0 ? "Tick" : "Tock")
+            det_alarm_active.innerText = ": " + lantern_batt[get_atoninfo['lantern_batt']]
+            det_buoy_led_power.innerText = ": " + lantern[get_atoninfo['lantern']]
+            det_buoy_low_vin.innerText = ": " + ambient[get_atoninfo['ambient']]
+            det_buoy_photocell.innerText = ": " + (get_atoninfo['hatch_door'] == 0 ? "Close" : "Open")
+            det_buoy_temp.innerText = ": " + (get_atoninfo['off_pos'] == 0 ? "On Pos." : "Off Pos.")
+        }
+
+        if (dac == 533 && fid == 2){
+            const panelId = document.getElementById('dac533-fid2')
+            panelId.classList.remove('hide-container')
+
+            const detShiptype = document.getElementById('det-shiptype-fid2')
+            const detShipname = document.getElementById('det-shipname-fid2')
+            const detMMSI = document.getElementById('det-mmsi-fid2')
+
+            const det_voltage_int = document.getElementById('det-voltage-int-fid2')
+            const det_voltage_ext1 = document.getElementById('det-voltage-ext1-fid2')
+            const det_thermal_temp = document.getElementById('det-thermal-temp-fid2')
+            const det_off_pos = document.getElementById('det-off-pos-fid2')
+            const det_ldr = document.getElementById('det-ldr-fid2')
+            const det_racon = document.getElementById('det-racon-fid2')
+            const det_light = document.getElementById('det-light-fid2')
+            const det_health = document.getElementById('det-health-fid2')
+        
+            const det_beat = document.getElementById('det-beat-fid2')
+            const det_alarm_active = document.getElementById('det-alarm-active-fid2')
+            const det_buoy_led_power = document.getElementById('det-buoy-led-power-fid2')
+            const det_buoy_low_vin = document.getElementById('det-buoy-low-vin-fid2')
+            const det_buoy_photocell = document.getElementById('det-buoy-photocell-fid2')
+            const det_buoy_temp = document.getElementById('det-buoy-temp-fid2')
+            const det_buoy_force_off = document.getElementById('det-buoy-force-off-fid2')
+            const det_buoy_islight = document.getElementById('det-buoy-islight-fid2')
+            const det_buoy_errled_short = document.getElementById('det-buoy-errled-short-fid2')
+            const det_buoy_errled_open = document.getElementById('det-buoy-errled-open-fid2')
+            const det_buoy_errled_voltlow = document.getElementById('det-buoy-errled-voltlow-fid2')
+            const det_buoy_errled_vinlow = document.getElementById('det-buoy-errled-vinlow-fid2')
+            const det_buoy_errled_power = document.getElementById('det-buoy-errled-power-fid2')
+            const det_buoy_adjmaxpower = document.getElementById('det-buoy-adjmaxpower-fid2')
+
+            detShiptype.innerText = ": " + get_atoninfo['type']
+            detShipname.innerText = ": " + get_atoninfo['atonname']
+            detMMSI.innerText = ": " + get_atoninfo['mmsi']  
+
+            det_voltage_int.innerText = ": " + get_atoninfo['volt_int'].toFixed(6)
+            det_voltage_ext1.innerText = ": " + get_atoninfo['volt_ex1'].toFixed(6)
+            det_thermal_temp.innerText = ": " + get_atoninfo['volt_ex2'].toFixed(6)
+            det_off_pos.innerText = ": " + (get_atoninfo['off_pos'] == 0 ? "On Pos." : "Off Pos.")
+            det_ldr.innerText = ": " + ambient[get_atoninfo['ambient']]
+            det_racon.innerText = ": " + racon[get_atoninfo['racon']]
+            det_light.innerText = ": " + light[get_atoninfo['light']]
+            det_health.innerText = ": " + (get_atoninfo['health'] == 0 ? "Good" : "Alarm")
+        
+            det_beat.innerText = ": " + (get_atoninfo['beat'] == 0 ? "Tick" : "Tock")
+            det_alarm_active.innerText = ": " + (get_atoninfo['main_lantern_cond'] == 0 ? "Normal" : "Fail")
+            det_buoy_led_power.innerText = ": " + (get_atoninfo['main_lantern_stat'] == 0 ? "Off" : "On")
+            det_buoy_low_vin.innerText = ": " + (get_atoninfo['stdby_lantern_cond'] == 0 ? "Normal" : "Fail")
+            det_buoy_photocell.innerText = ": " + (get_atoninfo['stdby_lantern_stat'] == 0 ? "Off" : "On")
+            det_buoy_temp.innerText = ": " + (get_atoninfo['emerg_lantern_cond'] == 0 ? "Normal" : "Fail")
+            det_buoy_force_off.innerText = ": " + (get_atoninfo['emerg_lantern_stat'] == 0 ? "Off" : "On")
+            det_buoy_islight.innerText = ": " + (get_atoninfo['opticA_drive_stat'] == 0 ? "Off" : "On")
+            det_buoy_errled_short.innerText = ": " + (get_atoninfo['opticA_drive_cond'] == 0 ? "Normal" : "Fail")
+            det_buoy_errled_open.innerText = ": " + (get_atoninfo['opticB_drive_stat'] == 0 ? "Off" : "On")
+            det_buoy_errled_voltlow.innerText = ": " + (get_atoninfo['opticB_drive_cond'] == 0 ? "Normal" : "Fail")
+            det_buoy_errled_vinlow.innerText = ": " + (get_atoninfo['hatch_door'] == 0 ? "Close" : "Open")
+            det_buoy_errled_power.innerText = ": " + (get_atoninfo['main_power'] == 0 ? "Off" : "On")
+            det_buoy_adjmaxpower.innerText = ": " + (get_atoninfo['bms_cond'] == 0 ? "Normal" : "Fail")          
+        }
+
+        if (dac == 533 && fid == 4){
+            const panelId = document.getElementById('dac533-fid4')
+            panelId.classList.remove('hide-container')
+
+            const detShiptype = document.getElementById('det-shiptype')
+            const detShipname = document.getElementById('det-shipname')
+            const detMMSI = document.getElementById('det-mmsi')
+
+            const det_voltage_int = document.getElementById('det-voltage-int')
+            const det_voltage_ext1 = document.getElementById('det-voltage-ext1')
+            const det_thermal_temp = document.getElementById('det-thermal-temp')
+            const det_off_pos = document.getElementById('det-off-pos')
+            const det_ldr = document.getElementById('det-ldr')
+            const det_racon = document.getElementById('det-racon')
+            const det_light = document.getElementById('det-light')
+            const det_health = document.getElementById('det-health')
+        
+            const det_beat = document.getElementById('det-beat')
+            const det_alarm_active = document.getElementById('det-alarm-active')
+            const det_buoy_led_power = document.getElementById('det-buoy-led-power')
+            const det_buoy_low_vin = document.getElementById('det-buoy-low-vin')
+            const det_buoy_photocell = document.getElementById('det-buoy-photocell')
+            const det_buoy_temp = document.getElementById('det-buoy-temp')
+            const det_buoy_force_off = document.getElementById('det-buoy-force-off')
+            const det_buoy_islight = document.getElementById('det-buoy-islight')
+            const det_buoy_errled_short = document.getElementById('det-buoy-errled-short')
+            const det_buoy_errled_open = document.getElementById('det-buoy-errled-open')
+            const det_buoy_errled_voltlow = document.getElementById('det-buoy-errled-voltlow')
+            const det_buoy_errled_vinlow = document.getElementById('det-buoy-errled-vinlow')
+            const det_buoy_errled_power = document.getElementById('det-buoy-errled-power')
+            const det_buoy_adjmaxpower = document.getElementById('det-buoy-adjmaxpower')
+            const det_buoy_sensor_interrupt = document.getElementById('det-buoy-sensor-interrupt')
+            const det_buoy_solarcharging = document.getElementById('det-buoy-solarcharging')
+
+
+            detShiptype.innerText = ": " + get_atoninfo['type']
+            detShipname.innerText = ": " + get_atoninfo['atonname']
+            detMMSI.innerText = ": " + get_atoninfo['mmsi']  
+
+            det_voltage_int.innerText = ": " + get_atoninfo['volt_int'].toFixed(6)
+            det_voltage_ext1.innerText = ": " + get_atoninfo['volt_ex1'].toFixed(6)
+            det_thermal_temp.innerText = ": " + get_atoninfo['volt_ex2'].toFixed(6)
+            det_off_pos.innerText = ": " + (get_atoninfo['off_pos'] == 0 ? "On Pos." : "Off Pos.")
+            det_ldr.innerText = ": " + ambient[get_atoninfo['ambient']]
+            det_racon.innerText = ": " + racon[get_atoninfo['racon']]
+            det_light.innerText = ": " + light[get_atoninfo['light']]
+            det_health.innerText = ": " + (get_atoninfo['health'] == 0 ? "Good" : "Alarm")
+        
+            det_beat.innerText = ": " + (get_atoninfo['beat'] == 0 ? "Tick" : "Tock")
+            det_alarm_active.innerText = ": " + (get_atoninfo['alarm_active'] == 0 ? "No" : "Yes")
+            det_buoy_led_power.innerText = ": " + (get_atoninfo['buoy_led_power'] == 0 ? "No" : "Yes")
+            det_buoy_low_vin.innerText = ": " + (get_atoninfo['buoy_low_vin'] == 0 ? "No" : "Yes")
+            det_buoy_photocell.innerText = ": " + (get_atoninfo['buoy_photocell'] == 0 ? "No" : "Yes")
+            det_buoy_temp.innerText = ": " + (get_atoninfo['buoy_temp'] == 0 ? "No" : "Yes")
+            det_buoy_force_off.innerText = ": " + (get_atoninfo['buoy_force_off'] == 0 ? "No" : "Yes")
+            det_buoy_islight.innerText = ": " + (get_atoninfo['buoy_islight'] == 0 ? "No" : "Yes")
+            det_buoy_errled_short.innerText = ": " + (get_atoninfo['buoy_errled_short'] == 0 ? "No" : "Yes")
+            det_buoy_errled_open.innerText = ": " + (get_atoninfo['buoy_errled_open'] == 0 ? "No" : "Yes")
+            det_buoy_errled_voltlow.innerText = ": " + (get_atoninfo['buoy_errled_voltlow'] == 0 ? "No" : "Yes")
+            det_buoy_errled_vinlow.innerText = ": " + (get_atoninfo['buoy_errled_vinlow'] == 0 ? "No" : "Yes")
+            det_buoy_errled_power.innerText = ": " + (get_atoninfo['buoy_errled_power'] == 0 ? "No" : "Yes")
+            det_buoy_adjmaxpower.innerText = ": " + (get_atoninfo['buoy_adjmaxpower'] == 0 ? "No" : "Yes")
+            det_buoy_sensor_interrupt.innerText = ": " + (get_atoninfo['buoy_sensor_interrupt'] == 0 ? "No" : "Yes")
+            det_buoy_solarcharging.innerText = ": " + (get_atoninfo['buoy_solarcharging'] == 0 ? "No" : "Yes")            
+        }
+
+    }
 }
 
 
