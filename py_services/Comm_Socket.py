@@ -16,7 +16,7 @@ from datetime import datetime, timedelta
 
 def loaddata():
     global df
-    df = pd.read_csv('/Users/zultan/sources/htlm-css/ATON_dashboard/docs/atonlist.csv') 
+    df = pd.read_csv('/Users/msharil/Devapp/VDP/Pinc_ATONDashboard_VDP/docs/atonlist.csv') 
 
 
 def getAton(mmsi):
