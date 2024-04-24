@@ -60,15 +60,33 @@ search_mmsi.addEventListener('keypress', (e) => {
 })
 
 btn_test.addEventListener('click', (e) => {
-    marker = lst_vessel[995331105]
+    // lst_vessel[mmsi] = marker1
+    // lst_atoninfo[mmsi] = obj
+    
 
     if (test_flg == 0){
-        marker.remove()
+        for (let i in lst_atoninfo) {
+            atonInfo = lst_atoninfo[i]
+
+            if (atonInfo['type'].toLowerCase() == 'beacon'){
+                marker = lst_vessel[i]
+                marker.remove()
+            }
+        }
+
         test_flg = 1
     }
     else
     {
-        marker.addTo(map)
+        for (let i in lst_atoninfo) {
+            atonInfo = lst_atoninfo[i]
+
+            if (atonInfo['type'].toLowerCase() == 'beacon'){
+                marker = lst_vessel[i]
+                marker.addTo(map)
+            }
+        }
+        
         test_flg = 0
     }
 } )
