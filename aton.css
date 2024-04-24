@@ -1,0 +1,201 @@
+:root {
+    --color-white: #ffffff;
+    --color-light: #f0eff5;
+    --color-gray-light: #86848c;
+    --color-gray-dark: #56555e;
+    --color-dark: #27282f;
+    --color-primary: rgb(71, 7, 234);
+    --color-success: rgb(34, 202, 75);
+    --color-danger: rgb(255, 67, 54);
+    --color-warning: rgb(234, 181, 7);
+    --color-purple: rgb(160, 99, 245);
+  
+    --color-primary-light: rgba(71, 7, 234, 0.2);
+    --color-success-light: rgba(34, 202, 75, 0.2);
+    --color-danger-light: rgba(255, 67, 54, 0.2);
+    --color-warning-light: rgba(234, 181, 7, 0.2);
+    --color-purple-light: rgba(160, 99, 245, 0.2);
+    
+    --card-padding: 10px;
+    --padding-1: 1rem;
+    --padding-2: 8px;
+  
+    --card-border-radius: 1.6rem;
+    --border-radius-1: 1rem;
+    --border-radius-2: 6px;
+    --border-radius-3: 30px;
+  }
+  
+  .dark-theme {
+    --color-white: #131316;
+    --color-light: #23232a;
+    --color-dark: #ddd;
+    --color-gray-dark: #adacb5;
+  }
+
+
+/* Dashboard Properties */
+.module-title {
+    letter-spacing: 4px;
+}
+
+.mapContainer {
+    height: 80vh;
+}
+
+
+/* ATON Marker */
+#aton {
+    /* background-image:  url("/static/aton.svg"); */
+    /* background-size: cover; */
+    border: 1px solid white;
+    width: 12px;
+    height: 12px;
+    /* border-radius: 50%; */
+    cursor: pointer;
+  } 
+
+  #aton-lighthouse {
+    /* background-image:  url("/static/aton.svg"); */
+    /* background-size: cover; */
+    border: 1px solid white;
+    width: 8px;
+    height: 16px;
+    /* border-radius: 50%; */
+    cursor: pointer;
+  } 
+
+  .buoyClass {
+    border-radius: 50%;
+  }
+
+  .aton-error {
+    border: 1px solid var(--color-danger) !important;
+  }
+
+  .aton-ok {
+    border: 1px solid var(--color-success) !important;
+  }
+
+  .aton-warn {
+    border: 1px solid var(--color-warning) !important;
+  }
+
+
+/***********************/
+/* Info Panel for ATON */
+/***********************/
+.aton-detail-info {
+    background-color: #404140;
+    border-radius: 10px;
+    padding-top: 10px;
+    padding-bottom: 10px;
+    font-size: xx-small;
+  }
+  
+  .aton-detail-info div {
+    margin: 8px;
+  }
+  
+  .aton-detail-info span {
+    font-size: small
+  }
+  
+  .aton-detail-info label {
+    font-size: small;
+    display: inline-block;
+    width: 150px;
+  }
+  
+  .hide-container {
+    display: none;
+  }
+
+
+/* ********************** */
+/*     aton zoomer      */
+/* ********************** */
+.atons-on-sea {
+    position: relative;
+    top: -7px;
+    left: -7px;
+    height: 26px;
+    width: 26px;
+    border-radius: 5px;
+  }
+  
+  .atons-lh-on-sea {
+    position: relative;
+    top: -6px;
+    left: -8px;
+    height: 26px;
+    width: 26px;
+    border-radius: 5px;
+  }
+
+
+/********************
+  Radical popup menu
+*********************/
+/* nav {
+    position: absolute;
+    top: 280px;
+    right: 300px;
+} */
+
+nav .nav-content {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  
+  .nav-content .toggle-btn,
+  .nav-content span {
+    height: 30px;
+    width: 30px;
+    background-color: #343533;
+    color: rgb(198, 172, 254);;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50%;
+    box-shadow: 0px 0px 20px rgba(0, 0, 0, 0.3);
+  }
+  
+  .nav-content .toggle-btn {
+    z-index: 1000;
+    cursor: pointer;
+    transform: rotate(225deg);
+    transition: all 0.5s;
+    opacity: 0;
+  }
+  
+  .nav-content .toggle-btn.open {
+    transform: rotate(0deg);
+  }
+  
+  .nav-content span {
+    position: absolute;
+    transition: all 0.5s ease-in;
+    opacity: 0;
+    z-index: 1001;
+  }
+  
+  nav.open .nav-content span {
+    transform: rotate(calc(var(--i) * (360deg/12))) translateY(80px);
+    opacity: 1;
+  }
+  
+  .nav-content span i {
+    transform: rotate(calc(var(--i) * (360deg/ -12)));
+    opacity: 1;
+    transition: 0.3s;
+  }
+  
+  .nav-content span:hover i {
+    opacity: 1;
+  }
+  
+  .nav-content span:hover {
+    box-shadow: 0px 0px 30px rgba(255,255,255,1.0);
+  }

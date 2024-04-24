@@ -1,0 +1,379 @@
+<!DOCTYPE html>
+<html lang="en" class="h-full bg-gray-800">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AtoN Dashboard</title>
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css" integrity="sha512-z3gLpd7yknf1YoNbCzqRKc4qyor8gaKU1qmn+CShxbuBusANI9QpRohGBreCFkKxLhei6S9CQXFEbbKuqLg0DA==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+
+    <link href="https://api.mapbox.com/mapbox-gl-js/v3.1.2/mapbox-gl.css" rel="stylesheet">
+    <script src="https://api.mapbox.com/mapbox-gl-js/v3.1.2/mapbox-gl.js"></script>
+
+    <script src="https://unpkg.com/@turf/turf@6/turf.min.js"></script>
+
+    <!-- Mapbox drawing functions -->
+    <script src="https://api.mapbox.com/mapbox-gl-js/plugins/mapbox-gl-draw/v1.4.3/mapbox-gl-draw.js"></script>
+    <link rel="stylesheet" href="https://api.mapbox.com/mapbox-gl-js/plugins/mapbox-gl-draw/v1.4.3/mapbox-gl-draw.css" type="text/css">
+
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+    <link href="aton.css" rel="stylesheet">
+</head>
+
+<body class="h-full overflow-hidden">
+
+    <!--
+    This example requires some changes to your config:
+    
+    ```
+    // tailwind.config.js
+    module.exports = {
+        // ...
+        plugins: [
+        // ...
+        require('@tailwindcss/forms'),
+        ],
+    }
+    ```
+    -->
+    <!--
+    This example requires updating your template:
+
+    ```
+    <html class="h-full bg-gray-100">
+    <body class="h-full overflow-hidden">
+    ```
+    -->
+    <div class="flex h-full flex-col">
+        <!-- Top nav-->
+        <header class="relative flex h-16 flex-shrink-0 items-center bg-gray-800">
+            <!-- Logo area -->
+            <div class="absolute inset-y-0 left-0 lg:static lg:flex-shrink-0">
+                <a href="#"
+                    class="flex h-16 w-16 items-center justify-center bg-cyan-400 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-blue-600 lg:w-20">
+                    <!-- <img class="h-8 w-auto" src="https://tailwindui.com/img/logos/mark.svg?color=white"
+                        alt="Your Company"> -->
+                    <h2 class="text-3xl font-semibold text-gray-300">A</h2>
+                </a>
+            </div>
+
+            <!-- Menu button area -->
+            <div class="absolute inset-y-0 right-0 flex items-center pr-4 sm:pr-6 lg:hidden">
+                <!-- Mobile menu button -->
+                <button type="button"
+                    class="relative -mr-2 inline-flex items-center justify-center rounded-md p-2 text-gray-400 hover:bg-gray-100 hover:text-gray-500 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-blue-600">
+                    <span class="absolute -inset-0.5"></span>
+                    <span class="sr-only">Open main menu</span>
+                    <svg class="block h-6 w-6" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"
+                        aria-hidden="true">
+                        <path stroke-linecap="round" stroke-linejoin="round"
+                            d="M3.75 6.75h16.5M3.75 12h16.5m-16.5 5.25h16.5" />
+                    </svg>
+                </button>
+            </div>
+
+            <!-- Desktop nav area -->
+            <div class="hidden lg:flex lg:min-w-0 lg:flex-1 lg:items-center lg:justify-between">
+                <div class="min-w-0 flex-1">
+                    <div class="relative max-w-2xl text-gray-400 focus-within:text-gray-500">
+                        <div
+                            class="pointer-events-none absolute inset-y-0 left-0 flex items-center justify-center pl-4">
+                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
+                                stroke="currentColor" class="w-6 h-6">
+                                <path stroke-linecap="round" stroke-linejoin="round"
+                                    d="M3.75 6.75h16.5M3.75 12h16.5m-16.5 5.25h16.5" />
+                            </svg>
+                        </div>
+                    </div>
+                </div>
+                <div class="ml-10 flex flex-shrink-0 items-center space-x-10 pr-4">
+
+                    <!--
+                        Dropdown menu, show/hide based on menu state.
+        
+                        Entering: "transition ease-out duration-100"
+                        From: "transform opacity-0 scale-95"
+                        To: "transform opacity-100 scale-100"
+                        Leaving: "transition ease-in duration-75"
+                        From: "transform opacity-100 scale-100"
+                        To: "transform opacity-0 scale-95"
+                    -->
+
+                    <div class="flex items-center space-x-8">
+                        <span class="inline-flex">
+                            <a href="#"
+                                class="relative -mx-1 rounded-full bg-white p-1 text-gray-400 hover:text-gray-500">
+                                <span class="absolute -inset-1.5"></span>
+                                <span class="sr-only">View notifications</span>
+                                <svg class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
+                                    stroke="currentColor" aria-hidden="true">
+                                    <path stroke-linecap="round" stroke-linejoin="round"
+                                        d="M14.857 17.082a23.848 23.848 0 005.454-1.31A8.967 8.967 0 0118 9.75v-.7V9A6 6 0 006 9v.75a8.967 8.967 0 01-2.312 6.022c1.733.64 3.56 1.085 5.455 1.31m5.714 0a24.255 24.255 0 01-5.714 0m5.714 0a3 3 0 11-5.714 0" />
+                                </svg>
+                            </a>
+                        </span>
+
+                        <div class="relative inline-block text-left">
+                            <button type="button"
+                                class="relative flex rounded-full bg-white text-sm focus:outline-none focus:ring-2 focus:ring-blue-600 focus:ring-offset-2"
+                                id="menu-1-button" aria-expanded="false" aria-haspopup="true">
+                                <span class="absolute -inset-1.5"></span>
+                                <span class="sr-only">Open user menu</span>
+                                <img class="h-8 w-8 rounded-full"
+                                    src="https://images.unsplash.com/photo-1517365830460-955ce3ccd263?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80"
+                                    alt="">
+                            </button>
+
+                            <!--
+                                Dropdown menu, show/hide based on menu state.
+                
+                                Entering: "transition ease-out duration-100"
+                                From: "transform opacity-0 scale-95"
+                                To: "transform opacity-100 scale-100"
+                                Leaving: "transition ease-in duration-75"
+                                From: "transform opacity-100 scale-100"
+                                To: "transform opacity-0 scale-95"
+                            -->
+                            <div class="absolute right-0 z-10 mt-2 w-56 origin-top-right rounded-md bg-white shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none hidden"
+                                role="menu" aria-orientation="vertical" aria-labelledby="menu-1-button" tabindex="-1">
+                                <div class="py-1" role="none">
+                                    <!-- Active: "bg-gray-100", Not Active: "" -->
+                                    <a href="#" class="block px-4 py-2 text-sm text-gray-700" role="menuitem"
+                                        tabindex="-1" id="menu-1-item-0">Your Profile</a>
+                                    <a href="#" class="block px-4 py-2 text-sm text-gray-700" role="menuitem"
+                                        tabindex="-1" id="menu-1-item-1">Sign Out</a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Mobile menu, show/hide this `div` based on menu open/closed state -->
+
+            <div class="relative z-40 lg:hidden" role="dialog" aria-modal="true">
+                <!--
+                Off-canvas menu backdrop, show/hide based on off-canvas menu state.
+        
+                Entering: "transition-opacity ease-linear duration-300"
+                    From: "opacity-0"
+                    To: "opacity-100"
+                Leaving: "transition-opacity ease-linear duration-300"
+                    From: "opacity-100"
+                    To: "opacity-0"
+                -->
+                <div class="hidden sm:fixed sm:inset-0 sm:block sm:bg-gray-600 sm:bg-opacity-75"></div>
+
+                <div class="fixed inset-0 z-40">
+                    <!--
+                        Mobile menu, toggle classes based on menu state.
+            
+                        Entering: "transition ease-out duration-150 sm:ease-in-out sm:duration-300"
+                        From: "transform opacity-0 scale-110 sm:translate-x-full sm:scale-100 sm:opacity-100"
+                        To: "transform opacity-100 scale-100 sm:translate-x-0 sm:scale-100 sm:opacity-100"
+                        Leaving: "transition ease-in duration-150 sm:ease-in-out sm:duration-300"
+                        From: "transform opacity-100 scale-100 sm:translate-x-0 sm:scale-100 sm:opacity-100"
+                        To: "transform opacity-0 scale-110 sm:translate-x-full sm:scale-100 sm:opacity-100"
+                    -->
+                    <div class="fixed inset-0 z-40 h-full w-full bg-white sm:inset-y-0 sm:left-auto sm:right-0 sm:w-full sm:max-w-sm sm:shadow-lg"
+                        aria-label="Global">
+                        <div class="flex h-16 items-center justify-between px-4 sm:px-6">
+                            <a href="#">
+                                <img class="block h-8 w-auto"
+                                    src="https://tailwindui.com/img/logos/mark.svg?color=cyan&shade=400"
+                                    alt="Your Company">
+                            </a>
+                            <button type="button"
+                                class="relative -mr-2 inline-flex items-center justify-center rounded-md p-2 text-gray-400 hover:bg-gray-100 hover:text-gray-500 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-blue-600">
+                                <span class="absolute -inset-0.5"></span>
+                                <span class="sr-only">Close main menu</span>
+                                <svg class="block h-6 w-6" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
+                                    stroke="currentColor" aria-hidden="true">
+                                    <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" />
+                                </svg>
+                            </button>
+                        </div>
+                        <div class="border-t border-gray-200 pb-3 pt-4">
+                            <div class="max-w-8xl mx-auto flex items-center px-4 sm:px-6">
+                                <div class="flex-shrink-0">
+                                    <img class="h-10 w-10 rounded-full"
+                                        src="https://images.unsplash.com/photo-1517365830460-955ce3ccd263?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80"
+                                        alt="">
+                                </div>
+                                <div class="ml-3 min-w-0 flex-1">
+                                    <div class="truncate text-base font-medium text-gray-800">John Doe</div>
+                                    <div class="truncate text-sm font-medium text-gray-500">john.doe@example.com
+                                    </div>
+                                </div>
+                                <a href="#"
+                                    class="relative ml-auto flex-shrink-0 bg-white p-2 text-gray-400 hover:text-gray-500">
+                                    <span class="absolute -inset-0.5"></span>
+                                    <span class="sr-only">View notifications</span>
+                                    <svg class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
+                                        stroke="currentColor" aria-hidden="true">
+                                        <path stroke-linecap="round" stroke-linejoin="round"
+                                            d="M14.857 17.082a23.848 23.848 0 005.454-1.31A8.967 8.967 0 0118 9.75v-.7V9A6 6 0 006 9v.75a8.967 8.967 0 01-2.312 6.022c1.733.64 3.56 1.085 5.455 1.31m5.714 0a24.255 24.255 0 01-5.714 0m5.714 0a3 3 0 11-5.714 0" />
+                                    </svg>
+                                </a>
+                            </div>
+                            <div class="max-w-8xl mx-auto mt-3 space-y-1 px-2 sm:px-4">
+                                <a href="#"
+                                    class="block rounded-md px-3 py-2 text-base font-medium text-gray-900 hover:bg-gray-50">Your
+                                    Profile</a>
+                                <a href="#"
+                                    class="block rounded-md px-3 py-2 text-base font-medium text-gray-900 hover:bg-gray-50">Sign
+                                    out</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </header>
+
+        <!-- Bottom section -->
+        <div class="flex min-h-0 flex-1 overflow-hidden shadow-2xl">
+            <!-- Narrow sidebar-->
+            <nav aria-label="Sidebar"
+                class="hidden lg:block lg:flex-shrink-0 lg:overflow-y-auto bg-gradient-to-b from-blue-700 to-sky-400 transition-width transition-slowest ease z-30 text-white">
+                <div class="relative flex w-20 flex-col space-y-3 p-3">
+                    <a href="#"
+                        class="hover:bg-blue-900 text-white inline-flex h-14 w-14 flex-shrink-0 items-center justify-center rounded-lg">
+                        <span class="sr-only">Open</span>
+                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
+                            stroke="currentColor" class="w-6 h-6">
+                            <path stroke-linecap="round" stroke-linejoin="round"
+                                d="M12.75 3.03v.568c0 .334.148.65.405.864l1.068.89c.442.369.535 1.01.216 1.49l-.51.766a2.25 2.25 0 0 1-1.161.886l-.143.048a1.107 1.107 0 0 0-.57 1.664c.369.555.169 1.307-.427 1.605L9 13.125l.423 1.059a.956.956 0 0 1-1.652.928l-.679-.906a1.125 1.125 0 0 0-1.906.172L4.5 15.75l-.612.153M12.75 3.031a9 9 0 0 0-8.862 12.872M12.75 3.031a9 9 0 0 1 6.69 14.036m0 0-.177-.529A2.25 2.25 0 0 0 17.128 15H16.5l-.324-.324a1.453 1.453 0 0 0-2.328.377l-.036.073a1.586 1.586 0 0 1-.982.816l-.99.282c-.55.157-.894.702-.8 1.267l.073.438c.08.474.49.821.97.821.846 0 1.598.542 1.865 1.345l.215.643m5.276-3.67a9.012 9.012 0 0 1-5.276 3.67m0 0a9 9 0 0 1-10.275-4.835M15.75 9c0 .896-.393 1.7-1.016 2.25" />
+                        </svg>
+                    </a>
+                </div>
+            </nav>
+
+            <!-- Main area -->
+            <main class="min-w-0 flex-1 border-t border-gray-200 xl:flex">
+                <section aria-labelledby="message-heading"
+                    class="flex h-full min-w-0 flex-1 flex-col overflow-hidden xl:order-last">
+                    <!-- Top section -->
+                    <div class="min-h-0 flex-1 overflow-y-auto">
+                        <div class="space-y-2 py-4 sm:space-y-4 sm:px-6 lg:px-8">
+                            <div class="bg-gray-700 px-4 py-6 shadow sm:rounded-lg sm:px-6 text-gray-400">
+                                <h1 class="module-title">ATON Dashboard</h1>
+                            </div>
+                            <div id="map" class="bg-gray-700 px-4 py-6 shadow sm:rounded-lg sm:px-6 text-gray-400 mapContainer">
+
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Message list-->
+                <aside class="hidden xl:order-first xl:block xl:flex-shrink-0">
+                    <div class="relative flex h-full w-80 flex-col border-gray-200 bg-gray-700">
+                        <div class="flex-shrink-0">
+                            <div class="flex h-16 flex-col justify-center px-6">
+                                <div class="flex items-baseline space-x-3">
+                                    <h2 class="text-lg font-bold text-gray-300">AtoN Summary</h2>
+                                    <p class="text-sm font-medium text-gray-400">(15/04/2024)</p>
+                                </div>
+                            </div>
+                        </div>
+                        <nav aria-label="Sub Menu" class="min-h-0 flex-1 overflow-y-auto">
+                            <ul role="list" class="divide-y divide-gray-200">
+                                <li class="relative px-6 py-2 focus-within:ring-blue-600">
+                                    <div class="flex justify-between space-x-3 border-b border-gray-200">
+                                        <div class="min-w-0 flex-1">
+                                            <a href="#" class="block focus:outline-none">
+                                                <span class="absolute inset-0" aria-hidden="true"></span>
+                                                <p class="truncate text-sm font-semibold text-gray-300 mb-3">Total Sites
+                                                </p>
+                                            </a>
+                                        </div>
+                                        <p class="flex-shrink-0 whitespace-nowrap text-sm text-gray-400" id="cnt_in_aton">504</p>
+                                    </div>
+
+                                    <div class="flex justify-between space-x-3 border-b border-gray-200 mt-3">
+                                        <div class="min-w-0 flex-1">
+                                            <a href="#" class="block focus:outline-none">
+                                                <span class="absolute inset-0" aria-hidden="true"></span>
+                                                <p class="truncate text-sm font-semibold text-gray-300 mb-3">No Messages
+                                                    6
+                                                </p>
+                                            </a>
+                                        </div>
+                                        <p class="flex-shrink-0 whitespace-nowrap text-sm text-gray-400" id="cnt_in_nomsg6">0 (0.00%)</p>
+                                    </div>
+
+                                    <div class="flex justify-between space-x-3 border-b border-gray-200 mt-3">
+                                        <div class="min-w-0 flex-1">
+                                            <a href="#" class="block focus:outline-none">
+                                                <span class="absolute inset-0" aria-hidden="true"></span>
+                                                <p class="truncate text-sm font-semibold text-gray-300 mb-3">Light error
+                                                </p>
+                                            </a>
+                                        </div>
+                                        <p class="flex-shrink-0 whitespace-nowrap text-sm text-gray-400" id="cnt_in_light">0 (0.00%)</p>
+                                    </div>
+
+                                    <div class="flex justify-between space-x-3 border-b border-gray-200 mt-3">
+                                        <div class="min-w-0 flex-1">
+                                            <a href="#" class="block focus:outline-none">
+                                                <span class="absolute inset-0" aria-hidden="true"></span>
+                                                <p class="truncate text-sm font-semibold text-gray-300 mb-3">Low Batt
+                                                    AtoN
+                                                </p>
+                                            </a>
+                                        </div>
+                                        <p class="flex-shrink-0 whitespace-nowrap text-sm text-gray-400" id="cnt_in_battAton">0 (0.00%)</p>
+                                    </div>
+
+                                    <div class="flex justify-between space-x-3 border-b border-gray-200 mt-3">
+                                        <div class="min-w-0 flex-1">
+                                            <a href="#" class="block focus:outline-none">
+                                                <span class="absolute inset-0" aria-hidden="true"></span>
+                                                <p class="truncate text-sm font-semibold text-gray-300 mb-3">Low Batt
+                                                    Lantern
+                                                </p>
+                                            </a>
+                                        </div>
+                                        <p class="flex-shrink-0 whitespace-nowrap text-sm text-gray-400" id="cnt_in_battLant">0 (0.00%)</p>
+                                    </div>
+
+                                    <div class="flex justify-between space-x-3 border-b border-gray-200 mt-3">
+                                        <div class="min-w-0 flex-1">
+                                            <a href="#" class="block focus:outline-none">
+                                                <span class="absolute inset-0" aria-hidden="true"></span>
+                                                <p class="truncate text-sm font-semibold text-gray-300 mb-3">Bad LDR
+                                                    6
+                                                </p>
+                                            </a>
+                                        </div>
+                                        <p class="flex-shrink-0 whitespace-nowrap text-sm text-gray-400" id="cnt_in_ldr">0 (0.00%)</p>
+                                    </div>
+
+                                    <div class="flex justify-between space-x-3 border-b border-gray-200 mt-3">
+                                        <div class="min-w-0 flex-1">
+                                            <a href="#" class="block focus:outline-none">
+                                                <span class="absolute inset-0" aria-hidden="true"></span>
+                                                <p class="truncate text-sm font-semibold text-gray-300 mb-3">Off Pos
+                                                    6
+                                                </p>
+                                            </a>
+                                        </div>
+                                        <p class="flex-shrink-0 whitespace-nowrap text-sm text-gray-400" id="cnt_in_offpos">0 (0.00%)</p>
+                                    </div>
+                                </li>
+                            </ul>
+                        </nav>
+
+                    </div>
+
+                </aside>
+            </main>
+        </div>
+    </div>
+
+
+    <script src="aton.js"></script>    
+</body>
+
+</html>
