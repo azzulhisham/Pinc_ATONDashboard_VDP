@@ -813,7 +813,7 @@ function vessel_info_panel(mmsi){
 // JavaScript example using WebSocket object
 // Create a WebSocket object for historical data
 /////////////////////////////////////////////////////////
-const ws2_URL = "ws://MYKUL-MBP-02.local:38381";
+const ws2_URL = "ws://localhost:38381";
 // Define a heartbeat interval in milliseconds
 const HEARTBEAT_INTERVAL2 = 30000;
 
