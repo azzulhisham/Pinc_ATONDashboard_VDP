@@ -6,7 +6,9 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>AtoN Dashboard</title>
 
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css" integrity="sha512-z3gLpd7yknf1YoNbCzqRKc4qyor8gaKU1qmn+CShxbuBusANI9QpRohGBreCFkKxLhei6S9CQXFEbbKuqLg0DA==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css"
+        integrity="sha512-z3gLpd7yknf1YoNbCzqRKc4qyor8gaKU1qmn+CShxbuBusANI9QpRohGBreCFkKxLhei6S9CQXFEbbKuqLg0DA=="
+        crossorigin="anonymous" referrerpolicy="no-referrer" />
 
     <link href="https://api.mapbox.com/mapbox-gl-js/v3.1.2/mapbox-gl.css" rel="stylesheet">
     <script src="https://api.mapbox.com/mapbox-gl-js/v3.1.2/mapbox-gl.js"></script>
@@ -15,7 +17,8 @@
 
     <!-- Mapbox drawing functions -->
     <script src="https://api.mapbox.com/mapbox-gl-js/plugins/mapbox-gl-draw/v1.4.3/mapbox-gl-draw.js"></script>
-    <link rel="stylesheet" href="https://api.mapbox.com/mapbox-gl-js/plugins/mapbox-gl-draw/v1.4.3/mapbox-gl-draw.css" type="text/css">
+    <link rel="stylesheet" href="https://api.mapbox.com/mapbox-gl-js/plugins/mapbox-gl-draw/v1.4.3/mapbox-gl-draw.css"
+        type="text/css">
 
     <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
     <link href="aton.css" rel="stylesheet">
@@ -197,11 +200,9 @@
                         <div class="border-t border-gray-200 pb-3 pt-4">
                             <div class="max-w-8xl mx-auto flex items-center px-4 sm:px-6">
                                 <div class="flex-shrink-0">
-                                    <img class="h-10 w-10 rounded-full"
-                                        src="https://images.unsplash.com/photo-1517365830460-955ce3ccd263?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80"
-                                        alt="">
+                                    <img class="h-10 w-10 rounded-full" src="" alt="">
                                 </div>
-                                <div class="ml-3 min-w-0 flex-1">
+                                <div class=" ml-3 min-w-0 flex-1">
                                     <div class="truncate text-base font-medium text-gray-800">John Doe</div>
                                     <div class="truncate text-sm font-medium text-gray-500">john.doe@example.com
                                     </div>
@@ -254,13 +255,10 @@
                 <section aria-labelledby="message-heading"
                     class="flex h-full min-w-0 flex-1 flex-col overflow-hidden xl:order-last">
                     <!-- Top section -->
-                    <div class="min-h-0 flex-1 overflow-y-auto">
-                        <div class="space-y-2 py-4 sm:space-y-4 sm:px-6 lg:px-8">
-                            <div class="bg-gray-700 px-4 py-6 shadow sm:rounded-lg sm:px-6 text-gray-400">
-                                <h1 class="module-title">ATON Dashboard</h1>
-                            </div>
-                            <div id="map" class="bg-gray-700 px-4 py-6 shadow sm:rounded-lg sm:px-6 text-gray-400 mapContainer">
-
+                    <div class="flex-1 overflow-y-auto">
+                        <div class="py-2 sm:space-y-4 sm:px-2 lg:px-3">
+                            <div id="map"
+                                class="bg-gray-700 px-4 py-6 shadow sm:rounded-lg sm:px-6 text-gray-400 mapContainer">
                             </div>
                         </div>
                     </div>
@@ -268,98 +266,102 @@
 
                 <!-- Message list-->
                 <aside class="hidden xl:order-first xl:block xl:flex-shrink-0">
-                    <div class="relative flex h-full w-80 flex-col border-gray-200 bg-gray-700">
+                    <div class="relative flex w-80 flex-col border-gray-200 bg-gray-700 pb-5">
                         <div class="flex-shrink-0">
                             <div class="flex h-16 flex-col justify-center px-6">
                                 <div class="flex items-baseline space-x-3">
                                     <h2 class="text-lg font-bold text-gray-300">AtoN Summary</h2>
                                     <p class="text-sm font-medium text-gray-400">(15/04/2024)</p>
+                                    <p class="text-lg font-bold text-gray-300"><i class=""></i>:</p>
                                 </div>
                             </div>
                         </div>
                         <nav aria-label="Sub Menu" class="min-h-0 flex-1 overflow-y-auto">
                             <ul role="list" class="divide-y divide-gray-200">
-                                <li class="relative px-6 py-2 focus-within:ring-blue-600">
+                                <li class="relative px-6 focus-within:ring-blue-600">
                                     <div class="flex justify-between space-x-3 border-b border-gray-200">
                                         <div class="min-w-0 flex-1">
                                             <a href="#" class="block focus:outline-none">
                                                 <span class="absolute inset-0" aria-hidden="true"></span>
-                                                <p class="truncate text-sm font-semibold text-gray-300 mb-3">Total Sites
+                                                <p class="truncate text-sm font-semibold text-gray-300 mb-2">Total Sites
                                                 </p>
                                             </a>
                                         </div>
-                                        <p class="flex-shrink-0 whitespace-nowrap text-sm text-gray-400" id="cnt_in_aton">504</p>
+                                        <p class="flex-shrink-0 whitespace-nowrap text-sm text-gray-400"
+                                            id="cnt_in_aton">504</p>
                                     </div>
 
-                                    <div class="flex justify-between space-x-3 border-b border-gray-200 mt-3">
+                                    <div class="flex justify-between space-x-3 border-b border-gray-200 mt-2">
                                         <div class="min-w-0 flex-1">
                                             <a href="#" class="block focus:outline-none">
                                                 <span class="absolute inset-0" aria-hidden="true"></span>
-                                                <p class="truncate text-sm font-semibold text-gray-300 mb-3">No Messages
+                                                <p class="truncate text-sm font-semibold text-gray-300 mb-2">No Messages
                                                     6
                                                 </p>
                                             </a>
                                         </div>
-                                        <p class="flex-shrink-0 whitespace-nowrap text-sm text-gray-400" id="cnt_in_nomsg6">0 (0.00%)</p>
+                                        <p class="flex-shrink-0 whitespace-nowrap text-sm text-gray-400"
+                                            id="cnt_in_nomsg6">0 (0.00%)</p>
                                     </div>
 
-                                    <div class="flex justify-between space-x-3 border-b border-gray-200 mt-3">
+                                    <div class="flex justify-between space-x-3 border-b border-gray-200 mt-2">
                                         <div class="min-w-0 flex-1">
                                             <a href="#" class="block focus:outline-none">
                                                 <span class="absolute inset-0" aria-hidden="true"></span>
-                                                <p class="truncate text-sm font-semibold text-gray-300 mb-3">Light error
+                                                <p class="truncate text-sm font-semibold text-gray-300 mb-2">Light error
                                                 </p>
                                             </a>
                                         </div>
-                                        <p class="flex-shrink-0 whitespace-nowrap text-sm text-gray-400" id="cnt_in_light">0 (0.00%)</p>
+                                        <p class="flex-shrink-0 whitespace-nowrap text-sm text-gray-400"
+                                            id="cnt_in_light">0 (0.00%)</p>
                                     </div>
 
-                                    <div class="flex justify-between space-x-3 border-b border-gray-200 mt-3">
+                                    <div class="flex justify-between space-x-3 border-b border-gray-200 mt-2">
                                         <div class="min-w-0 flex-1">
                                             <a href="#" class="block focus:outline-none">
                                                 <span class="absolute inset-0" aria-hidden="true"></span>
-                                                <p class="truncate text-sm font-semibold text-gray-300 mb-3">Low Batt
+                                                <p class="truncate text-sm font-semibold text-gray-300 mb-2">Low Batt
                                                     AtoN
                                                 </p>
                                             </a>
                                         </div>
-                                        <p class="flex-shrink-0 whitespace-nowrap text-sm text-gray-400" id="cnt_in_battAton">0 (0.00%)</p>
+                                        <p class="flex-shrink-0 whitespace-nowrap text-sm text-gray-400"
+                                            id="cnt_in_battAton">0 (0.00%)</p>
                                     </div>
 
-                                    <div class="flex justify-between space-x-3 border-b border-gray-200 mt-3">
+                                    <div class="flex justify-between space-x-3 border-b border-gray-200 mt-2">
                                         <div class="min-w-0 flex-1">
                                             <a href="#" class="block focus:outline-none">
                                                 <span class="absolute inset-0" aria-hidden="true"></span>
-                                                <p class="truncate text-sm font-semibold text-gray-300 mb-3">Low Batt
+                                                <p class="truncate text-sm font-semibold text-gray-300 mb-2">Low Batt
                                                     Lantern
                                                 </p>
                                             </a>
                                         </div>
-                                        <p class="flex-shrink-0 whitespace-nowrap text-sm text-gray-400" id="cnt_in_battLant">0 (0.00%)</p>
+                                        <p class="flex-shrink-0 whitespace-nowrap text-sm text-gray-400"
+                                            id="cnt_in_battLant">0 (0.00%)</p>
                                     </div>
 
-                                    <div class="flex justify-between space-x-3 border-b border-gray-200 mt-3">
+                                    <div class="flex justify-between space-x-3 border-b border-gray-200 mt-2">
                                         <div class="min-w-0 flex-1">
                                             <a href="#" class="block focus:outline-none">
                                                 <span class="absolute inset-0" aria-hidden="true"></span>
-                                                <p class="truncate text-sm font-semibold text-gray-300 mb-3">Bad LDR
-                                                    6
-                                                </p>
+                                                <p class="truncate text-sm font-semibold text-gray-300 mb-2">Bad LDR</p>
                                             </a>
                                         </div>
-                                        <p class="flex-shrink-0 whitespace-nowrap text-sm text-gray-400" id="cnt_in_ldr">0 (0.00%)</p>
+                                        <p class="flex-shrink-0 whitespace-nowrap text-sm text-gray-400"
+                                            id="cnt_in_ldr">0 (0.00%)</p>
                                     </div>
 
-                                    <div class="flex justify-between space-x-3 border-b border-gray-200 mt-3">
+                                    <div class="flex justify-between space-x-3 border-b border-gray-200 mt-2">
                                         <div class="min-w-0 flex-1">
                                             <a href="#" class="block focus:outline-none">
                                                 <span class="absolute inset-0" aria-hidden="true"></span>
-                                                <p class="truncate text-sm font-semibold text-gray-300 mb-3">Off Pos
-                                                    6
-                                                </p>
+                                                <p class="truncate text-sm font-semibold text-gray-300 mb-2">Off Pos</p>
                                             </a>
                                         </div>
-                                        <p class="flex-shrink-0 whitespace-nowrap text-sm text-gray-400" id="cnt_in_offpos">0 (0.00%)</p>
+                                        <p class="flex-shrink-0 whitespace-nowrap text-sm text-gray-400"
+                                            id="cnt_in_offpos">0 (0.00%)</p>
                                     </div>
                                 </li>
                             </ul>
@@ -367,13 +369,343 @@
 
                     </div>
 
+                    <select class="text-sm w-20 mb-3 hidden">
+                        <option value="All">All</option>
+                        <option value=">60">>60</option>
+                        <option value=">55">>55</option>
+                        <option value=">50">>50</option>
+                        <option value=">45">>45</option>
+                        <option value="<45">
+                            <45 </option>
+                        <option value="NA">NA</option>
+                    </select>
+
+                    <div class="relative flex w-80 h-full flex-col border-gray-200 bg-gray-700">
+                        <div class=" bg-gray-600 rounded-lg m-3 px-2 py-2">
+                            <div class="flex h-16 flex-col justify-center px-6">
+                                <div class="flex items-baseline space-x-3 mb-2">
+                                    <h2 class="text-lg font-bold text-gray-300">Legend</h2>
+                                </div>
+                                <div class="flex items-baseline space-x-3">
+                                    <h2 class="text-lg text-gray-300">AtoN</h2>
+                                </div>
+                            </div>
+                            <nav aria-label="Sub Menu" class="min-h-0 flex-1 overflow-y-auto">
+                                <ul role="list" class="space-y-3 text-sm leading-6 px-6 py-2 text-gray-400">
+                                    <li class="flex gap-x-3">
+                                        <svg class="h-6 w-5 flex-none text-red-600" viewBox="0 0 20 20"
+                                            fill="currentColor" aria-hidden="true">
+                                            <path fill-rule="evenodd"
+                                                d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.857-9.809a.75.75 0 00-1.214-.882l-3.483 4.79-1.88-1.88a.75.75 0 10-1.06 1.061l2.5 2.5a.75.75 0 001.137-.089l4-5.5z"
+                                                clip-rule="evenodd" />
+                                        </svg>
+                                        Beacon - Good
+                                    </li>
+                                    <li class="flex gap-x-3">
+                                        <svg class="h-6 w-5 flex-none text-indigo-600" viewBox="0 0 20 20"
+                                            fill="currentColor" aria-hidden="true">
+                                            <path fill-rule="evenodd"
+                                                d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.857-9.809a.75.75 0 00-1.214-.882l-3.483 4.79-1.88-1.88a.75.75 0 10-1.06 1.061l2.5 2.5a.75.75 0 001.137-.089l4-5.5z"
+                                                clip-rule="evenodd" />
+                                        </svg>
+                                        Buoy - Good
+                                    </li>
+                                    <li class="flex gap-x-3">
+                                        <svg class="h-6 w-5 flex-none text-indigo-600" viewBox="0 0 20 20"
+                                            fill="currentColor" aria-hidden="true">
+                                            <path fill-rule="evenodd"
+                                                d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.857-9.809a.75.75 0 00-1.214-.882l-3.483 4.79-1.88-1.88a.75.75 0 10-1.06 1.061l2.5 2.5a.75.75 0 001.137-.089l4-5.5z"
+                                                clip-rule="evenodd" />
+                                        </svg>
+                                        Lighthouse - Good
+                                    </li>
+                                    <li class="flex gap-x-3">
+                                        <svg class="h-6 w-5 flex-none text-indigo-600" viewBox="0 0 20 20"
+                                            fill="currentColor" aria-hidden="true">
+                                            <path fill-rule="evenodd"
+                                                d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.857-9.809a.75.75 0 00-1.214-.882l-3.483 4.79-1.88-1.88a.75.75 0 10-1.06 1.061l2.5 2.5a.75.75 0 001.137-.089l4-5.5z"
+                                                clip-rule="evenodd" />
+                                        </svg>
+                                        Beacon - NG
+                                    </li>
+                                    <li class="flex gap-x-3">
+                                        <svg class="h-6 w-5 flex-none #10B981" viewBox="0 0 20 20" fill="currentColor"
+                                            aria-hidden="true">
+                                            <path fill-rule="evenodd"
+                                                d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.857-9.809a.75.75 0 00-1.214-.882l-3.483 4.79-1.88-1.88a.75.75 0 10-1.06 1.061l2.5 2.5a.75.75 0 001.137-.089l4-5.5z"
+                                                clip-rule="evenodd" />
+                                        </svg>
+                                        Buoy - NG
+                                    </li>
+                                    <li class="flex gap-x-3">
+                                        <svg class="h-6 w-5 flex-none text-indigo-600" viewBox="0 0 20 20"
+                                            fill="currentColor" aria-hidden="true">
+                                            <path fill-rule="evenodd"
+                                                d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.857-9.809a.75.75 0 00-1.214-.882l-3.483 4.79-1.88-1.88a.75.75 0 10-1.06 1.061l2.5 2.5a.75.75 0 001.137-.089l4-5.5z"
+                                                clip-rule="evenodd" />
+                                        </svg>
+                                        Lighthouse - NG
+                                    </li>
+                                </ul>
+                                <ul role="" class="divide-y divide-gray-200 hidden">
+                                    <li class="relative px-6 py-2 focus-within:ring-blue-600">
+                                        <div class="flex justify-between space-x-3 border-gray-200 mb-3">
+                                            <div class="flex-1">
+                                                <a href="#" class="block focus:outline-none">
+                                                    <span class="absolute inset-0" aria-hidden="true"></span>
+                                                    <p class="truncate text-sm font-semibold text-gray-300">AtoN
+                                                    </p>
+                                                </a>
+                                            </div>
+                                        </div>
+                                        <div class="flex justify-between space-x-3 border-gray-200 mb-2">
+                                            <div class="flex-1">
+                                                <a href="#" class="block focus:outline-none">
+                                                    <span class="absolute inset-0" aria-hidden="true"></span>
+                                                    <p class="truncate text-sm font-semibold text-gray-300">Beacon -
+                                                        Good
+                                                    </p>
+                                                </a>
+                                            </div>
+                                        </div>
+                                        <div class="flex justify-between space-x-3 border-gray-200 mb-2">
+                                            <div class="flex-1">
+                                                <a href="#" class="block focus:outline-none">
+                                                    <span class="absolute inset-0" aria-hidden="true"></span>
+                                                    <p class="truncate text-sm font-semibold text-gray-300">Beacon -
+                                                        Good
+                                                    </p>
+                                                </a>
+                                            </div>
+                                        </div>
+                                        <div class="flex justify-between space-x-3 border-gray-200 mb-2">
+                                            <div class="flex-1">
+                                                <a href="#" class="block focus:outline-none">
+                                                    <span class="absolute inset-0" aria-hidden="true"></span>
+                                                    <svg class="h-6 w-5 flex-none text-indigo-600" viewBox="0 0 20 20"
+                                                        fill="currentColor" aria-hidden="true">
+                                                        <path fill-rule="evenodd"
+                                                            d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.857-9.809a.75.75 0 00-1.214-.882l-3.483 4.79-1.88-1.88a.75.75 0 10-1.06 1.061l2.5 2.5a.75.75 0 001.137-.089l4-5.5z"
+                                                            clip-rule="evenodd" />
+                                                    </svg>
+                                                    <p class="truncate text-sm font-semibold text-gray-300">Beacon -
+                                                        Good
+                                                    </p>
+                                                </a>
+                                            </div>
+                                        </div>
+                                        <div class="flex justify-between space-x-3 border-gray-200 mb-2">
+                                            <div class="flex-1">
+                                                <a href="#" class="block focus:outline-none">
+                                                    <span class="absolute inset-0" aria-hidden="true"></span>
+                                                    <p class="truncate text-sm font-semibold text-gray-300">Beacon -
+                                                        Good
+                                                    </p>
+                                                </a>
+                                            </div>
+                                        </div>
+                                        <div class="flex justify-between space-x-3 border-gray-200 mb-2">
+                                            <div class="flex-1">
+                                                <a href="#" class="block focus:outline-none">
+                                                    <span class="absolute inset-0" aria-hidden="true"></span>
+                                                    <p class="truncate text-sm font-semibold text-gray-300">Beacon -
+                                                        Good
+                                                    </p>
+                                                </a>
+                                            </div>
+                                        </div>
+                                        <div class="flex justify-between space-x-3 border-gray-200 mb-2">
+                                            <div class="flex-1">
+                                                <a href="#" class="block focus:outline-none">
+                                                    <span class="absolute inset-0" aria-hidden="true"></span>
+                                                    <p class="truncate text-sm font-semibold text-gray-300">Beacon -
+                                                        Good
+                                                    </p>
+                                                </a>
+                                            </div>
+                                        </div>
+                                    </li>
+                                </ul>
+                            </nav>
+                        </div>
+
+                    </div>
+
+
+                    <div class="relative flex w-80 h-full flex-col border-gray-200 bg-gray-700 hidden">
+                        <div class="">
+                            <div class="flex h-16 flex-col justify-center px-6">
+                                <div class="flex items-baseline space-x-3">
+                                    <h2 class="text-lg font-bold text-gray-300">Condition</h2>
+                                </div>
+                            </div>
+                        </div>
+                        <nav aria-label="Sub Menu" class="min-h-0 flex-1 overflow-y-auto">
+                            <ul role="" class="divide-y divide-gray-200">
+                                <li class="relative px-6 py-2 focus-within:ring-blue-600">
+                                    <div class="flex justify-between space-x-3 border-b border-gray-200">
+                                        <div class="flex-1">
+                                            <a href="#" class="block focus:outline-none">
+                                                <span class="absolute inset-0" aria-hidden="true"></span>
+                                                <p class="truncate text-sm font-semibold text-gray-300">Structure
+                                                </p>
+                                            </a>
+                                        </div>
+                                        <select class="text-sm w-20 mb-3">
+                                            <option value="">All</option>
+                                            <option value="">Lighthouse</option>
+                                            <option value="">Becon</option>
+                                            <option value="">Buoy</option>
+                                        </select>
+                                    </div>
+
+                                    <div class="flex justify-between space-x-3 border-b border-gray-200 mt-2">
+                                        <div class="min-w-0 flex-1">
+                                            <a href="#" class="block focus:outline-none">
+                                                <span class="absolute inset-0" aria-hidden="true"></span>
+                                                <p class="truncate text-sm font-semibold text-gray-300">Error
+                                                </p>
+                                            </a>
+                                        </div>
+                                        <select class="flex-shrink-0 text-sm w-20 mb-3">
+                                            <option value="">All</option>
+                                            <option value="">OK</option>
+                                            <option value="">NG</option>
+                                            <option value="">NA</option>
+                                        </select>
+                                    </div>
+
+                                    <div class="flex justify-between space-x-3 border-b border-gray-200 mt-2">
+                                        <div class="min-w-0 flex-1">
+                                            <a href="#" class="block focus:outline-none">
+                                                <span class="absolute inset-0" aria-hidden="true"></span>
+                                                <p class="truncate text-sm font-semibold text-gray-300">Lantern
+                                                    Model
+                                                </p>
+                                            </a>
+                                        </div>
+                                        <select class="flex-shrink-0 text-sm w-20 mb-3">
+                                            <option value="">All</option>
+                                        </select>
+                                    </div>
+
+                                    <div class="flex justify-between space-x-3 border-b border-gray-200 mt-2">
+                                        <div class="min-w-0 flex-1">
+                                            <a href="#" class="block focus:outline-none">
+                                                <span class="absolute inset-0" aria-hidden="true"></span>
+                                                <p class="truncate text-sm font-semibold text-gray-300">Temperature</p>
+                                            </a>
+                                        </div>
+                                        <select class="text-sm w-20 mb-3">
+                                            <option value="All">All</option>
+                                            <option value=">60">>60</option>
+                                            <option value=">55">>55</option>
+                                            <option value=">50">>50</option>
+                                            <option value=">45">>45</option>
+                                            <option value="<45">
+                                                <45 </option>
+                                            <option value="NA">NA</option>
+                                        </select>
+                                    </div>
+
+                                    <div class="flex justify-between space-x-3 border-b border-gray-200 mt-2">
+                                        <div class="min-w-0 flex-1">
+                                            <a href="#" class="block focus:outline-none">
+                                                <span class="absolute inset-0" aria-hidden="true"></span>
+                                                <p class="truncate text-sm font-semibold text-gray-300">Battery
+                                                    Aton
+                                                </p>
+                                            </a>
+                                        </div>
+                                        <select class="flex-shrink-0 text-sm w-20 mb-3">
+                                            <option value="">All</option>
+                                        </select>
+
+                                    </div>
+
+                                    <div class="flex justify-between space-x-3 border-b border-gray-200 mt-2">
+                                        <div class="min-w-0 flex-1">
+                                            <a href="#" class="block focus:outline-none">
+                                                <span class="absolute inset-0" aria-hidden="true"></span>
+                                                <p class="truncate text-sm font-semibold text-gray-300">Battery Lantern
+                                                </p>
+                                            </a>
+                                        </div>
+                                        <select class="flex-shrink-0 text-sm w-20 mb-3">
+                                            <option value="">All</option>
+                                        </select>
+                                    </div>
+
+                                    <div class="flex justify-between space-x-3 border-b border-gray-200 mt-2">
+                                        <div class="min-w-0 flex-1">
+                                            <a href="#" class="block focus:outline-none">
+                                                <span class="absolute inset-0" aria-hidden="true"></span>
+                                                <p class="truncate text-sm font-semibold text-gray-300">Off Position
+                                                </p>
+                                            </a>
+                                        </div>
+                                        <select class="flex-shrink-0 text-sm w-20 mb-3">
+                                            <option value="">All</option>
+                                        </select>
+                                    </div>
+
+                                    <div class="flex justify-between space-x-3 border-b border-gray-200 mt-2">
+                                        <div class="min-w-0 flex-1">
+                                            <a href="#" class="block focus:outline-none">
+                                                <span class="absolute inset-0" aria-hidden="true"></span>
+                                                <p class="truncate text-sm font-semibold text-gray-300 mb-2">LDR
+                                                    Condition
+                                                </p>
+                                            </a>
+                                        </div>
+                                        <select class="flex-shrink-0 text-sm w-20 mb-3">
+                                            <option value="">All</option>
+                                        </select>
+                                    </div>
+
+                                    <div class="flex justify-between space-x-3 border-b border-gray-200 mt-2">
+                                        <div class="min-w-0 flex-1">
+                                            <a href="#" class="block focus:outline-none">
+                                                <span class="absolute inset-0" aria-hidden="true"></span>
+                                                <p class="truncate text-sm font-semibold text-gray-300 mb-2">
+                                                    Transmission Condition
+                                                </p>
+                                            </a>
+                                        </div>
+                                        <select class="flex-shrink-0 text-sm w-20 mb-3">
+                                            <option value="">All</option>
+                                        </select>
+                                    </div>
+
+                                    <div class="flex justify-between space-x-3 border-b border-gray-200 mt-2">
+                                        <div class="min-w-0 flex-1">
+                                            <a href="#" class="block focus:outline-none">
+                                                <span class="absolute inset-0" aria-hidden="true"></span>
+                                                <p class="truncate text-sm font-semibold text-gray-300 mb-2">Remark
+                                                </p>
+                                            </a>
+                                        </div>
+                                        <select class="flex-shrink-0 text-sm w-20 mb-3">
+                                            <option value="">All</option>
+                                            <option value="1">OK</option>
+                                            <option value="1">NG</option>
+                                        </select>
+                                    </div>
+
+                                    <div class="flex justify-between space-x-3 border-b border-gray-200 mt-2">
+                                        <button class="w-full bg-white font-semibold text-sm h-8">RESET</button>
+                                    </div>
+                                </li>
+                            </ul>
+                        </nav>
+                    </div>
                 </aside>
             </main>
         </div>
     </div>
 
 
-    <script src="aton.js"></script>    
+    <script src="aton.js"></script>
 </body>
 
 </html>
