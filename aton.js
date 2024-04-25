@@ -307,7 +307,7 @@ function addVesselRadicalPopupMenu(mmsi){
     const p_spanI1 = document.createElement('i')
     p_spanI1.className = "fa-solid fa-earth-americas"
     const p_span1 = document.createElement('span')
-    p_span1.className = "menu-item"
+    p_span1.className = "menu-item bg-green"
     p_span1.setAttribute("style", "--i:1;")
     p_span1.appendChild(p_spanI1)
     p_span1.id = "sp1_" + mmsi
@@ -545,11 +545,11 @@ function showVesselPopup(e) {
     const coordinates = get_mmsi.getLngLat()
 
     if (!toggleBtn.classList.contains('open')) {
-        const description = '<h4>' + elemid_text[1] + '</h4>' +
+        const description = '<div class="bg-gray-700 text-gray-300"><h4 class="font-bold">' + elemid_text[1] + '</h4>' +
                             '<small> Name &nbsp;: ' + get_atoninfo['atonname'] + '</small><br>' +
                             '<small> Region &nbsp;: ' + get_atoninfo['region']  + '</small><br>' +
                             '<small> Latitude &nbsp;: ' + coordinates.lat + '</small><br>' +
-                            '<small> Longitude &nbsp;: ' + coordinates.lng + '</small>'
+                            '<small> Longitude &nbsp;: ' + coordinates.lng + '</small></div>'
        
         popup.setLngLat(coordinates).setHTML(description).addTo(map);
     }

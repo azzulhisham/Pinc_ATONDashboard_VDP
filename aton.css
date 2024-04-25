@@ -100,7 +100,7 @@
     position: absolute;
     left: -300px;
     top: 0px;
-    color: rgb(198, 172, 254);;
+    /* color: rgb(198, 172, 254); */
     width: 330px;
     height: 100vh;
     background-color: #343533;
@@ -314,8 +314,8 @@ nav .nav-content {
   .nav-content span {
     height: 30px;
     width: 30px;
-    background-color: #343533;
-    color: rgb(198, 172, 254);;
+    /* background-color: #343533; */
+    /* color: rgb(198, 172, 254);; */
     display: flex;
     align-items: center;
     justify-content: center;
