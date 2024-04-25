@@ -40,7 +40,7 @@
 }
 
 .mapContainer {
-    height: 80vh;
+    height: 90vh;
 }
 
 
@@ -94,6 +94,32 @@
     border: 1px solid #EF4444 !important;
   }
 
+
+/* Legend */
+.beacon-ok-legend {
+    color: #10B981 !important;
+}
+
+.buoy-ok-legend {
+    color: #06B6D4 !important;
+}
+
+.lighthouse-ok-legend {
+    color: #D006D4 !important;
+}
+
+
+.beacon-ng-legend {
+    color: #F59E0B !important;
+}
+
+.buoy-ng-legend {
+    color: #F97316 !important;
+}
+
+.lighthouse-ng-legend {
+    color: #EF4444 !important;
+}
 
 /* vessel info panel */
 .vessel-info {
