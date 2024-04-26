@@ -2,6 +2,7 @@
 lst_vessel = {};
 lst_atoninfo = {};
 lst_atonData = {};
+lst_statistic = [];
 
 
 // DOM Objects
@@ -1189,6 +1190,15 @@ function init_WebSocket2(){
             }
         }
 
+        if (obj['payload'] === 'getatonstatistic') {
+            lst_statistic.push(obj) 
+        }
+
+        if (obj['payload'] === 'getatonstatistic_done') {
+            console.log(lst_statistic)
+            build_tabulator_table()
+        }        
+
         if (obj['payload'] === 'getallatonmsg') {
             if (obj['messageType'] == 6) {
                 atonStatus = 'ok'
@@ -1327,3 +1337,64 @@ function clearHeartbeat2() {
 
 // setInterval(updateDashboard, 30000);
 
+function build_tabulator_table() {
+    //Build Tabulator
+    var table = new Tabulator("#example-table", {
+        height:"330px",
+        resizableColumnFit:true,
+        responsiveLayout: true,
+        data:lst_statistic,
+        columns:[
+            {title:"No", field:"no"},
+            {title:"Site<br>Name", field:"atonname", width:60},
+            {title:"MMSI", field:"mmsi", headerFilter:"input"},
+            {title:"Structure", field:"type"},
+            {title:"Region", field:"region", width:60},
+            {title:"Min.<br>Temp.", field:"minTemp"},
+            {title:"Max.<br>Temp.", field:"maxTemp"},
+
+            {title:"Min. Batt<br>ATON", field:"minBattAton"},
+            {title:"Min. Batt<br>ATON", field:"maxBattAton"},
+            {title:"Avg. Batt<br>ATON", field:"meanBattAton"},
+            {title:"Stddev<br>Batt ATON", field:"stddevBattAton"},
+            {title:"Skew Batt<br>ATON.", field:"skewBattAton"},
+            {title:"Kurt Batt<br>ATON", field:"kurtBattAton"},
+
+
+            // {title:"Progress", field:"progress", width:100, sorter:"number"},
+            // {title:"Gender", field:"gender"},
+            // {title:"Rating", field:"rating", width:80},
+            // {title:"Favourite Color", field:"col"},
+            // {title:"Date Of Birth", field:"dob", hozAlign:"center", sorter:"date"},
+            // {title:"Driver", field:"car", hozAlign:"center", formatter:"tickCross"},
+        ],
+    });
+
+    //trigger download of data.csv file
+    document.getElementById("download-csv").addEventListener("click", function(){
+        table.download("csv", "data.csv");
+    });
+
+    //trigger download of data.json file
+    document.getElementById("download-json").addEventListener("click", function(){
+        table.download("json", "data.json");
+    });
+
+    //trigger download of data.xlsx file
+    //document.getElementById("download-xlsx").addEventListener("click", function(){
+    //     table.download("xlsx", "data.xlsx", {sheetName:"My Data"});
+    // });
+
+    //trigger download of data.pdf file
+    document.getElementById("download-pdf").addEventListener("click", function(){
+        table.download("pdf", "data.pdf", {
+            orientation:"portrait", //set page orientation to portrait
+            title:"Example Report", //add title to report
+        });
+    });
+
+    //trigger download of data.html file
+    // document.getElementById("download-html").addEventListener("click", function(){
+    //     table.download("html", "data.html", {style:true});
+    // });
+}

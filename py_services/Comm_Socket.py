@@ -16,7 +16,7 @@ from datetime import datetime, timedelta
 
 def loaddata():
     global df
-    df = pd.read_csv('/Users/msharil/Devapp/VDP/Pinc_ATONDashboard_VDP/docs/atonlist.csv') 
+    df = pd.read_csv('/Users/zultan/sources/python/Pinc_ATONDashboard_VDP/docs/atonlist.csv') 
 
 
 def getAton(mmsi):
@@ -140,6 +140,37 @@ async def handler(websocket, path):
 
                 summary.update(aton_summary) 
                 await websocket.send(json.dumps(summary)) 
+
+                # Process last 24 hours statistical data
+                atons_statistic = PyCH.get_aton_statistic()
+                data_cnt = 0
+
+                for i in atons_statistic:
+                    statistic = getAton(i["mmsi"])
+                    
+                    if statistic.shape[0] > 0 :
+                        aton_info = {
+                            'atonname': statistic.iloc[0]['name'],
+                            'region': statistic.iloc[0]['region'],
+                            'type': statistic.iloc[0]['type']
+                        }
+
+                        i.update(aton_info)
+                        data_cnt += 1
+
+                        data = {
+                            'payload': 'getatonstatistic',
+                            'no': data_cnt
+                        }
+
+                        data.update(i)
+                        await websocket.send(json.dumps(data))    
+
+                data = {
+                    'payload': 'getatonstatistic_done'
+                } 
+
+                await websocket.send(json.dumps(data))  
 
 
 

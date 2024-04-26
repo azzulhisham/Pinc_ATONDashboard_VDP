@@ -3,7 +3,7 @@ import json
 import pandas as pd
 import sqlalchemy as sa
 import clickhouse_connect
-import time
+import math
 from datetime import datetime, timedelta
 
 
@@ -373,6 +373,93 @@ class PyCH:
             ret_result.append(data)    
 
         return ret_result     
+
+    def get_aton_statistic():
+        now = datetime.now() 
+        #today = datetime(now.year, now.month, now.day)
+        utc_today = now - timedelta(hours=8)
+        utc_last24 = utc_today - timedelta(hours=24)
+
+
+        client = clickhouse_connect.get_client(host='10.10.20.50', port=8123)
+        result = client.query(
+        f'''
+            with 
+            anal as (
+                select 
+                ts,  
+                mmsi,
+                min(volt_ex2) over (PARTITION BY mmsi) as minTemp,
+                max(volt_ex2) over (PARTITION BY mmsi) as maxTemp,
+                
+                min(volt_int) over (PARTITION BY mmsi) as minBattAton,
+                max(volt_int) over (PARTITION BY mmsi) as maxBattAton,
+                avg(volt_int) over (PARTITION BY mmsi) as meanBattAton,
+                median(volt_int) over (PARTITION BY mmsi) as medianBattAton,
+                stddevPop(volt_int) over (PARTITION BY mmsi) as stddevBattAton,
+                skewPop(volt_int) over (PARTITION BY mmsi) as skewBattAton,
+                kurtPop(volt_int) over (PARTITION BY mmsi) as kurtBattAton,
+                
+                min(volt_ex1) over (PARTITION BY mmsi) as minBattLant,
+                max(volt_ex1) over (PARTITION BY mmsi) as maxBattLant,
+                avg(volt_ex1) over (PARTITION BY mmsi) as meanBattLant,
+                median(volt_ex1) over (PARTITION BY mmsi) as medianBattLant,
+                stddevPop(volt_ex1) over (PARTITION BY mmsi) as stddevBattLant,
+                skewPop(volt_ex1) over (PARTITION BY mmsi) as skewBattLant,
+                kurtPop(volt_ex1) over (PARTITION BY mmsi) as kurtBattLant,
+                
+                count() over (PARTITION BY mmsi) as msg6,
+                row_number() over (PARTITION BY mmsi  order by ts desc) as rownum
+                
+                from pnav.ais_type6_533
+                where ts >= '{utc_last24.strftime("%Y-%m-%d %H:%M:%S")}' --and ts < '2024-04-25' 
+            ),
+            aton_alive as (
+                select ts, mmsi,
+                row_number() over (PARTITION BY mmsi  order by ts desc) as rownum
+                from pnav.ais_type6_533
+                where ts >= '{utc_last24.strftime("%Y-%m-%d %H:%M:%S")}'
+            )
+            select *, age('second', toDateTime(at.ts), now()) as lastseen
+            from anal aa
+            join aton_alive at on aa.rownum=1 and at.rownum=1 and aa.mmsi=at.mmsi
+            order by mmsi
+        '''
+        )
+
+        ret_result = []  
+
+        for i in result.result_rows:
+            data = {
+                'ts': i[0].strftime("%Y-%m-%d %H:%M:%S"),
+                'mmsi':	i[1],
+                'minTemp': round(i[2], 2),
+                'maxTemp': round(i[3], 2),
+                'minBattAton': round(i[4], 2),
+                'maxBattAton': round(i[5], 2),
+                'meanBattAton':	round(i[6], 2),
+                'medianBattAton': round(i[7], 2),
+                'stddevBattAton': round(i[8], 2),
+                'skewBattAton':	round(i[9], 2) if not math.isnan(i[9]) else -999,
+                'kurtBattAton':	round(i[10], 2) if not math.isnan(i[10]) else -999,
+                'minBattLant':	round(i[11], 2),
+                'maxBattLant':	round(i[12], 2),
+                'meanBattLant':	round(i[13], 2),
+                'medianBattLant': round(i[14], 2),
+                'stddevBattLant': round(i[15], 2),
+                'skewBattLant':	round(i[16], 2) if not math.isnan(i[16]) else -999, 
+                'kurtBattLant':	round(i[17], 2) if not math.isnan(i[16]) else -999,
+                'msg6Count': i[18],
+                'rownum': i[19],
+                'at.ts': i[20].strftime("%Y-%m-%d %H:%M:%S"),
+                'at.mmsi': i[21],
+                'at.rownum': i[22],
+                'lastseen':	i[23]
+            }
+
+            ret_result.append(data)   
+
+        return ret_result   
 
 
     def get_weather_waterLevel():
