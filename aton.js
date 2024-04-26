@@ -8,6 +8,7 @@ lst_atonData = {};
 const closeVesselInfo = document.getElementById("closeVesselInfo")
 const vesselInfo = document.querySelector('.vessel-info')
 
+const inp_search = document.getElementById("inp-search")
 const search_mmsi = document.getElementById("search_mmsi")
 const meas_dist_func = document.getElementById("distance")
 const meas_dist = document.getElementById('meas_dist')
@@ -65,6 +66,16 @@ search_mmsi.addEventListener('keypress', (e) => {
         searchVessel(search_mmsi.value)
     }  
 })
+
+inp_search.addEventListener('focusout', () => {
+    searchVessel(inp_search.value)
+})
+
+// inp_search.addEventListener('keypress', (e) => {
+//     if (e.which === 13){
+//         searchVessel(search_mmsi.value)
+//     }  
+// })
 
 chk_select_beacon.addEventListener('click', (e) => {
     // lst_vessel[mmsi] = marker1

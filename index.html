@@ -205,7 +205,7 @@
                                         <span class="material-symbols-outlined">square_foot</span>
                                         <input id="meas_dist" type="text" placeholder="Meas. Distance: " readonly>
                                     </div>
-                                    <div class="search-bar">
+                                    <div class="search-bar" style="display:none">
                                         <span class="material-symbols-outlined">search</span>
                                         <input id="search_mmsi" type="search" placeholder="MMSI">
                                     </div>
@@ -762,7 +762,7 @@
                     <div class="relative h-full flex w-80 flex-col border-gray-200 bg-gray-700">
 
                         <div class=" bg-gray-600 rounded-lg m-3 px-3 py-2">
-                            <h2 class="text-md font-bold pt-2 text-gray-300 px-2">Filter</h2>
+                            <h2 class="text-md font-bold pt-2 text-gray-300 px-2">Search</h2>
                             <!-- === Filter === -->
                             <form class="px-6 pt-2 sm:px-6 lg:col-start-1 lg:row-start-1 lg:px-0 lg:pb-2">
                                 <div class="mx-auto max-w-lg lg:max-w-none">
@@ -781,9 +781,9 @@
                                                                 clip-rule="evenodd" />
                                                         </svg>
                                                     </div>
-                                                    <input type="text" name="parameter" id="parameter"
+                                                    <input type="text" name="parameter" id="inp-search"
                                                         class="block w-full rounded-none rounded-lg border-0 py-2 pl-10 text-gray-700 ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
-                                                        placeholder="Parameter">
+                                                        placeholder="Search ATON">
                                                 </div>
                                                 <button type="button"
                                                     class="relative -ml-px inline-flex items-center gap-x-1.5 px-3 py-2 text-sm font-semibold text-gray-400 ring-0">
