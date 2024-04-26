@@ -853,9 +853,10 @@
                                                         class="ml-3 text-sm text-gray-300">Buoy</label>
                                                 </div>
                                                 <div class="flex items-center">
-                                                    <input id="chk-select-lighthouse" name="selectAtonType" value="lighthouse"
-                                                        type="checkbox"
-                                                        class="h-4 w-4 rounded rounded-xl border-gray-300 text-gray-300" checked>
+                                                    <input id="chk-select-lighthouse" name="selectAtonType"
+                                                        value="lighthouse" type="checkbox"
+                                                        class="h-4 w-4 rounded rounded-xl border-gray-300 text-gray-300"
+                                                        checked>
                                                     <label for="chk-select-lighthouse"
                                                         class="ml-3 text-sm text-gray-300">Lighthouse</label>
                                                 </div>
@@ -886,7 +887,8 @@
                                                 <div class="flex items-center">
                                                     <input id="rad-aton-all" name="selectAtonCond" value="new-arrivals"
                                                         type="radio"
-                                                        class="h-4 w-4 rounded border-gray-300 text-indigo-600 focus:ring-indigo-500" checked>
+                                                        class="h-4 w-4 rounded border-gray-300 text-indigo-600 focus:ring-indigo-500"
+                                                        checked>
                                                     <label for="rad-aton-all"
                                                         class="ml-3 text-sm text-gray-300">All</label>
                                                 </div>
@@ -901,8 +903,8 @@
                                                     <input id="rad-aton-ng" name="selectAtonCond" value="tees"
                                                         type="radio"
                                                         class="h-4 w-4 rounded border-gray-300 text-indigo-600 focus:ring-indigo-500">
-                                                    <label for="rad-aton-ng"
-                                                        class="ml-3 text-sm text-gray-300">Not Good</label>
+                                                    <label for="rad-aton-ng" class="ml-3 text-sm text-gray-300">Not
+                                                        Good</label>
                                                 </div>
                                             </div>
                                         </div>
@@ -1634,10 +1636,12 @@
 
         const showChart = document.getElementById('showChart');
         const dialogShowChart = document.getElementById('dialogShowChart');
+        dialogShowChart.classList.add("hidden");
         const closeChartButton = document.getElementById('closeChart');
 
         const showReport = document.getElementById('showReport');
         const dialogShowReport = document.getElementById('dialogShowReport');
+        dialogShowReport.classList.add("hidden");
         const closeReportButton = document.getElementById('closeReport');
 
         menuButton.addEventListener('mouseenter', () => {
