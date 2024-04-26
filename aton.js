@@ -25,7 +25,14 @@ const cnt_in_battAton = document.getElementById('cnt_in_battAton')
 const cnt_in_battLant = document.getElementById('cnt_in_battLant')
 const dashboard_date = document.getElementById('dashboard-date')
 
-const btn_test = document.getElementById('btn-test')
+const chk_select_beacon = document.getElementById('chk-select-beacon')
+const chk_select_buoy = document.getElementById('chk-select-buoy')
+const chk_select_lighthouse = document.getElementById('chk-select-lighthouse')
+const rad_aton_all = document.getElementById('rad-aton-all')
+const rad_aton_ok = document.getElementById('rad-aton-ok')
+const rad_aton_ng = document.getElementById('rad-aton-ng')
+
+
 
 var test_flg = 0
 var today = new Date();
@@ -59,12 +66,11 @@ search_mmsi.addEventListener('keypress', (e) => {
     }  
 })
 
-btn_test.addEventListener('click', (e) => {
+chk_select_beacon.addEventListener('click', (e) => {
     // lst_vessel[mmsi] = marker1
     // lst_atoninfo[mmsi] = obj
-    
 
-    if (test_flg == 0){
+    if (!chk_select_beacon.checked){
         for (let i in lst_atoninfo) {
             atonInfo = lst_atoninfo[i]
 
@@ -73,8 +79,6 @@ btn_test.addEventListener('click', (e) => {
                 marker.remove()
             }
         }
-
-        test_flg = 1
     }
     else
     {
@@ -83,13 +87,198 @@ btn_test.addEventListener('click', (e) => {
 
             if (atonInfo['type'].toLowerCase() == 'beacon'){
                 marker = lst_vessel[i]
-                marker.addTo(map)
+
+                if (rad_aton_all.checked) {
+                    marker.addTo(map)
+                }
+                
+                if (rad_aton_ok.checked && atonInfo['status'] == 1) {
+                    marker.addTo(map)
+                }
+
+                if (rad_aton_ng.checked && atonInfo['status'] == 0) {
+                    marker.addTo(map)
+                }
             }
         }
-        
-        test_flg = 0
+    }  
+})
+
+chk_select_buoy.addEventListener('click', (e) => {
+    // lst_vessel[mmsi] = marker1
+    // lst_atoninfo[mmsi] = obj
+
+    if (!chk_select_buoy.checked){
+        for (let i in lst_atoninfo) {
+            atonInfo = lst_atoninfo[i]
+
+            if (atonInfo['type'].toLowerCase() == 'buoy'){
+                marker = lst_vessel[i]
+                marker.remove()
+            }
+        }
     }
-} )
+    else
+    {
+        for (let i in lst_atoninfo) {
+            atonInfo = lst_atoninfo[i]
+
+            if (atonInfo['type'].toLowerCase() == 'buoy'){
+                marker = lst_vessel[i]
+
+                if (rad_aton_all.checked) {
+                    marker.addTo(map)
+                }
+                
+                if (rad_aton_ok.checked && atonInfo['status'] == 1) {
+                    marker.addTo(map)
+                }
+
+                if (rad_aton_ng.checked && atonInfo['status'] == 0) {
+                    marker.addTo(map)
+                }
+            }
+        }
+    }  
+})
+
+chk_select_lighthouse.addEventListener('click', (e) => {
+    // lst_vessel[mmsi] = marker1
+    // lst_atoninfo[mmsi] = obj
+
+    if (!chk_select_lighthouse.checked){
+        for (let i in lst_atoninfo) {
+            atonInfo = lst_atoninfo[i]
+
+            if (atonInfo['type'].toLowerCase() == 'lighthouse'){
+                marker = lst_vessel[i]
+                marker.remove()
+            }
+        }
+    }
+    else
+    {
+        for (let i in lst_atoninfo) {
+            atonInfo = lst_atoninfo[i]
+
+            if (atonInfo['type'].toLowerCase() == 'lighthouse'){
+                marker = lst_vessel[i]
+
+                if (rad_aton_all.checked) {
+                    marker.addTo(map)
+                }
+                
+                if (rad_aton_ok.checked && atonInfo['status'] == 1) {
+                    marker.addTo(map)
+                }
+
+                if (rad_aton_ng.checked && atonInfo['status'] == 0) {
+                    marker.addTo(map)
+                }
+            }
+        }
+    }  
+})
+
+
+rad_aton_all.addEventListener('click', (e) => {
+    for (let i in lst_atoninfo) {
+        atonInfo = lst_atoninfo[i]
+        marker = lst_vessel[i]
+
+        let chkElem = document.getElementById('vessels-on-sea_' + atonInfo['mmsi'])
+        
+        if (chk_select_beacon.checked && atonInfo['type'].toLowerCase() == 'beacon' && chkElem == null) {
+            marker.addTo(map)
+        }
+
+        if (chk_select_buoy.checked && atonInfo['type'].toLowerCase() == 'buoy' && chkElem == null) {
+            marker.addTo(map)
+        } 
+        
+        if (chk_select_lighthouse.checked && atonInfo['type'].toLowerCase() == 'lighthouse' && chkElem == null) {
+            marker.addTo(map)
+        } 
+    }
+})
+
+rad_aton_ok.addEventListener('click', (e) => {
+    for (let i in lst_atoninfo) {
+        atonInfo = lst_atoninfo[i]
+        marker = lst_vessel[i]
+
+        let chkElem = document.getElementById('vessels-on-sea_' + atonInfo['mmsi'])
+        
+        if (chk_select_beacon.checked && atonInfo['type'].toLowerCase() == 'beacon') {
+            if (chkElem == null && atonInfo['status'] == 1) {
+                marker.addTo(map)
+            }
+
+            if (chkElem != null && atonInfo['status'] == 0) {
+                marker.remove()
+            }            
+        }
+
+        if (chk_select_buoy.checked && atonInfo['type'].toLowerCase() == 'buoy') {
+            if (chkElem == null && atonInfo['status'] == 1) {
+                marker.addTo(map)
+            }
+
+            if (chkElem != null && atonInfo['status'] == 0) {
+                marker.remove()
+            }            
+        }
+        
+        if (chk_select_lighthouse.checked && atonInfo['type'].toLowerCase() == 'lighthouse') {
+            if (chkElem == null && atonInfo['status'] == 1) {
+                marker.addTo(map)
+            }
+
+            if (chkElem != null && atonInfo['status'] == 0) {
+                marker.remove()
+            }            
+        }
+    }
+})
+
+rad_aton_ng.addEventListener('click', (e) => {
+    for (let i in lst_atoninfo) {
+        atonInfo = lst_atoninfo[i]
+        marker = lst_vessel[i]
+
+        let chkElem = document.getElementById('vessels-on-sea_' + atonInfo['mmsi'])
+        
+        if (chk_select_beacon.checked && atonInfo['type'].toLowerCase() == 'beacon') {
+            if (chkElem == null && atonInfo['status'] == 0) {
+                marker.addTo(map)
+            }
+
+            if (chkElem != null && atonInfo['status'] == 1) {
+                marker.remove()
+            }            
+        }
+
+        if (chk_select_buoy.checked && atonInfo['type'].toLowerCase() == 'buoy') {
+            if (chkElem == null && atonInfo['status'] == 0) {
+                marker.addTo(map)
+            }
+
+            if (chkElem != null && atonInfo['status'] == 1) {
+                marker.remove()
+            }            
+        }
+        
+        if (chk_select_lighthouse.checked && atonInfo['type'].toLowerCase() == 'lighthouse') {
+            if (chkElem == null && atonInfo['status'] == 0) {
+                marker.addTo(map)
+            }
+
+            if (chkElem != null && atonInfo['status'] == 1) {
+                marker.remove()
+            }            
+        }
+    }
+})
 
 ///////////////////
 //     mapbox
@@ -965,7 +1154,7 @@ function init_WebSocket2(){
                         radical_menu.style.transform = "rotate(-" + cog + "deg)"
                         el_vessel.appendChild(radical_menu)
                         el.appendChild(el_vessel)
-                        el.style.zIndex = 100
+                        // el.style.zIndex = 100
         
                         const nav = document.getElementById("nav_" + mmsi)
                         nav.addEventListener('mouseup', toggleRadicalMenu)
