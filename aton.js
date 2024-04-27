@@ -34,6 +34,25 @@ const rad_aton_all = document.getElementById('rad-aton-all')
 const rad_aton_ok = document.getElementById('rad-aton-ok')
 const rad_aton_ng = document.getElementById('rad-aton-ng')
 
+const data_table = document.getElementById('data-table')
+
+// JavaScript to handle mouseover event and show/hide panel
+const menuButton = document.getElementById('menuButton');
+const infoOptions = document.getElementById('infoOptions');
+infoOptions.classList.add('hidden');
+
+const showChart = document.getElementById('showChart');
+const dialogShowChart = document.getElementById('dialogShowChart');
+dialogShowChart.classList.add("hidden");
+const closeChartButton = document.getElementById('closeChart');
+
+const showReport = document.getElementById('showReport');
+const dialogShowReport = document.getElementById('dialogShowReport');
+dialogShowReport.classList.add("hidden");
+const closeReportButton = document.getElementById('closeReport');
+
+menuTimeoutId = undefined;
+optsTimeoutId = undefined;
 
 
 var test_flg = 0
@@ -291,6 +310,58 @@ rad_aton_ng.addEventListener('click', (e) => {
         }
     }
 })
+
+
+menuButton.addEventListener('mouseenter', () => {
+    if (optsTimeoutId != undefined){
+        clearTimeout(optsTimeoutId)
+        optsTimeoutId = undefined
+    }
+    infoOptions.classList.remove('hidden');
+});
+
+menuButton.addEventListener('mouseleave', () => {
+    menuTimeoutId = setTimeout(() => {
+        if (optsTimeoutId == undefined){
+            infoOptions.classList.add('hidden');
+        }
+        
+        menuTimeoutId = undefined
+    }, 250)
+});
+
+infoOptions.addEventListener('mouseenter', () => {
+    if (menuTimeoutId != undefined){
+        clearTimeout(menuTimeoutId)
+        menuTimeoutId = undefined
+    }
+})
+
+infoOptions.addEventListener('mouseleave', () => {
+    optsTimeoutId = setTimeout(() => {
+        infoOptions.classList.add('hidden');
+        optsTimeoutId = undefined
+    }, 250)            
+})
+
+// Dialog Cart Handling
+showChart.addEventListener('click', () => {
+    dialogShowChart.classList.remove('hidden');
+});
+
+closeChartButton.addEventListener('click', () => {
+    dialogShowChart.classList.add('hidden');
+});
+
+
+// Dialog Report Handling
+showReport.addEventListener('click', () => {
+    dialogShowReport.classList.remove('hidden');
+});
+
+closeReportButton.addEventListener('click', () => {
+    dialogShowReport.classList.add('hidden');
+});
 
 ///////////////////
 //     mapbox
@@ -1195,7 +1266,6 @@ function init_WebSocket2(){
         }
 
         if (obj['payload'] === 'getatonstatistic_done') {
-            console.log(lst_statistic)
             build_tabulator_table()
         }        
 
