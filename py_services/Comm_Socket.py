@@ -173,6 +173,24 @@ async def handler(websocket, path):
                 await websocket.send(json.dumps(data))  
 
 
+            if msg[0] == 'getallatonvoltdata':
+                atons = PyCH.get_aton_voltdata(msg[1])
+
+                for i in atons:
+                    data = {
+                        'payload': 'getallatonvoltdata',
+                        'mmsi': msg[1]
+                    }
+
+                    data.update(i)
+                    await websocket.send(json.dumps(data)) 
+
+                data = {
+                    'payload': 'getallatonvoltdata_done'
+                } 
+
+                await websocket.send(json.dumps(data))  
+
 
             if msg[0] == 'getallatonmsg':
                 atons = PyCH.get_all_aton_msg()

@@ -468,6 +468,6 @@ nav .nav-content {
 
   #data-table {
     width: 960px;
-    font-size: smaller;
-    margin-top: 8px;
+    font-size: smaller !important;
+    margin-top: 15px;
   }
