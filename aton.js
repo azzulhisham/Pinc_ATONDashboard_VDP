@@ -1339,17 +1339,17 @@ function clearHeartbeat2() {
 
 function build_tabulator_table() {
     //Build Tabulator
-    var table = new Tabulator("#example-table", {
-        height:"330px",
+    var table = new Tabulator("#data-table", {
+        height: "300px",
         resizableColumnFit:true,
-        responsiveLayout: true,
+        renderHorizontal:"virtual",
         data:lst_statistic,
         columns:[
             {title:"No", field:"no"},
-            {title:"Site<br>Name", field:"atonname", width:60},
-            {title:"MMSI", field:"mmsi", headerFilter:"input"},
+            {title:"Site Name", field:"atonname", headerFilter:"input", width:100},
+            {title:"MMSI", field:"mmsi", headerFilter:"input", width:100},
             {title:"Structure", field:"type"},
-            {title:"Region", field:"region", width:60},
+            {title:"Region", field:"region", headerFilter:"input", width:120},
             {title:"Min.<br>Temp.", field:"minTemp"},
             {title:"Max.<br>Temp.", field:"maxTemp"},
 
@@ -1360,13 +1360,14 @@ function build_tabulator_table() {
             {title:"Skew Batt<br>ATON.", field:"skewBattAton"},
             {title:"Kurt Batt<br>ATON", field:"kurtBattAton"},
 
+            {title:"Min. Batt<br>Lantern", field:"minBattLant"},
+            {title:"Min. Batt<br>Lantern", field:"maxBattLant"},
+            {title:"Avg. Batt<br>Lantern", field:"meanBattLant"},
+            {title:"Stddev<br>Batt Lantern", field:"stddevBattLant"},
+            {title:"Skew Batt<br>Lantern.", field:"skewBattLant"},
+            {title:"Kurt Batt<br>Lantern", field:"kurtBattLant"},
 
-            // {title:"Progress", field:"progress", width:100, sorter:"number"},
-            // {title:"Gender", field:"gender"},
-            // {title:"Rating", field:"rating", width:80},
-            // {title:"Favourite Color", field:"col"},
-            // {title:"Date Of Birth", field:"dob", hozAlign:"center", sorter:"date"},
-            // {title:"Driver", field:"car", hozAlign:"center", formatter:"tickCross"},
+            {title:"Message 6<br>Counting", field:"msg6Count"},
         ],
     });
 

@@ -220,7 +220,7 @@
                                     <!-- Informative Button -->
                                     <div class="fixed right-0 mt-40 mr-10">
                                         <div id="menu" class="relative">
-                                            <button
+                                            <button id="menuButton"
                                                 class="text-gray-400 hover:text-gray-300 bg-white font-bold py-1 px-1 rounded-full hover:bg-gray-700 focus:outline-none focus:shadow-outline">
                                                 <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
                                                     stroke-width="1.5" stroke="currentColor" class="w-6 h-6">
@@ -228,7 +228,7 @@
                                                         d="m11.25 11.25.041-.02a.75.75 0 0 1 1.063.852l-.708 2.836a.75.75 0 0 0 1.063.853l.041-.021M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0Zm-9-3.75h.008v.008H12V8.25Z" />
                                                 </svg>
                                             </button>
-                                            <div id="infoOptions" class=" hidden absolute z-10 mb-4 mt-1">
+                                            <div id="infoOptions" class="absolute z-10 mb-4 mt-1">
                                                 <button id="showChart"
                                                     class="px-1 py-1 text-gray-800 bg-gray-400 rounded-full hover:bg-gray-700 mb-2">
                                                     <svg xmlns="http://www.w3.org/2000/svg" fill="none"
@@ -455,7 +455,7 @@
                                                                 <button id="download-pdf" class="bg-red-500 text-white px-4 py-2 mt-4 rounded">Download PDF</button>
                                                             </div>
                                                             
-                                                            <div id="example-table"></div>
+                                                            <div id="data-table"></div>
                                                         </div>
                                                     </div>
                                                 </div>
@@ -1631,8 +1631,9 @@
 
     <script>
         // JavaScript to handle mouseover event and show/hide panel
-        const menuButton = document.getElementById('menu');
+        const menuButton = document.getElementById('menuButton');
         const infoOptions = document.getElementById('infoOptions');
+        infoOptions.classList.add('hidden');
 
         const showChart = document.getElementById('showChart');
         const dialogShowChart = document.getElementById('dialogShowChart');
@@ -1644,13 +1645,41 @@
         dialogShowReport.classList.add("hidden");
         const closeReportButton = document.getElementById('closeReport');
 
+
+        menuTimeoutId = undefined;
+        optsTimeoutId = undefined;
+
         menuButton.addEventListener('mouseenter', () => {
+            if (optsTimeoutId != undefined){
+                clearTimeout(optsTimeoutId)
+                optsTimeoutId = undefined
+            }
             infoOptions.classList.remove('hidden');
         });
 
         menuButton.addEventListener('mouseleave', () => {
-            infoOptions.classList.add('hidden');
+            menuTimeoutId = setTimeout(() => {
+                if (optsTimeoutId == undefined){
+                    infoOptions.classList.add('hidden');
+                }
+                
+                menuTimeoutId = undefined
+            }, 250)
         });
+
+        infoOptions.addEventListener('mouseenter', () => {
+            if (menuTimeoutId != undefined){
+                clearTimeout(menuTimeoutId)
+                menuTimeoutId = undefined
+            }
+        })
+
+        infoOptions.addEventListener('mouseleave', () => {
+            optsTimeoutId = setTimeout(() => {
+                infoOptions.classList.add('hidden');
+                optsTimeoutId = undefined
+            }, 250)            
+        })
 
         // Dialog Cart Handling
         showChart.addEventListener('click', () => {
@@ -1671,8 +1700,6 @@
             dialogShowReport.classList.add('hidden');
         });
 
-        //dialogShowReport.classList.add('hidden');
-        dialogShowChart.classList.add('hidden');
     </script>
 
     <script src="aton.js"></script>
