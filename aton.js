@@ -2,12 +2,14 @@
 lst_vessel = {};
 lst_atoninfo = {};
 lst_atonData = {};
+lst_statistic = [];
 
 
 // DOM Objects
 const closeVesselInfo = document.getElementById("closeVesselInfo")
 const vesselInfo = document.querySelector('.vessel-info')
 
+const inp_search = document.getElementById("inp-search")
 const search_mmsi = document.getElementById("search_mmsi")
 const meas_dist_func = document.getElementById("distance")
 const meas_dist = document.getElementById('meas_dist')
@@ -25,7 +27,33 @@ const cnt_in_battAton = document.getElementById('cnt_in_battAton')
 const cnt_in_battLant = document.getElementById('cnt_in_battLant')
 const dashboard_date = document.getElementById('dashboard-date')
 
-const btn_test = document.getElementById('btn-test')
+const chk_select_beacon = document.getElementById('chk-select-beacon')
+const chk_select_buoy = document.getElementById('chk-select-buoy')
+const chk_select_lighthouse = document.getElementById('chk-select-lighthouse')
+const rad_aton_all = document.getElementById('rad-aton-all')
+const rad_aton_ok = document.getElementById('rad-aton-ok')
+const rad_aton_ng = document.getElementById('rad-aton-ng')
+
+const data_table = document.getElementById('data-table')
+
+// JavaScript to handle mouseover event and show/hide panel
+const menuButton = document.getElementById('menuButton');
+const infoOptions = document.getElementById('infoOptions');
+infoOptions.classList.add('hidden');
+
+const showChart = document.getElementById('showChart');
+const dialogShowChart = document.getElementById('dialogShowChart');
+dialogShowChart.classList.add("hidden");
+const closeChartButton = document.getElementById('closeChart');
+
+const showReport = document.getElementById('showReport');
+const dialogShowReport = document.getElementById('dialogShowReport');
+dialogShowReport.classList.add("hidden");
+const closeReportButton = document.getElementById('closeReport');
+
+menuTimeoutId = undefined;
+optsTimeoutId = undefined;
+
 
 var test_flg = 0
 var today = new Date();
@@ -59,12 +87,21 @@ search_mmsi.addEventListener('keypress', (e) => {
     }  
 })
 
-btn_test.addEventListener('click', (e) => {
+inp_search.addEventListener('focusout', () => {
+    searchVessel(inp_search.value)
+})
+
+// inp_search.addEventListener('keypress', (e) => {
+//     if (e.which === 13){
+//         searchVessel(search_mmsi.value)
+//     }  
+// })
+
+chk_select_beacon.addEventListener('click', (e) => {
     // lst_vessel[mmsi] = marker1
     // lst_atoninfo[mmsi] = obj
-    
 
-    if (test_flg == 0){
+    if (!chk_select_beacon.checked){
         for (let i in lst_atoninfo) {
             atonInfo = lst_atoninfo[i]
 
@@ -73,8 +110,6 @@ btn_test.addEventListener('click', (e) => {
                 marker.remove()
             }
         }
-
-        test_flg = 1
     }
     else
     {
@@ -83,13 +118,253 @@ btn_test.addEventListener('click', (e) => {
 
             if (atonInfo['type'].toLowerCase() == 'beacon'){
                 marker = lst_vessel[i]
-                marker.addTo(map)
+
+                if (rad_aton_all.checked) {
+                    marker.addTo(map)
+                }
+                
+                if (rad_aton_ok.checked && atonInfo['status'] == 1) {
+                    marker.addTo(map)
+                }
+
+                if (rad_aton_ng.checked && atonInfo['status'] == 0) {
+                    marker.addTo(map)
+                }
             }
         }
-        
-        test_flg = 0
+    }  
+})
+
+chk_select_buoy.addEventListener('click', (e) => {
+    // lst_vessel[mmsi] = marker1
+    // lst_atoninfo[mmsi] = obj
+
+    if (!chk_select_buoy.checked){
+        for (let i in lst_atoninfo) {
+            atonInfo = lst_atoninfo[i]
+
+            if (atonInfo['type'].toLowerCase() == 'buoy'){
+                marker = lst_vessel[i]
+                marker.remove()
+            }
+        }
     }
-} )
+    else
+    {
+        for (let i in lst_atoninfo) {
+            atonInfo = lst_atoninfo[i]
+
+            if (atonInfo['type'].toLowerCase() == 'buoy'){
+                marker = lst_vessel[i]
+
+                if (rad_aton_all.checked) {
+                    marker.addTo(map)
+                }
+                
+                if (rad_aton_ok.checked && atonInfo['status'] == 1) {
+                    marker.addTo(map)
+                }
+
+                if (rad_aton_ng.checked && atonInfo['status'] == 0) {
+                    marker.addTo(map)
+                }
+            }
+        }
+    }  
+})
+
+chk_select_lighthouse.addEventListener('click', (e) => {
+    // lst_vessel[mmsi] = marker1
+    // lst_atoninfo[mmsi] = obj
+
+    if (!chk_select_lighthouse.checked){
+        for (let i in lst_atoninfo) {
+            atonInfo = lst_atoninfo[i]
+
+            if (atonInfo['type'].toLowerCase() == 'lighthouse'){
+                marker = lst_vessel[i]
+                marker.remove()
+            }
+        }
+    }
+    else
+    {
+        for (let i in lst_atoninfo) {
+            atonInfo = lst_atoninfo[i]
+
+            if (atonInfo['type'].toLowerCase() == 'lighthouse'){
+                marker = lst_vessel[i]
+
+                if (rad_aton_all.checked) {
+                    marker.addTo(map)
+                }
+                
+                if (rad_aton_ok.checked && atonInfo['status'] == 1) {
+                    marker.addTo(map)
+                }
+
+                if (rad_aton_ng.checked && atonInfo['status'] == 0) {
+                    marker.addTo(map)
+                }
+            }
+        }
+    }  
+})
+
+
+rad_aton_all.addEventListener('click', (e) => {
+    for (let i in lst_atoninfo) {
+        atonInfo = lst_atoninfo[i]
+        marker = lst_vessel[i]
+
+        let chkElem = document.getElementById('vessels-on-sea_' + atonInfo['mmsi'])
+        
+        if (chk_select_beacon.checked && atonInfo['type'].toLowerCase() == 'beacon' && chkElem == null) {
+            marker.addTo(map)
+        }
+
+        if (chk_select_buoy.checked && atonInfo['type'].toLowerCase() == 'buoy' && chkElem == null) {
+            marker.addTo(map)
+        } 
+        
+        if (chk_select_lighthouse.checked && atonInfo['type'].toLowerCase() == 'lighthouse' && chkElem == null) {
+            marker.addTo(map)
+        } 
+    }
+})
+
+rad_aton_ok.addEventListener('click', (e) => {
+    for (let i in lst_atoninfo) {
+        atonInfo = lst_atoninfo[i]
+        marker = lst_vessel[i]
+
+        let chkElem = document.getElementById('vessels-on-sea_' + atonInfo['mmsi'])
+        
+        if (chk_select_beacon.checked && atonInfo['type'].toLowerCase() == 'beacon') {
+            if (chkElem == null && atonInfo['status'] == 1) {
+                marker.addTo(map)
+            }
+
+            if (chkElem != null && atonInfo['status'] == 0) {
+                marker.remove()
+            }            
+        }
+
+        if (chk_select_buoy.checked && atonInfo['type'].toLowerCase() == 'buoy') {
+            if (chkElem == null && atonInfo['status'] == 1) {
+                marker.addTo(map)
+            }
+
+            if (chkElem != null && atonInfo['status'] == 0) {
+                marker.remove()
+            }            
+        }
+        
+        if (chk_select_lighthouse.checked && atonInfo['type'].toLowerCase() == 'lighthouse') {
+            if (chkElem == null && atonInfo['status'] == 1) {
+                marker.addTo(map)
+            }
+
+            if (chkElem != null && atonInfo['status'] == 0) {
+                marker.remove()
+            }            
+        }
+    }
+})
+
+rad_aton_ng.addEventListener('click', (e) => {
+    for (let i in lst_atoninfo) {
+        atonInfo = lst_atoninfo[i]
+        marker = lst_vessel[i]
+
+        let chkElem = document.getElementById('vessels-on-sea_' + atonInfo['mmsi'])
+        
+        if (chk_select_beacon.checked && atonInfo['type'].toLowerCase() == 'beacon') {
+            if (chkElem == null && atonInfo['status'] == 0) {
+                marker.addTo(map)
+            }
+
+            if (chkElem != null && atonInfo['status'] == 1) {
+                marker.remove()
+            }            
+        }
+
+        if (chk_select_buoy.checked && atonInfo['type'].toLowerCase() == 'buoy') {
+            if (chkElem == null && atonInfo['status'] == 0) {
+                marker.addTo(map)
+            }
+
+            if (chkElem != null && atonInfo['status'] == 1) {
+                marker.remove()
+            }            
+        }
+        
+        if (chk_select_lighthouse.checked && atonInfo['type'].toLowerCase() == 'lighthouse') {
+            if (chkElem == null && atonInfo['status'] == 0) {
+                marker.addTo(map)
+            }
+
+            if (chkElem != null && atonInfo['status'] == 1) {
+                marker.remove()
+            }            
+        }
+    }
+})
+
+
+menuButton.addEventListener('mouseenter', () => {
+    if (optsTimeoutId != undefined){
+        clearTimeout(optsTimeoutId)
+        optsTimeoutId = undefined
+    }
+    infoOptions.classList.remove('hidden');
+});
+
+menuButton.addEventListener('mouseleave', () => {
+    menuTimeoutId = setTimeout(() => {
+        if (optsTimeoutId == undefined){
+            infoOptions.classList.add('hidden');
+        }
+        
+        menuTimeoutId = undefined
+    }, 250)
+});
+
+infoOptions.addEventListener('mouseenter', () => {
+    if (menuTimeoutId != undefined){
+        clearTimeout(menuTimeoutId)
+        menuTimeoutId = undefined
+    }
+})
+
+infoOptions.addEventListener('mouseleave', () => {
+    optsTimeoutId = setTimeout(() => {
+        infoOptions.classList.add('hidden');
+        optsTimeoutId = undefined
+    }, 250)            
+})
+
+// Dialog Cart Handling
+showChart.addEventListener('click', () => {
+    dialogShowChart.classList.remove('hidden');
+});
+
+closeChartButton.addEventListener('click', () => {
+    dialogShowChart.classList.add('hidden');
+});
+
+
+// Dialog Report Handling
+showReport.addEventListener('click', () => {
+    data_table.innerHTML = ''
+    build_tabulator_table()
+    dialogShowReport.classList.remove('hidden');
+});
+
+closeReportButton.addEventListener('click', () => {
+    dialogShowReport.classList.add('hidden');
+});
+
 
 ///////////////////
 //     mapbox
@@ -550,6 +825,12 @@ async function radicalMenuClick(e) {
             vessel_info_panel(elemid_text[1])
             vesselInfo.classList.add('openwide')
         }
+
+        if (elemid_text[0] == 'sp6'){
+            data_table.innerHTML = ''
+            build_chart()
+            dialogShowReport.classList.remove('hidden');
+        }
     }
 }
 
@@ -965,7 +1246,7 @@ function init_WebSocket2(){
                         radical_menu.style.transform = "rotate(-" + cog + "deg)"
                         el_vessel.appendChild(radical_menu)
                         el.appendChild(el_vessel)
-                        el.style.zIndex = 100
+                        // el.style.zIndex = 100
         
                         const nav = document.getElementById("nav_" + mmsi)
                         nav.addEventListener('mouseup', toggleRadicalMenu)
@@ -988,6 +1269,14 @@ function init_WebSocket2(){
                 }    
             }
         }
+
+        if (obj['payload'] === 'getatonstatistic') {
+            lst_statistic.push(obj) 
+        }
+
+        if (obj['payload'] === 'getatonstatistic_done') {
+            build_tabulator_table()
+        }        
 
         if (obj['payload'] === 'getallatonmsg') {
             if (obj['messageType'] == 6) {
@@ -1127,3 +1416,147 @@ function clearHeartbeat2() {
 
 // setInterval(updateDashboard, 30000);
 
+
+function build_tabulator_table() {
+    //Build Tabulator
+    var table = new Tabulator("#data-table", {
+        height: "300px",
+        resizableColumnFit:true,
+        renderHorizontal:"virtual",
+        data:lst_statistic,
+        columns:[
+            {title:"No", field:"no"},
+            {title:"Site Name", field:"atonname", headerFilter:"input", width:100},
+            {title:"MMSI", field:"mmsi", headerFilter:"input", width:100},
+            {title:"Structure", field:"type"},
+            {title:"Region", field:"region", headerFilter:"input", width:120},
+            {title:"Min.<br>Temp.", field:"minTemp"},
+            {title:"Max.<br>Temp.", field:"maxTemp"},
+
+            {title:"Min. Batt<br>ATON", field:"minBattAton"},
+            {title:"Min. Batt<br>ATON", field:"maxBattAton"},
+            {title:"Avg. Batt<br>ATON", field:"meanBattAton"},
+            {title:"Stddev<br>Batt ATON", field:"stddevBattAton"},
+            {title:"Skew Batt<br>ATON.", field:"skewBattAton"},
+            {title:"Kurt Batt<br>ATON", field:"kurtBattAton"},
+
+            {title:"Min. Batt<br>Lantern", field:"minBattLant"},
+            {title:"Min. Batt<br>Lantern", field:"maxBattLant"},
+            {title:"Avg. Batt<br>Lantern", field:"meanBattLant"},
+            {title:"Stddev<br>Batt Lantern", field:"stddevBattLant"},
+            {title:"Skew Batt<br>Lantern.", field:"skewBattLant"},
+            {title:"Kurt Batt<br>Lantern", field:"kurtBattLant"},
+
+            {title:"Message 6<br>Counting", field:"msg6Count"},
+        ],
+    });
+
+    //trigger download of data.csv file
+    document.getElementById("download-csv").addEventListener("click", function(){
+        table.download("csv", "data.csv");
+    });
+
+    //trigger download of data.json file
+    document.getElementById("download-json").addEventListener("click", function(){
+        table.download("json", "data.json");
+    });
+
+    //trigger download of data.xlsx file
+    //document.getElementById("download-xlsx").addEventListener("click", function(){
+    //     table.download("xlsx", "data.xlsx", {sheetName:"My Data"});
+    // });
+
+    //trigger download of data.pdf file
+    document.getElementById("download-pdf").addEventListener("click", function(){
+        table.download("pdf", "data.pdf", {
+            orientation:"portrait", //set page orientation to portrait
+            title:"Example Report", //add title to report
+        });
+    });
+
+    //trigger download of data.html file
+    // document.getElementById("download-html").addEventListener("click", function(){
+    //     table.download("html", "data.html", {style:true});
+    // });
+}
+
+
+function build_chart(){
+    Highcharts.chart('data-table', {
+
+        title: {
+            text: 'U.S Solar Employment Growth',
+            align: 'left'
+        },
+    
+        subtitle: {
+            text: 'By Job Category. Source: <a href="https://irecusa.org/programs/solar-jobs-census/" target="_blank">IREC</a>.',
+            align: 'left'
+        },
+    
+        yAxis: {
+            title: {
+                text: 'Number of Employees'
+            }
+        },
+    
+        xAxis: {
+            accessibility: {
+                rangeDescription: 'Range: 2010 to 2020'
+            }
+        },
+    
+        legend: {
+            layout: 'vertical',
+            align: 'right',
+            verticalAlign: 'middle'
+        },
+    
+        plotOptions: {
+            series: {
+                label: {
+                    connectorAllowed: false
+                },
+                pointStart: 2010
+            }
+        },
+    
+        series: [{
+            name: 'Installation & Developers',
+            data: [43934, 48656, 65165, 81827, 112143, 142383,
+                171533, 165174, 155157, 161454, 154610]
+        }, {
+            name: 'Manufacturing',
+            data: [24916, 37941, 29742, 29851, 32490, 30282,
+                38121, 36885, 33726, 34243, 31050]
+        }, {
+            name: 'Sales & Distribution',
+            data: [11744, 30000, 16005, 19771, 20185, 24377,
+                32147, 30912, 29243, 29213, 25663]
+        }, {
+            name: 'Operations & Maintenance',
+            data: [null, null, null, null, null, null, null,
+                null, 11164, 11218, 10077]
+        }, {
+            name: 'Other',
+            data: [21908, 5548, 8105, 11248, 8989, 11816, 18274,
+                17300, 13053, 11906, 10073]
+        }],
+    
+        responsive: {
+            rules: [{
+                condition: {
+                    maxWidth: 500
+                },
+                chartOptions: {
+                    legend: {
+                        layout: 'horizontal',
+                        align: 'center',
+                        verticalAlign: 'bottom'
+                    }
+                }
+            }]
+        }
+    
+    });
+}
