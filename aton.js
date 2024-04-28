@@ -54,6 +54,20 @@ const dialogShowReport = document.getElementById('dialogShowReport');
 dialogShowReport.classList.add("hidden");
 const closeReportButton = document.getElementById('closeReport');
 
+// Javascript show hide sidebar menu
+const sidebarMenu = document.getElementById('sidebarMenu');
+const sidebarToggle = document.getElementById('sidebarToggle');
+sidebarToggle.addEventListener("click", () => { 
+    // sidebarMenu.classList.add("hidden");
+    if (sidebarMenu.style.display !== "none") {
+        sidebarMenu.style.display = "none";
+    } else { 
+        sidebarMenu.style.display = "";
+    }
+});
+
+// sidebarMenu.classList.add("hidden");
+
 menuTimeoutId = undefined;
 optsTimeoutId = undefined;
 
