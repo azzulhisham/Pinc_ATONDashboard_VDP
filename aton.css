@@ -253,6 +253,10 @@
     width: 6px;
   }
   
+  #sidebarToggle {
+    cursor: pointer;
+  }
+
   #top-left {
     top: 0;
     left: 0;
