@@ -3,7 +3,7 @@ lst_vessel = {};
 lst_atoninfo = {};
 lst_atonData = {};
 lst_statistic = [];
-
+lst_voltdata = [];
 
 // DOM Objects
 const closeVesselInfo = document.getElementById("closeVesselInfo")
@@ -35,6 +35,9 @@ const rad_aton_ok = document.getElementById('rad-aton-ok')
 const rad_aton_ng = document.getElementById('rad-aton-ng')
 
 const data_table = document.getElementById('data-table')
+const download_csv = document.getElementById('download-csv')
+const download_json = document.getElementById('download-json')
+const download_pdf = document.getElementById('download-pdf')
 
 // JavaScript to handle mouseover event and show/hide panel
 const menuButton = document.getElementById('menuButton');
@@ -50,6 +53,20 @@ const showReport = document.getElementById('showReport');
 const dialogShowReport = document.getElementById('dialogShowReport');
 dialogShowReport.classList.add("hidden");
 const closeReportButton = document.getElementById('closeReport');
+
+// Javascript show hide sidebar menu
+const sidebarMenu = document.getElementById('sidebarMenu');
+const sidebarToggle = document.getElementById('sidebarToggle');
+sidebarToggle.addEventListener("click", () => { 
+    // sidebarMenu.classList.add("hidden");
+    if (sidebarMenu.style.display !== "none") {
+        sidebarMenu.style.display = "none";
+    } else { 
+        sidebarMenu.style.display = "";
+    }
+});
+
+// sidebarMenu.classList.add("hidden");
 
 menuTimeoutId = undefined;
 optsTimeoutId = undefined;
@@ -359,6 +376,9 @@ showReport.addEventListener('click', () => {
     data_table.innerHTML = ''
     build_tabulator_table()
     dialogShowReport.classList.remove('hidden');
+    download_csv.classList.remove('hidden')
+    download_json.classList.remove('hidden')
+    download_pdf.classList.remove('hidden')
 });
 
 closeReportButton.addEventListener('click', () => {
@@ -827,9 +847,8 @@ async function radicalMenuClick(e) {
         }
 
         if (elemid_text[0] == 'sp6'){
-            data_table.innerHTML = ''
-            build_chart()
-            dialogShowReport.classList.remove('hidden');
+            lst_voltdata = []
+            ws2.send('getallatonvoltdata:' + elemid_text[1])
         }
     }
 }
@@ -1276,7 +1295,17 @@ function init_WebSocket2(){
 
         if (obj['payload'] === 'getatonstatistic_done') {
             build_tabulator_table()
-        }        
+        } 
+        
+        if (obj['payload'] === 'getallatonvoltdata') {
+            lst_voltdata.push(obj) 
+        }
+
+        if (obj['payload'] === 'getallatonvoltdata_done') {
+            data_table.innerHTML = ''
+            build_chart()
+            dialogShowReport.classList.remove('hidden');
+        }          
 
         if (obj['payload'] === 'getallatonmsg') {
             if (obj['messageType'] == 6) {
@@ -1482,28 +1511,38 @@ function build_tabulator_table() {
 
 
 function build_chart(){
+    download_csv.classList.add('hidden')
+    download_json.classList.add('hidden')
+    download_pdf.classList.add('hidden')
+
+    x = []
+    y1 = []
+    y2 = []
+
+    lst_voltdata.forEach(elem => {
+        x.push(elem.ts)
+        y1.push(elem.volt_int)
+        y2.push(elem.volt_ex1)
+    })
+
     Highcharts.chart('data-table', {
 
         title: {
-            text: 'U.S Solar Employment Growth',
-            align: 'left'
+            text: 'ATON Battery Voltage and Lantern Voltage for last 24 hours of ' + lst_voltdata[0].mmsi,
+            align: 'center'
         },
-    
-        subtitle: {
-            text: 'By Job Category. Source: <a href="https://irecusa.org/programs/solar-jobs-census/" target="_blank">IREC</a>.',
-            align: 'left'
-        },
-    
+  
         yAxis: {
             title: {
-                text: 'Number of Employees'
+                text: 'Voltage'
             }
         },
     
         xAxis: {
-            accessibility: {
-                rangeDescription: 'Range: 2010 to 2020'
-            }
+            categories: x
+            
+            // type: 'datetime',
+            // offset: 40
         },
     
         legend: {
@@ -1512,35 +1551,12 @@ function build_chart(){
             verticalAlign: 'middle'
         },
     
-        plotOptions: {
-            series: {
-                label: {
-                    connectorAllowed: false
-                },
-                pointStart: 2010
-            }
-        },
-    
         series: [{
-            name: 'Installation & Developers',
-            data: [43934, 48656, 65165, 81827, 112143, 142383,
-                171533, 165174, 155157, 161454, 154610]
+            name: 'ATON',
+            data: y1
         }, {
-            name: 'Manufacturing',
-            data: [24916, 37941, 29742, 29851, 32490, 30282,
-                38121, 36885, 33726, 34243, 31050]
-        }, {
-            name: 'Sales & Distribution',
-            data: [11744, 30000, 16005, 19771, 20185, 24377,
-                32147, 30912, 29243, 29213, 25663]
-        }, {
-            name: 'Operations & Maintenance',
-            data: [null, null, null, null, null, null, null,
-                null, 11164, 11218, 10077]
-        }, {
-            name: 'Other',
-            data: [21908, 5548, 8105, 11248, 8989, 11816, 18274,
-                17300, 13053, 11906, 10073]
+            name: 'Lantern',
+            data: y2
         }],
     
         responsive: {
@@ -1557,6 +1573,5 @@ function build_chart(){
                 }
             }]
         }
-    
     });
 }

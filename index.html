@@ -20,7 +20,7 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.4.0/jspdf.umd.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.5.20/jspdf.plugin.autotable.min.js"></script>
 
-    <!-- Mapbox drawing functions -->    
+    <!-- Mapbox drawing functions -->
     <link href="https://api.mapbox.com/mapbox-gl-js/v3.1.2/mapbox-gl.css" rel="stylesheet">
     <script src="https://api.mapbox.com/mapbox-gl-js/v3.1.2/mapbox-gl.js"></script>
 
@@ -73,18 +73,17 @@
             <!-- Desktop nav area -->
             <div class="hidden lg:flex lg:min-w-0 lg:flex-1 lg:items-center lg:justify-between">
                 <div class="min-w-0 flex-1">
-                    <div class="relative max-w-2xl text-gray-400 focus-within:text-gray-500">
-                        <div
-                            class="pointer-events-none absolute inset-y-0 left-0 flex items-center justify-center pl-4">
+                    <div class=" relative max-w-2xl text-gray-400 focus-within:text-gray-500">
+                        <button type="button" class="px-4" id="sidebarToggle">
                             <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
                                 stroke="currentColor" class="w-6 h-6">
                                 <path stroke-linecap="round" stroke-linejoin="round"
                                     d="M3.75 6.75h16.5M3.75 12h16.5m-16.5 5.25h16.5" />
                             </svg>
-                        </div>
+                        </button>
                     </div>
                 </div>
-                <div class="ml-10 flex flex-shrink-0 items-center space-x-10 pr-4">
+                <div class=" ml-10 flex flex-shrink-0 items-center space-x-10 pr-4">
 
                     <div class="flex items-center space-x-8">
                         <span class="inline-flex">
@@ -187,8 +186,8 @@
         <!-- Bottom section -->
         <div class="flex min-h-0 flex-1 overflow-hidden shadow-2xl">
             <!-- Narrow sidebar-->
-            <nav aria-label="Sidebar"
-                class="hidden lg:block lg:flex-shrink-0 lg:overflow-y-auto bg-gradient-to-b from-blue-700 to-sky-400 transition-width transition-slowest ease z-30 text-white">
+            <nav aria-label="Sidebar" class="hidden lg:block lg:flex-shrink-0 lg:overflow-y-auto bg-gradient-to-b from-blue-700 to-sky-400
+                transition-width transition-slowest ease z-30 text-white">
                 <div class="relative flex w-20 flex-col space-y-3 p-3">
                     <a href="#"
                         class="hover:bg-blue-900 text-white inline-flex h-14 w-14 flex-shrink-0 items-center justify-center rounded-lg">
@@ -322,7 +321,7 @@
 
                                                 <div
                                                     class="relative transform overflow-hidden rounded-lg bg-gray-900 lg:max-w-5xl px-4 pb-4 pt-5 text-center shadow-xl transition-all sm:my-8 sm:w-full sm:max-w-lg sm:p-6">
-                                                    <h2>Statistical Result</h2>
+                                                    <!-- <h2>Statistical Result</h2> -->
                                                     <div class=" absolute right-0 top-0 hidden pr-4 pt-4 sm:block">
                                                         <button id="closeReport" type=" button" class="rounded-md">
                                                             <span class="sr-only">Close</span>
@@ -337,129 +336,18 @@
                                                     <div class="sm:flex sm:items-start justify-center ">
                                                         <div class=" mt-3 text-center sm:ml-4 sm:mt-0 sm:text-left">
 
-                                                            <!-- Table     -->
-                                                            <!-- <div class="bg-gray-900">
-                                                                <div class="mx-auto">
-                                                                    <div class="py-4">
-                                                                        <div class="px-4 sm:px-6 lg:px-8">
-                                                                            <div class="sm:flex sm:items-center">
-                                                                            </div>
-                                                                            <div class="mt-2 flow-root">
-                                                                                <div
-                                                                                    class="-mx-4 -my-2 overflow-x-auto sm:-mx-6 lg:-mx-8">
-                                                                                    <div
-                                                                                        class="inline-block min-w-full py-2 align-middle sm:px-6 lg:px-8">
-                                                                                        <table
-                                                                                            class="min-w-full divide-y divide-gray-700">
-                                                                                            <thead>
-                                                                                                <tr>
-                                                                                                    <th scope="col"
-                                                                                                        class="py-3.5 pl-4 pr-3 text-left text-sm font-semibold text-white sm:pl-0">
-                                                                                                        Name</th>
-                                                                                                    <th scope="col"
-                                                                                                        class="px-3 py-3.5 text-left text-sm font-semibold text-white">
-                                                                                                        XXX</th>
-                                                                                                    <th scope="col"
-                                                                                                        class="px-3 py-3.5 text-left text-sm font-semibold text-white">
-                                                                                                        XXX</th>
-                                                                                                    <th scope="col"
-                                                                                                        class="px-3 py-3.5 text-left text-sm font-semibold text-white">
-                                                                                                        XXX</th>
-                                                                                                    <th scope="col"
-                                                                                                        class="px-3 py-3.5 text-left text-sm font-semibold text-white">
-                                                                                                        XXX</th>
-                                                                                                    <th scope="col"
-                                                                                                        class="px-3 py-3.5 text-left text-sm font-semibold text-white">
-                                                                                                        XXX</th>
-                                                                                                    <th scope="col"
-                                                                                                        class="px-3 py-3.5 text-left text-sm font-semibold text-white">
-                                                                                                        XXX</th>
-                                                                                                    <th scope="col"
-                                                                                                        class="px-3 py-3.5 text-left text-sm font-semibold text-white">
-                                                                                                        XXX</th>
-                                                                                                    <th scope="col"
-                                                                                                        class="px-3 py-3.5 text-left text-sm font-semibold text-white">
-                                                                                                        XXX</th>
-                                                                                                    <th scope="col"
-                                                                                                        class="px-3 py-3.5 text-left text-sm font-semibold text-white">
-                                                                                                        XXX</th>
-                                                                                                    <th scope="col"
-                                                                                                        class="relative py-3.5 pl-3 pr-4 sm:pr-0">
-                                                                                                        <span
-                                                                                                            class="sr-only">Edit</span>
-                                                                                                    </th>
-                                                                                                </tr>
-                                                                                            </thead>
-                                                                                            <tbody
-                                                                                                class="divide-y divide-gray-800">
-                                                                                                <tr>
-                                                                                                    <td
-                                                                                                        class="whitespace-nowrap py-4 pl-4 pr-3 text-sm font-medium text-white sm:pl-0">
-                                                                                                        User 1
-                                                                                                    </td>
-                                                                                                    <td
-                                                                                                        class="whitespace-nowrap px-3 py-4 text-sm text-gray-300">
-                                                                                                        Item
-                                                                                                    </td>
-                                                                                                    <td
-                                                                                                        class="whitespace-nowrap px-3 py-4 text-sm text-gray-300">
-                                                                                                        Item
-                                                                                                    </td>
-                                                                                                    <td
-                                                                                                        class="whitespace-nowrap px-3 py-4 text-sm text-gray-300">
-                                                                                                        Item
-                                                                                                    </td>
-                                                                                                    <td
-                                                                                                        class="whitespace-nowrap px-3 py-4 text-sm text-gray-300">
-                                                                                                        Item
-                                                                                                    </td>
-                                                                                                    <td
-                                                                                                        class="whitespace-nowrap px-3 py-4 text-sm text-gray-300">
-                                                                                                        Item
-                                                                                                    </td>
-                                                                                                    <td
-                                                                                                        class="whitespace-nowrap px-3 py-4 text-sm text-gray-300">
-                                                                                                        Item
-                                                                                                    </td>
-                                                                                                    <td
-                                                                                                        class="whitespace-nowrap px-3 py-4 text-sm text-gray-300">
-                                                                                                        Item
-                                                                                                    </td>
-                                                                                                    <td
-                                                                                                        class="whitespace-nowrap px-3 py-4 text-sm text-gray-300">
-                                                                                                        Item
-                                                                                                    </td>
-                                                                                                    <td
-                                                                                                        class="whitespace-nowrap px-3 py-4 text-sm text-gray-300">
-                                                                                                        Item
-                                                                                                    </td>
-                                                                                                    <td
-                                                                                                        class="relative whitespace-nowrap py-4 pl-3 pr-4 text-right text-sm font-medium sm:pr-0">
-                                                                                                        <a href="#"
-                                                                                                            class="text-indigo-400 hover:text-indigo-300">Edit<span
-                                                                                                                class="sr-only">,
-                                                                                                                Lindsay
-                                                                                                                Walton</span></a>
-                                                                                                    </td>
-                                                                                                </tr>
-
-                                                                                               
-                                                                                            </tbody>
-                                                                                        </table>
-                                                                                    </div>
-                                                                                </div>
-                                                                            </div>
-                                                                        </div>
-                                                                    </div>
-                                                                </div>
-                                                            </div> -->
-
                                                             <div>
-                                                                <button id="download-csv" class="bg-red-500 text-white px-4 py-2 mt-4 rounded">Download CSV</button>
-                                                                <button id="download-json" class="bg-red-500 text-white px-4 py-2 mt-4 rounded">Download JSON</button>
-                                                                <button id="download-pdf" class="bg-red-500 text-white px-4 py-2 mt-4 rounded">Download PDF</button>
+                                                                <button id="download-csv"
+                                                                    class="bg-red-500 text-white px-4 py-2 mt-4 rounded">Download
+                                                                    CSV</button>
+                                                                <button id="download-json"
+                                                                    class="bg-red-500 text-white px-4 py-2 mt-4 rounded">Download
+                                                                    JSON</button>
+                                                                <button id="download-pdf"
+                                                                    class="bg-red-500 text-white px-4 py-2 mt-4 rounded">Download
+                                                                    PDF</button>
                                                             </div>
-                                                            
+
                                                             <div id="data-table"></div>
                                                         </div>
                                                     </div>
@@ -669,967 +557,981 @@
                 </section>
 
                 <!-- Message list-->
-                <aside class="hidden xl:order-first xl:block xl:flex-shrink-0">
-                    <div class="relative flex w-80 flex-col border-gray-200 bg-gray-700 pb-5">
-                        <div class="flex-shrink-0">
-                            <div class="flex h-16 flex-col justify-center px-6">
-                                <div class="flex items-baseline space-x-3">
-                                    <h2 class="text-lg font-bold text-gray-300">AtoN Summary</h2>
-                                    <p class="text-sm font-medium text-gray-400" id="dashboard-date">(15/04/2024)</p>
-                                </div>
-                            </div>
-                        </div>
-                        <nav aria-label="Sub Menu" class="min-h-0 flex-1 overflow-y-auto">
-                            <ul role="list" class="divide-y divide-gray-200">
-                                <li class="relative px-6 focus-within:ring-blue-600">
-                                    <div class="flex justify-between space-x-3 border-b border-gray-200">
-                                        <div class="min-w-0 flex-1">
-                                            <a href="#" class="block focus:outline-none">
-                                                <span class="absolute inset-0" aria-hidden="true"></span>
-                                                <p class="truncate text-sm font-semibold text-gray-300 mb-2">Total Sites
-                                                </p>
-                                            </a>
-                                        </div>
-                                        <p class="flex-shrink-0 whitespace-nowrap text-sm text-gray-400"
-                                            id="cnt_in_aton">504
+                <div id="sidebarMenu" class="menu">
+                    <aside class=" hidden xl:order-first xl:block xl:flex-shrink-0">
+                        <div class="relative flex w-80 flex-col border-gray-200 bg-gray-700 pb-5">
+                            <div class="flex-shrink-0">
+                                <div class="flex h-16 flex-col justify-center px-6">
+                                    <div class="flex items-baseline space-x-3">
+                                        <h2 class="text-lg font-bold text-gray-300">AtoN Summary</h2>
+                                        <p class="text-sm font-medium text-gray-400" id="dashboard-date">(15/04/2024)
                                         </p>
                                     </div>
-
-                                    <div class="flex justify-between space-x-3 border-b border-gray-200 mt-2">
-                                        <div class="min-w-0 flex-1">
-                                            <a href="#" class="block focus:outline-none">
-                                                <span class="absolute inset-0" aria-hidden="true"></span>
-                                                <p class="truncate text-sm font-semibold text-gray-300 mb-2">No Messages
-                                                    6
-                                                </p>
-                                            </a>
-                                        </div>
-                                        <p class="flex-shrink-0 whitespace-nowrap text-sm text-gray-400"
-                                            id="cnt_in_nomsg6">0
-                                            (0.00%)</p>
-                                    </div>
-
-                                    <div class="flex justify-between space-x-3 border-b border-gray-200 mt-2">
-                                        <div class="min-w-0 flex-1">
-                                            <a href="#" class="block focus:outline-none">
-                                                <span class="absolute inset-0" aria-hidden="true"></span>
-                                                <p class="truncate text-sm font-semibold text-gray-300 mb-2">Light error
-                                                </p>
-                                            </a>
-                                        </div>
-                                        <p class="flex-shrink-0 whitespace-nowrap text-sm text-gray-400"
-                                            id="cnt_in_light">0
-                                            (0.00%)</p>
-                                    </div>
-
-                                    <div class="flex justify-between space-x-3 border-b border-gray-200 mt-2">
-                                        <div class="min-w-0 flex-1">
-                                            <a href="#" class="block focus:outline-none">
-                                                <span class="absolute inset-0" aria-hidden="true"></span>
-                                                <p class="truncate text-sm font-semibold text-gray-300 mb-2">Low Batt
-                                                    AtoN
-                                                </p>
-                                            </a>
-                                        </div>
-                                        <p class="flex-shrink-0 whitespace-nowrap text-sm text-gray-400"
-                                            id="cnt_in_battAton">0
-                                            (0.00%)</p>
-                                    </div>
-
-                                    <div class="flex justify-between space-x-3 border-b border-gray-200 mt-2">
-                                        <div class="min-w-0 flex-1">
-                                            <a href="#" class="block focus:outline-none">
-                                                <span class="absolute inset-0" aria-hidden="true"></span>
-                                                <p class="truncate text-sm font-semibold text-gray-300 mb-2">Low Batt
-                                                    Lantern
-                                                </p>
-                                            </a>
-                                        </div>
-                                        <p class="flex-shrink-0 whitespace-nowrap text-sm text-gray-400"
-                                            id="cnt_in_battLant">0
-                                            (0.00%)</p>
-                                    </div>
-
-                                    <div class="flex justify-between space-x-3 border-b border-gray-200 mt-2">
-                                        <div class="min-w-0 flex-1">
-                                            <a href="#" class="block focus:outline-none">
-                                                <span class="absolute inset-0" aria-hidden="true"></span>
-                                                <p class="truncate text-sm font-semibold text-gray-300 mb-2">Bad LDR</p>
-                                            </a>
-                                        </div>
-                                        <p class="flex-shrink-0 whitespace-nowrap text-sm text-gray-400"
-                                            id="cnt_in_ldr">0
-                                            (0.00%)</p>
-                                    </div>
-
-                                    <div class="flex justify-between space-x-3 border-b border-gray-200 mt-2">
-                                        <div class="min-w-0 flex-1">
-                                            <a href="#" class="block focus:outline-none">
-                                                <span class="absolute inset-0" aria-hidden="true"></span>
-                                                <p class="truncate text-sm font-semibold text-gray-300 mb-2">Off Pos</p>
-                                            </a>
-                                        </div>
-                                        <p class="flex-shrink-0 whitespace-nowrap text-sm text-gray-400"
-                                            id="cnt_in_offpos">0
-                                            (0.00%)</p>
-                                    </div>
-                                </li>
-                            </ul>
-                        </nav>
-
-                    </div>
-
-                    <div class="relative h-full flex w-80 flex-col border-gray-200 bg-gray-700">
-
-                        <div class=" bg-gray-600 rounded-lg m-3 px-3 py-2">
-                            <h2 class="text-md font-bold pt-2 text-gray-300 px-2">Search</h2>
-                            <!-- === Filter === -->
-                            <form class="px-6 pt-2 sm:px-6 lg:col-start-1 lg:row-start-1 lg:px-0 lg:pb-2">
-                                <div class="mx-auto max-w-lg lg:max-w-none">
-                                    <section aria-labelledby="filter-widget">
-                                        <div>
-                                            <label for="email"
-                                                class="block text-sm font-medium leading-6 text-gray-900 hidden">Parameter</label>
-                                            <div class="mt-2 flex rounded-md shadow-sm text-gray-400">
-                                                <div class="relative flex flex-grow items-stretch focus-within:z-10">
-                                                    <div
-                                                        class="pointer-events-none absolute inset-y-0 left-0 flex items-center pl-3">
-                                                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"
-                                                            fill="currentColor" class="w-6 h-6">
-                                                            <path fill-rule="evenodd"
-                                                                d="M10.5 3.75a6.75 6.75 0 1 0 0 13.5 6.75 6.75 0 0 0 0-13.5ZM2.25 10.5a8.25 8.25 0 1 1 14.59 5.28l4.69 4.69a.75.75 0 1 1-1.06 1.06l-4.69-4.69A8.25 8.25 0 0 1 2.25 10.5Z"
-                                                                clip-rule="evenodd" />
-                                                        </svg>
-                                                    </div>
-                                                    <input type="text" name="parameter" id="inp-search"
-                                                        class="block w-full rounded-none rounded-lg border-0 py-2 pl-10 text-gray-700 ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
-                                                        placeholder="Search ATON">
-                                                </div>
-                                                <button type="button"
-                                                    class="relative -ml-px inline-flex items-center gap-x-1.5 px-3 py-2 text-sm font-semibold text-gray-400 ring-0">
-                                                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"
-                                                        fill="currentColor" class="w-6 h-6">
-                                                        <path fill-rule="evenodd"
-                                                            d="M5.47 5.47a.75.75 0 0 1 1.06 0L12 10.94l5.47-5.47a.75.75 0 1 1 1.06 1.06L13.06 12l5.47 5.47a.75.75 0 1 1-1.06 1.06L12 13.06l-5.47 5.47a.75.75 0 0 1-1.06-1.06L10.94 12 5.47 6.53a.75.75 0 0 1 0-1.06Z"
-                                                            clip-rule="evenodd" />
-                                                    </svg>
-                                                </button>
-                                            </div>
-                                        </div>
-                                    </section>
-                                </div>
-                            </form>
-
-                            <!-- === Filter Widget === -->
-                            <!-- Filters -->
-                            <form class="mt-4">
-                                <div class="border-t border-gray-200 pb-2 pt-2">
-                                    <fieldset>
-                                        <legend class="w-full px-2">
-                                            <!-- Expand/collapse section button -->
-                                            <button type="button"
-                                                class="flex w-full items-center justify-between p-2 text-gray-400 hover:text-gray-500"
-                                                aria-controls="filter-section-0" aria-expanded="false">
-                                                <span class="text-sm font-medium text-gray-300">Structure</span>
-                                                <span class="ml-6 flex h-3 items-center">
-                                                    <svg class="rotate-0 h-5 w-5 transform" viewBox="0 0 20 20"
-                                                        fill="currentColor" aria-hidden="true">
-                                                        <path fill-rule="evenodd"
-                                                            d="M5.23 7.21a.75.75 0 011.06.02L10 11.168l3.71-3.938a.75.75 0 111.08 1.04l-4.25 4.5a.75.75 0 01-1.08 0l-4.25-4.5a.75.75 0 01.02-1.06z"
-                                                            clip-rule="evenodd" />
-                                                    </svg>
-                                                </span>
-                                            </button>
-                                        </legend>
-                                        <div class="px-4 pb-2 pt-2" id="filter-section-0">
-                                            <div class="space-y-3">
-                                                <div class="flex items-center">
-                                                    <input id="chk-select-beacon" name="selectAtonType" value="beacon"
-                                                        type="checkbox"
-                                                        class="h-4 w-4 rounded border-gray-300 text-gray-300" checked>
-                                                    <label for="chk-select-beacon"
-                                                        class="ml-3 text-sm text-gray-300">Beacon</label>
-                                                </div>
-                                                <div class="flex items-center">
-                                                    <input id="chk-select-buoy" name="selectAtonType" value="buoy"
-                                                        type="checkbox"
-                                                        class="h-4 w-4 rounded border-gray-300 text-gray-300" checked>
-                                                    <label for="chk-select-buoy"
-                                                        class="ml-3 text-sm text-gray-300">Buoy</label>
-                                                </div>
-                                                <div class="flex items-center">
-                                                    <input id="chk-select-lighthouse" name="selectAtonType"
-                                                        value="lighthouse" type="checkbox"
-                                                        class="h-4 w-4 rounded rounded-xl border-gray-300 text-gray-300"
-                                                        checked>
-                                                    <label for="chk-select-lighthouse"
-                                                        class="ml-3 text-sm text-gray-300">Lighthouse</label>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </fieldset>
-                                </div>
-                                <div class="border-t border-gray-200 pb-2 pt-2">
-                                    <fieldset>
-                                        <legend class="w-full px-2">
-                                            <!-- Expand/collapse section button -->
-                                            <button type="button"
-                                                class="flex w-full items-center justify-between p-2 text-gray-400 hover:text-gray-500"
-                                                aria-controls="filter-section-0" aria-expanded="false">
-                                                <span class="text-sm font-medium text-gray-300">Condition</span>
-                                                <span class="ml-6 flex h-3 items-center">
-                                                    <svg class="rotate-0 h-5 w-5 transform" viewBox="0 0 20 20"
-                                                        fill="currentColor" aria-hidden="true">
-                                                        <path fill-rule="evenodd"
-                                                            d="M5.23 7.21a.75.75 0 011.06.02L10 11.168l3.71-3.938a.75.75 0 111.08 1.04l-4.25 4.5a.75.75 0 01-1.08 0l-4.25-4.5a.75.75 0 01.02-1.06z"
-                                                            clip-rule="evenodd" />
-                                                    </svg>
-                                                </span>
-                                            </button>
-                                        </legend>
-                                        <div class="px-4 pb-2 pt-4" id="filter-section-1">
-                                            <div class="space-y-3">
-                                                <div class="flex items-center">
-                                                    <input id="rad-aton-all" name="selectAtonCond" value="new-arrivals"
-                                                        type="radio"
-                                                        class="h-4 w-4 rounded border-gray-300 text-indigo-600 focus:ring-indigo-500"
-                                                        checked>
-                                                    <label for="rad-aton-all"
-                                                        class="ml-3 text-sm text-gray-300">All</label>
-                                                </div>
-                                                <div class="flex items-center">
-                                                    <input id="rad-aton-ok" name="selectAtonCond" value="tees"
-                                                        type="radio"
-                                                        class="h-4 w-4 rounded border-gray-300 text-indigo-600 focus:ring-indigo-500">
-                                                    <label for="rad-aton-ok"
-                                                        class="ml-3 text-sm text-gray-300">Good</label>
-                                                </div>
-                                                <div class="flex items-center">
-                                                    <input id="rad-aton-ng" name="selectAtonCond" value="tees"
-                                                        type="radio"
-                                                        class="h-4 w-4 rounded border-gray-300 text-indigo-600 focus:ring-indigo-500">
-                                                    <label for="rad-aton-ng" class="ml-3 text-sm text-gray-300">Not
-                                                        Good</label>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </fieldset>
-                                </div>
-                            </form>
-                        </div>
-
-                        <!-- <button id="btn-test">test</button> -->
-                    </div>
-
-                    <div class="relative flex w-80 h-full flex-col border-gray-200 bg-gray-700 hidden">
-                        <div class=" bg-gray-600 rounded-lg m-3 px-2 py-2">
-                            <div class="flex h-16 flex-col justify-center px-6">
-                                <div class="flex items-baseline space-x-3 mb-2">
-                                    <h2 class="text-lg font-bold text-gray-300">Legend</h2>
-                                </div>
-                                <div class="flex items-baseline space-x-3">
-                                    <h2 class="text-lg text-gray-300">AtoN</h2>
                                 </div>
                             </div>
                             <nav aria-label="Sub Menu" class="min-h-0 flex-1 overflow-y-auto">
-                                <ul role="list" class="space-y-3 text-sm leading-6 px-6 py-2 text-gray-400">
-                                    <li class="flex gap-x-3">
-                                        <svg class="h-6 w-5 flex-none beacon-ok-legend" viewBox="0 0 20 20"
-                                            fill="currentColor" aria-hidden="true">
+                                <ul role="list" class="divide-y divide-gray-200">
+                                    <li class="relative px-6 focus-within:ring-blue-600">
+                                        <div class="flex justify-between space-x-3 border-b border-gray-200">
+                                            <div class="min-w-0 flex-1">
+                                                <a href="#" class="block focus:outline-none">
+                                                    <span class="absolute inset-0" aria-hidden="true"></span>
+                                                    <p class="truncate text-sm font-semibold text-gray-300 mb-2">Total
+                                                        Sites
+                                                    </p>
+                                                </a>
+                                            </div>
+                                            <p class="flex-shrink-0 whitespace-nowrap text-sm text-gray-400"
+                                                id="cnt_in_aton">504
+                                            </p>
+                                        </div>
 
-                                            <path fill-rule="evenodd"
-                                                d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.857-9.809a.75.75 0 00-1.214-.882l-3.483 4.79-1.88-1.88a.75.75 0 10-1.06 1.061l2.5 2.5a.75.75 0 001.137-.089l4-5.5z"
-                                                clip-rule="evenodd" />
-                                        </svg>
-                                        Beacon - Good
-                                    </li>
-                                    <li class="flex gap-x-3">
-                                        <svg class="h-6 w-5 flex-none text-indigo-600 buoy-ok-legend"
-                                            viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
-                                            <path fill-rule="evenodd"
-                                                d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.857-9.809a.75.75 0 00-1.214-.882l-3.483 4.79-1.88-1.88a.75.75 0 10-1.06 1.061l2.5 2.5a.75.75 0 001.137-.089l4-5.5z"
-                                                clip-rule="evenodd" />
-                                        </svg>
-                                        Buoy - Good
-                                    </li>
-                                    <li class="flex gap-x-3">
-                                        <svg class="h-6 w-5 flex-none text-indigo-600 lighthouse-ok-legend"
-                                            viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
-                                            <path fill-rule="evenodd"
-                                                d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.857-9.809a.75.75 0 00-1.214-.882l-3.483 4.79-1.88-1.88a.75.75 0 10-1.06 1.061l2.5 2.5a.75.75 0 001.137-.089l4-5.5z"
-                                                clip-rule="evenodd" />
-                                        </svg>
-                                        Lighthouse - Good
-                                    </li>
-                                    <li class="flex gap-x-3">
-                                        <svg class="h-6 w-5 flex-none text-indigo-600 beacon-ng-legend"
-                                            viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
-                                            <path fill-rule="evenodd"
-                                                d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.857-9.809a.75.75 0 00-1.214-.882l-3.483 4.79-1.88-1.88a.75.75 0 10-1.06 1.061l2.5 2.5a.75.75 0 001.137-.089l4-5.5z"
-                                                clip-rule="evenodd" />
-                                        </svg>
-                                        Beacon - NG
-                                    </li>
-                                    <li class="flex gap-x-3">
-                                        <svg class="h-6 w-5 flex-none buoy-ng-legend" viewBox="0 0 20 20"
-                                            fill="currentColor" aria-hidden="true">
-                                            <path fill-rule="evenodd"
-                                                d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.857-9.809a.75.75 0 00-1.214-.882l-3.483 4.79-1.88-1.88a.75.75 0 10-1.06 1.061l2.5 2.5a.75.75 0 001.137-.089l4-5.5z"
-                                                clip-rule="evenodd" />
-                                        </svg>
-                                        Buoy - NG
-                                    </li>
-                                    <li class="flex gap-x-3">
-                                        <svg class="h-6 w-5 flex-none text-indigo-600 lighthouse-ng-legend"
-                                            viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
-                                            <path fill-rule="evenodd"
-                                                d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.857-9.809a.75.75 0 00-1.214-.882l-3.483 4.79-1.88-1.88a.75.75 0 10-1.06 1.061l2.5 2.5a.75.75 0 001.137-.089l4-5.5z"
-                                                clip-rule="evenodd" />
-                                        </svg>
-                                        Lighthouse - NG
+                                        <div class="flex justify-between space-x-3 border-b border-gray-200 mt-2">
+                                            <div class="min-w-0 flex-1">
+                                                <a href="#" class="block focus:outline-none">
+                                                    <span class="absolute inset-0" aria-hidden="true"></span>
+                                                    <p class="truncate text-sm font-semibold text-gray-300 mb-2">No
+                                                        Messages
+                                                        6
+                                                    </p>
+                                                </a>
+                                            </div>
+                                            <p class="flex-shrink-0 whitespace-nowrap text-sm text-gray-400"
+                                                id="cnt_in_nomsg6">0
+                                                (0.00%)</p>
+                                        </div>
+
+                                        <div class="flex justify-between space-x-3 border-b border-gray-200 mt-2">
+                                            <div class="min-w-0 flex-1">
+                                                <a href="#" class="block focus:outline-none">
+                                                    <span class="absolute inset-0" aria-hidden="true"></span>
+                                                    <p class="truncate text-sm font-semibold text-gray-300 mb-2">Light
+                                                        error
+                                                    </p>
+                                                </a>
+                                            </div>
+                                            <p class="flex-shrink-0 whitespace-nowrap text-sm text-gray-400"
+                                                id="cnt_in_light">0
+                                                (0.00%)</p>
+                                        </div>
+
+                                        <div class="flex justify-between space-x-3 border-b border-gray-200 mt-2">
+                                            <div class="min-w-0 flex-1">
+                                                <a href="#" class="block focus:outline-none">
+                                                    <span class="absolute inset-0" aria-hidden="true"></span>
+                                                    <p class="truncate text-sm font-semibold text-gray-300 mb-2">Low
+                                                        Batt
+                                                        AtoN
+                                                    </p>
+                                                </a>
+                                            </div>
+                                            <p class="flex-shrink-0 whitespace-nowrap text-sm text-gray-400"
+                                                id="cnt_in_battAton">0
+                                                (0.00%)</p>
+                                        </div>
+
+                                        <div class="flex justify-between space-x-3 border-b border-gray-200 mt-2">
+                                            <div class="min-w-0 flex-1">
+                                                <a href="#" class="block focus:outline-none">
+                                                    <span class="absolute inset-0" aria-hidden="true"></span>
+                                                    <p class="truncate text-sm font-semibold text-gray-300 mb-2">Low
+                                                        Batt
+                                                        Lantern
+                                                    </p>
+                                                </a>
+                                            </div>
+                                            <p class="flex-shrink-0 whitespace-nowrap text-sm text-gray-400"
+                                                id="cnt_in_battLant">0
+                                                (0.00%)</p>
+                                        </div>
+
+                                        <div class="flex justify-between space-x-3 border-b border-gray-200 mt-2">
+                                            <div class="min-w-0 flex-1">
+                                                <a href="#" class="block focus:outline-none">
+                                                    <span class="absolute inset-0" aria-hidden="true"></span>
+                                                    <p class="truncate text-sm font-semibold text-gray-300 mb-2">Bad LDR
+                                                    </p>
+                                                </a>
+                                            </div>
+                                            <p class="flex-shrink-0 whitespace-nowrap text-sm text-gray-400"
+                                                id="cnt_in_ldr">0
+                                                (0.00%)</p>
+                                        </div>
+
+                                        <div class="flex justify-between space-x-3 border-b border-gray-200 mt-2">
+                                            <div class="min-w-0 flex-1">
+                                                <a href="#" class="block focus:outline-none">
+                                                    <span class="absolute inset-0" aria-hidden="true"></span>
+                                                    <p class="truncate text-sm font-semibold text-gray-300 mb-2">Off Pos
+                                                    </p>
+                                                </a>
+                                            </div>
+                                            <p class="flex-shrink-0 whitespace-nowrap text-sm text-gray-400"
+                                                id="cnt_in_offpos">0
+                                                (0.00%)</p>
+                                        </div>
                                     </li>
                                 </ul>
-                                <ul role="" class="divide-y divide-gray-200 hidden">
+                            </nav>
+
+                        </div>
+
+                        <div class="relative h-full flex w-80 flex-col border-gray-200 bg-gray-700">
+
+                            <div class=" bg-gray-600 rounded-lg m-3 px-3 py-2">
+                                <h2 class="text-md font-bold pt-2 text-gray-300 px-2">Search</h2>
+                                <!-- === Filter === -->
+                                <form class="px-6 pt-2 sm:px-6 lg:col-start-1 lg:row-start-1 lg:px-0 lg:pb-2">
+                                    <div class="mx-auto max-w-lg lg:max-w-none">
+                                        <section aria-labelledby="filter-widget">
+                                            <div>
+                                                <label for="email"
+                                                    class="block text-sm font-medium leading-6 text-gray-900 hidden">Parameter</label>
+                                                <div class="mt-2 flex rounded-md shadow-sm text-gray-400">
+                                                    <div
+                                                        class="relative flex flex-grow items-stretch focus-within:z-10">
+                                                        <div
+                                                            class="pointer-events-none absolute inset-y-0 left-0 flex items-center pl-3">
+                                                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"
+                                                                fill="currentColor" class="w-6 h-6">
+                                                                <path fill-rule="evenodd"
+                                                                    d="M10.5 3.75a6.75 6.75 0 1 0 0 13.5 6.75 6.75 0 0 0 0-13.5ZM2.25 10.5a8.25 8.25 0 1 1 14.59 5.28l4.69 4.69a.75.75 0 1 1-1.06 1.06l-4.69-4.69A8.25 8.25 0 0 1 2.25 10.5Z"
+                                                                    clip-rule="evenodd" />
+                                                            </svg>
+                                                        </div>
+                                                        <input type="text" name="parameter" id="inp-search"
+                                                            class="block w-full rounded-none rounded-lg border-0 py-2 pl-10 text-gray-700 ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
+                                                            placeholder="Search ATON">
+                                                    </div>
+                                                    <button type="button"
+                                                        class="relative -ml-px inline-flex items-center gap-x-1.5 px-3 py-2 text-sm font-semibold text-gray-400 ring-0">
+                                                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"
+                                                            fill="currentColor" class="w-6 h-6">
+                                                            <path fill-rule="evenodd"
+                                                                d="M5.47 5.47a.75.75 0 0 1 1.06 0L12 10.94l5.47-5.47a.75.75 0 1 1 1.06 1.06L13.06 12l5.47 5.47a.75.75 0 1 1-1.06 1.06L12 13.06l-5.47 5.47a.75.75 0 0 1-1.06-1.06L10.94 12 5.47 6.53a.75.75 0 0 1 0-1.06Z"
+                                                                clip-rule="evenodd" />
+                                                        </svg>
+                                                    </button>
+                                                </div>
+                                            </div>
+                                        </section>
+                                    </div>
+                                </form>
+
+                                <!-- === Filter Widget === -->
+                                <!-- Filters -->
+                                <form class="mt-4">
+                                    <div class="border-t border-gray-200 pb-2 pt-2">
+                                        <fieldset>
+                                            <legend class="w-full px-2">
+                                                <!-- Expand/collapse section button -->
+                                                <button type="button"
+                                                    class="flex w-full items-center justify-between p-2 text-gray-400 hover:text-gray-500"
+                                                    aria-controls="filter-section-0" aria-expanded="false">
+                                                    <span class="text-sm font-medium text-gray-300">Structure</span>
+                                                    <span class="ml-6 flex h-3 items-center">
+                                                        <svg class="rotate-0 h-5 w-5 transform" viewBox="0 0 20 20"
+                                                            fill="currentColor" aria-hidden="true">
+                                                            <path fill-rule="evenodd"
+                                                                d="M5.23 7.21a.75.75 0 011.06.02L10 11.168l3.71-3.938a.75.75 0 111.08 1.04l-4.25 4.5a.75.75 0 01-1.08 0l-4.25-4.5a.75.75 0 01.02-1.06z"
+                                                                clip-rule="evenodd" />
+                                                        </svg>
+                                                    </span>
+                                                </button>
+                                            </legend>
+                                            <div class="px-4 pb-2 pt-2" id="filter-section-0">
+                                                <div class="space-y-3">
+                                                    <div class="flex items-center">
+                                                        <input id="chk-select-beacon" name="selectAtonType"
+                                                            value="beacon" type="checkbox"
+                                                            class="h-4 w-4 rounded border-gray-300 text-gray-300"
+                                                            checked>
+                                                        <label for="chk-select-beacon"
+                                                            class="ml-3 text-sm text-gray-300">Beacon</label>
+                                                    </div>
+                                                    <div class="flex items-center">
+                                                        <input id="chk-select-buoy" name="selectAtonType" value="buoy"
+                                                            type="checkbox"
+                                                            class="h-4 w-4 rounded border-gray-300 text-gray-300"
+                                                            checked>
+                                                        <label for="chk-select-buoy"
+                                                            class="ml-3 text-sm text-gray-300">Buoy</label>
+                                                    </div>
+                                                    <div class="flex items-center">
+                                                        <input id="chk-select-lighthouse" name="selectAtonType"
+                                                            value="lighthouse" type="checkbox"
+                                                            class="h-4 w-4 rounded rounded-xl border-gray-300 text-gray-300"
+                                                            checked>
+                                                        <label for="chk-select-lighthouse"
+                                                            class="ml-3 text-sm text-gray-300">Lighthouse</label>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </fieldset>
+                                    </div>
+                                    <div class="border-t border-gray-200 pb-2 pt-2">
+                                        <fieldset>
+                                            <legend class="w-full px-2">
+                                                <!-- Expand/collapse section button -->
+                                                <button type="button"
+                                                    class="flex w-full items-center justify-between p-2 text-gray-400 hover:text-gray-500"
+                                                    aria-controls="filter-section-0" aria-expanded="false">
+                                                    <span class="text-sm font-medium text-gray-300">Condition</span>
+                                                    <span class="ml-6 flex h-3 items-center">
+                                                        <svg class="rotate-0 h-5 w-5 transform" viewBox="0 0 20 20"
+                                                            fill="currentColor" aria-hidden="true">
+                                                            <path fill-rule="evenodd"
+                                                                d="M5.23 7.21a.75.75 0 011.06.02L10 11.168l3.71-3.938a.75.75 0 111.08 1.04l-4.25 4.5a.75.75 0 01-1.08 0l-4.25-4.5a.75.75 0 01.02-1.06z"
+                                                                clip-rule="evenodd" />
+                                                        </svg>
+                                                    </span>
+                                                </button>
+                                            </legend>
+                                            <div class="px-4 pb-2 pt-4" id="filter-section-1">
+                                                <div class="space-y-3">
+                                                    <div class="flex items-center">
+                                                        <input id="rad-aton-all" name="selectAtonCond"
+                                                            value="new-arrivals" type="radio"
+                                                            class="h-4 w-4 rounded border-gray-300 text-indigo-600 focus:ring-indigo-500"
+                                                            checked>
+                                                        <label for="rad-aton-all"
+                                                            class="ml-3 text-sm text-gray-300">All</label>
+                                                    </div>
+                                                    <div class="flex items-center">
+                                                        <input id="rad-aton-ok" name="selectAtonCond" value="tees"
+                                                            type="radio"
+                                                            class="h-4 w-4 rounded border-gray-300 text-indigo-600 focus:ring-indigo-500">
+                                                        <label for="rad-aton-ok"
+                                                            class="ml-3 text-sm text-gray-300">Good</label>
+                                                    </div>
+                                                    <div class="flex items-center">
+                                                        <input id="rad-aton-ng" name="selectAtonCond" value="tees"
+                                                            type="radio"
+                                                            class="h-4 w-4 rounded border-gray-300 text-indigo-600 focus:ring-indigo-500">
+                                                        <label for="rad-aton-ng" class="ml-3 text-sm text-gray-300">Not
+                                                            Good</label>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </fieldset>
+                                    </div>
+                                </form>
+                            </div>
+
+                            <!-- <button id="btn-test">test</button> -->
+                        </div>
+
+                        <div class="relative flex w-80 h-full flex-col border-gray-200 bg-gray-700 hidden">
+                            <div class=" bg-gray-600 rounded-lg m-3 px-2 py-2">
+                                <div class="flex h-16 flex-col justify-center px-6">
+                                    <div class="flex items-baseline space-x-3 mb-2">
+                                        <h2 class="text-lg font-bold text-gray-300">Legend</h2>
+                                    </div>
+                                    <div class="flex items-baseline space-x-3">
+                                        <h2 class="text-lg text-gray-300">AtoN</h2>
+                                    </div>
+                                </div>
+                                <nav aria-label="Sub Menu" class="min-h-0 flex-1 overflow-y-auto">
+                                    <ul role="list" class="space-y-3 text-sm leading-6 px-6 py-2 text-gray-400">
+                                        <li class="flex gap-x-3">
+                                            <svg class="h-6 w-5 flex-none beacon-ok-legend" viewBox="0 0 20 20"
+                                                fill="currentColor" aria-hidden="true">
+
+                                                <path fill-rule="evenodd"
+                                                    d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.857-9.809a.75.75 0 00-1.214-.882l-3.483 4.79-1.88-1.88a.75.75 0 10-1.06 1.061l2.5 2.5a.75.75 0 001.137-.089l4-5.5z"
+                                                    clip-rule="evenodd" />
+                                            </svg>
+                                            Beacon - Good
+                                        </li>
+                                        <li class="flex gap-x-3">
+                                            <svg class="h-6 w-5 flex-none text-indigo-600 buoy-ok-legend"
+                                                viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
+                                                <path fill-rule="evenodd"
+                                                    d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.857-9.809a.75.75 0 00-1.214-.882l-3.483 4.79-1.88-1.88a.75.75 0 10-1.06 1.061l2.5 2.5a.75.75 0 001.137-.089l4-5.5z"
+                                                    clip-rule="evenodd" />
+                                            </svg>
+                                            Buoy - Good
+                                        </li>
+                                        <li class="flex gap-x-3">
+                                            <svg class="h-6 w-5 flex-none text-indigo-600 lighthouse-ok-legend"
+                                                viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
+                                                <path fill-rule="evenodd"
+                                                    d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.857-9.809a.75.75 0 00-1.214-.882l-3.483 4.79-1.88-1.88a.75.75 0 10-1.06 1.061l2.5 2.5a.75.75 0 001.137-.089l4-5.5z"
+                                                    clip-rule="evenodd" />
+                                            </svg>
+                                            Lighthouse - Good
+                                        </li>
+                                        <li class="flex gap-x-3">
+                                            <svg class="h-6 w-5 flex-none text-indigo-600 beacon-ng-legend"
+                                                viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
+                                                <path fill-rule="evenodd"
+                                                    d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.857-9.809a.75.75 0 00-1.214-.882l-3.483 4.79-1.88-1.88a.75.75 0 10-1.06 1.061l2.5 2.5a.75.75 0 001.137-.089l4-5.5z"
+                                                    clip-rule="evenodd" />
+                                            </svg>
+                                            Beacon - NG
+                                        </li>
+                                        <li class="flex gap-x-3">
+                                            <svg class="h-6 w-5 flex-none buoy-ng-legend" viewBox="0 0 20 20"
+                                                fill="currentColor" aria-hidden="true">
+                                                <path fill-rule="evenodd"
+                                                    d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.857-9.809a.75.75 0 00-1.214-.882l-3.483 4.79-1.88-1.88a.75.75 0 10-1.06 1.061l2.5 2.5a.75.75 0 001.137-.089l4-5.5z"
+                                                    clip-rule="evenodd" />
+                                            </svg>
+                                            Buoy - NG
+                                        </li>
+                                        <li class="flex gap-x-3">
+                                            <svg class="h-6 w-5 flex-none text-indigo-600 lighthouse-ng-legend"
+                                                viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
+                                                <path fill-rule="evenodd"
+                                                    d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.857-9.809a.75.75 0 00-1.214-.882l-3.483 4.79-1.88-1.88a.75.75 0 10-1.06 1.061l2.5 2.5a.75.75 0 001.137-.089l4-5.5z"
+                                                    clip-rule="evenodd" />
+                                            </svg>
+                                            Lighthouse - NG
+                                        </li>
+                                    </ul>
+                                    <ul role="" class="divide-y divide-gray-200 hidden">
+                                        <li class="relative px-6 py-2 focus-within:ring-blue-600">
+                                            <div class="flex justify-between space-x-3 border-gray-200 mb-3">
+                                                <div class="flex-1">
+                                                    <a href="#" class="block focus:outline-none">
+                                                        <span class="absolute inset-0" aria-hidden="true"></span>
+                                                        <p class="truncate text-sm font-semibold text-gray-300">AtoN
+                                                        </p>
+                                                    </a>
+                                                </div>
+                                            </div>
+                                            <div class="flex justify-between space-x-3 border-gray-200 mb-2">
+                                                <div class="flex-1">
+                                                    <a href="#" class="block focus:outline-none">
+                                                        <span class="absolute inset-0" aria-hidden="true"></span>
+                                                        <p class="truncate text-sm font-semibold text-gray-300">Beacon -
+                                                            Good
+                                                        </p>
+                                                    </a>
+                                                </div>
+                                            </div>
+                                            <div class="flex justify-between space-x-3 border-gray-200 mb-2">
+                                                <div class="flex-1">
+                                                    <a href="#" class="block focus:outline-none">
+                                                        <span class="absolute inset-0" aria-hidden="true"></span>
+                                                        <p class="truncate text-sm font-semibold text-gray-300">Beacon -
+                                                            Good
+                                                        </p>
+                                                    </a>
+                                                </div>
+                                            </div>
+                                            <div class="flex justify-between space-x-3 border-gray-200 mb-2">
+                                                <div class="flex-1">
+                                                    <a href="#" class="block focus:outline-none">
+                                                        <span class="absolute inset-0" aria-hidden="true"></span>
+                                                        <svg class="h-6 w-5 flex-none text-indigo-600"
+                                                            viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
+                                                            <path fill-rule="evenodd"
+                                                                d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.857-9.809a.75.75 0 00-1.214-.882l-3.483 4.79-1.88-1.88a.75.75 0 10-1.06 1.061l2.5 2.5a.75.75 0 001.137-.089l4-5.5z"
+                                                                clip-rule="evenodd" />
+                                                        </svg>
+                                                        <p class="truncate text-sm font-semibold text-gray-300">Beacon -
+                                                            Good
+                                                        </p>
+                                                    </a>
+                                                </div>
+                                            </div>
+                                            <div class="flex justify-between space-x-3 border-gray-200 mb-2">
+                                                <div class="flex-1">
+                                                    <a href="#" class="block focus:outline-none">
+                                                        <span class="absolute inset-0" aria-hidden="true"></span>
+                                                        <p class="truncate text-sm font-semibold text-gray-300">Beacon -
+                                                            Good
+                                                        </p>
+                                                    </a>
+                                                </div>
+                                            </div>
+                                            <div class="flex justify-between space-x-3 border-gray-200 mb-2">
+                                                <div class="flex-1">
+                                                    <a href="#" class="block focus:outline-none">
+                                                        <span class="absolute inset-0" aria-hidden="true"></span>
+                                                        <p class="truncate text-sm font-semibold text-gray-300">Beacon -
+                                                            Good
+                                                        </p>
+                                                    </a>
+                                                </div>
+                                            </div>
+                                            <div class="flex justify-between space-x-3 border-gray-200 mb-2">
+                                                <div class="flex-1">
+                                                    <a href="#" class="block focus:outline-none">
+                                                        <span class="absolute inset-0" aria-hidden="true"></span>
+                                                        <p class="truncate text-sm font-semibold text-gray-300">Beacon -
+                                                            Good
+                                                        </p>
+                                                    </a>
+                                                </div>
+                                            </div>
+                                        </li>
+                                    </ul>
+                                </nav>
+                            </div>
+
+                        </div>
+
+
+                        <!-- Vessel Info Panel -->
+                        <div class="vessel-info text-gray-300">
+                            <div class="vessel-info-title">
+                                <h4>MMSI<span id="det-mmsi-title"></span></h4>
+                            </div>
+                            <div class="close-icon" id="closeVesselInfo">
+                                <i class="fas fa-times fa-2x"></i>
+                            </div>
+
+                            <br>
+
+                            <div id="aton-info" class="aton-detail-info">
+                                <div>
+                                    <label for=" atontype">ATON</label>
+                                    <span name="atontype" id="det-atontype">: 1</span>
+                                </div>
+                                <div>
+                                    <label for="atonname">ATON Name</label>
+                                    <span name="atonname" id="det-atonname">: Langkawi</span>
+                                </div>
+                                <div>
+                                    <label for="mmsi">MMSI</label>
+                                    <span name="mmsi" id="det-atonmmsi">: 533003500</span>
+                                </div>
+                                <div>
+                                    <label for="region">Region</label>
+                                    <span name="region" id="det-atonregion">: 533003500</span>
+                                </div>
+
+                                <div>
+                                    <label for="aidType">ATON Type</label>
+                                    <span name="aidType" id="det-aidType">: 1</span>
+                                </div>
+                                <div>
+                                    <label for="aidTypeDesc">ATON Type Desc.</label>
+                                    <span name="aidTypeDesc" id="det-aidTypeDesc">: Langkawi</span>
+                                </div>
+                                <div>
+                                    <label for="aidName">Aid Name</label>
+                                    <span name="aidName" id="det-aidName">: 533003500</span>
+                                </div>
+
+
+                                <div>
+                                    <label for="positionAccuracyDesc">Position Accuracy Desc.</label>
+                                    <span name="positionAccuracyDesc" id="det-positionAccuracyDesc">: 533003500</span>
+                                </div>
+                                <div>
+                                    <label for="longitude">Longitude</label>
+                                    <span name="longitude" id="det-longitude">: 533003500</span>
+                                </div>
+                                <div>
+                                    <label for="latitude">Latitude</label>
+                                    <span name="latitude" id="det-latitude">: 533003500</span>
+                                </div>
+
+                                <div>
+                                    <label for="to-bow">To-Bow</label>
+                                    <span name="to-bow" id="det-to-bow">: 533003500</span>
+                                </div>
+                                <div>
+                                    <label for="to-stern">To-Stern</label>
+                                    <span name="to-stern" id="det-to-stern">: 533003500</span>
+                                </div>
+                                <div>
+                                    <label for="to-port">To-Port</label>
+                                    <span name="to-port" id="det-to-port">: 533003500</span>
+                                </div>
+                                <div>
+                                    <label for="to-starboard">To-Starboard</label>
+                                    <span name="to-starboard" id="det-to-starboard">: 533003500</span>
+                                </div>
+                                <div>
+                                    <label for="epfdDesc">EPFD Desc.</label>
+                                    <span name="epfdDesc" id="det-epfdDesc">: 533003500</span>
+                                </div>
+                                <div>
+                                    <label for="utc-second">UTC Second</label>
+                                    <span name="utc-second" id="det-utc-second">: 533003500</span>
+                                </div>
+                                <div>
+                                    <label for="utc-second">Off Pos.</label>
+                                    <span name="utc-second" id="det-off-position">: 533003500</span>
+                                </div>
+                                <div>
+                                    <label for="buoy_photocell">Regional</label>
+                                    <span name="buoy_photocell" id="det-regional">: 533003500</span>
+                                </div>
+                                <div>
+                                    <label for="regional">Raim Flag</label>
+                                    <span name="regional" id="det-raimFlag">: 533003500</span>
+                                </div>
+                                <div>
+                                    <label for="virtualAid">Virtual AID</label>
+                                    <span name="virtualAid" id="det-virtualAid">: 533003500</span>
+                                </div>
+                                <div>
+                                    <label for="assigned">Assigned</label>
+                                    <span name="assigned" id="det-assigned">: 533003500</span>
+                                </div>
+                            </div>
+
+                            <div id="dac533-fid1" class="aton-detail-info">
+                                <div>
+                                    <label for="aton">ATON</label>
+                                    <span name="aton" id="det-shiptype-fid1">: 1</span>
+                                </div>
+                                <div>
+                                    <label for="atonname">ATON Name</label>
+                                    <span name="atonname" id="det-shipname-fid1">: Langkawi</span>
+                                </div>
+                                <div>
+                                    <label for="mmsi">MMSI</label>
+                                    <span name="mmsi" id="det-mmsi-fid1">: 533003500</span>
+                                </div>
+
+                                <div>
+                                    <label for="voltage-int">ATON Volt.</label>
+                                    <span name="voltage-int" id="det-voltage-int-fid1">: 533003500</span>
+                                </div>
+                                <div>
+                                    <label for="voltage-ext1">Lantern Volt.</label>
+                                    <span name="voltage-ext1" id="det-voltage-ext1-fid1">: 533003500</span>
+                                </div>
+                                <div>
+                                    <label for="thermal-temp">Racon Volt.</label>
+                                    <span name="thermal-temp" id="det-thermal-temp-fid1">: 533003500</span>
+                                </div>
+
+                                <div>
+                                    <label for="racon">Racon</label>
+                                    <span name="racon" id="det-racon-fid1">: 533003500</span>
+                                </div>
+                                <div>
+                                    <label for="light">Light</label>
+                                    <span name="light" id="det-light-fid1">: 533003500</span>
+                                </div>
+                                <div>
+                                    <label for="health">Health</label>
+                                    <span name="health" id="det-health-fid1">: 533003500</span>
+                                </div>
+                                <div>
+                                    <label for="beat">Beat</label>
+                                    <span name="beat" id="det-beat-fid1">: 533003500</span>
+                                </div>
+                                <div>
+                                    <label for="alarm-active">Lantern Batt</label>
+                                    <span name="alarm-active" id="det-alarm-active-fid1">: 533003500</span>
+                                </div>
+                                <div>
+                                    <label for="buoy-led-power">Lantern</label>
+                                    <span name="buoy-led-power" id="det-buoy-led-power-fid1">: 533003500</span>
+                                </div>
+                                <div>
+                                    <label for="buoy-low-vin">Ambient</label>
+                                    <span name="buoy-low-vin" id="det-buoy-low-vin-fid1">: 533003500</span>
+                                </div>
+                                <div>
+                                    <label for="buoy_photocell">Door</label>
+                                    <span name="buoy_photocell" id="det-buoy-photocell-fid1">: 533003500</span>
+                                </div>
+                                <div>
+                                    <label for="buoy-temp">Off Position</label>
+                                    <span name="buoy-temp" id="det-buoy-temp-fid1">: 533003500</span>
+                                </div>
+                            </div>
+
+                            <div id="dac533-fid2" class="aton-detail-info">
+                                <div>
+                                    <label for="aton">ATON</label>
+                                    <span name="aton" id="det-shiptype-fid2">: 1</span>
+                                </div>
+                                <div>
+                                    <label for="atonname">ATON Name</label>
+                                    <span name="atonname" id="det-shipname-fid2">: Langkawi</span>
+                                </div>
+                                <div>
+                                    <label for="mmsi">MMSI</label>
+                                    <span name="mmsi" id="det-mmsi-fid2">: 533003500</span>
+                                </div>
+
+                                <div>
+                                    <label for="voltage-int">ATON Volt.</label>
+                                    <span name="voltage-int" id="det-voltage-int-fid2">: 533003500</span>
+                                </div>
+                                <div>
+                                    <label for="voltage-ext1">Lantern Volt.</label>
+                                    <span name="voltage-ext1" id="det-voltage-ext1-fid2">: 533003500</span>
+                                </div>
+                                <div>
+                                    <label for="thermal-temp">Racon Volt.</label>
+                                    <span name="thermal-temp" id="det-thermal-temp-fid2">: 533003500</span>
+                                </div>
+                                <div>
+                                    <label for="off-pos">Off Position</label>
+                                    <span name="off-pos" id="det-off-pos-fid2">: 533003500</span>
+                                </div>
+                                <div>
+                                    <label for="ldr">Ambient</label>
+                                    <span name="ldr" id="det-ldr-fid2">: 533003500</span>
+                                </div>
+                                <div>
+                                    <label for="racon">Racon</label>
+                                    <span name="racon" id="det-racon-fid2">: 533003500</span>
+                                </div>
+                                <div>
+                                    <label for="light">Light</label>
+                                    <span name="light" id="det-light-fid2">: 533003500</span>
+                                </div>
+                                <div>
+                                    <label for="health">Health</label>
+                                    <span name="health" id="det-health-fid2">: 533003500</span>
+                                </div>
+                                <div>
+                                    <label for="beat">Beat</label>
+                                    <span name="beat" id="det-beat-fid2">: 533003500</span>
+                                </div>
+                                <div>
+                                    <label for="alarm-active">Main Lantern Cond.</label>
+                                    <span name="alarm-active" id="det-alarm-active-fid2">: 533003500</span>
+                                </div>
+                                <div>
+                                    <label for="buoy-led-power">Main Lantern Status</label>
+                                    <span name="buoy-led-power" id="det-buoy-led-power-fid2">: 533003500</span>
+                                </div>
+                                <div>
+                                    <label for="buoy-low-vin">Stdby Lantern Cond.</label>
+                                    <span name="buoy-low-vin" id="det-buoy-low-vin-fid2">: 533003500</span>
+                                </div>
+                                <div>
+                                    <label for="buoy_photocell">Stdby Lantern Status</label>
+                                    <span name="buoy_photocell" id="det-buoy-photocell-fid2">: 533003500</span>
+                                </div>
+                                <div>
+                                    <label for="buoy-temp">Emerg. Lantern Cond.</label>
+                                    <span name="buoy-temp" id="det-buoy-temp-fid2">: 533003500</span>
+                                </div>
+                                <div>
+                                    <label for="buoy-force-off">Emerg. Lantern Status</label>
+                                    <span name="buoy-force-off" id="det-buoy-force-off-fid2">: 533003500</span>
+                                </div>
+                                <div>
+                                    <label for="buoy-islight">Optic Drv A Status</label>
+                                    <span name="buoy-islight" id="det-buoy-islight-fid2">: 533003500</span>
+                                </div>
+                                <div>
+                                    <label for="buoy-errled-short">Optic Drv A cond.</label>
+                                    <span name="buoy-errled-short" id="det-buoy-errled-short-fid2">: 533003500</span>
+                                </div>
+                                <div>
+                                    <label for="buoy-errled-open">Optic Drv B Status</label>
+                                    <span name="buoy-errled-open" id="det-buoy-errled-open-fid2">: 533003500</span>
+                                </div>
+                                <div>
+                                    <label for="buoy-errled-voltlow">Optic Drv B cond.</label>
+                                    <span name="buoy-errled-voltlow" id="det-buoy-errled-voltlow-fid2">:
+                                        533003500</span>
+                                </div>
+                                <div>
+                                    <label for="buoy-errled-vinlow">Hatch Door</label>
+                                    <span name="buoy-errled-vinlow" id="det-buoy-errled-vinlow-fid2">: 533003500</span>
+                                </div>
+                                <div>
+                                    <label for="buoy-errled-power">Main Power</label>
+                                    <span name="buoy-errled-power" id="det-buoy-errled-power-fid2">: 533003500</span>
+                                </div>
+                                <div>
+                                    <label for="buoy-adjmaxpower">Batt. Sys. (BMS)</label>
+                                    <span name="buoy-adjmaxpower" id="det-buoy-adjmaxpower-fid2">: 533003500</span>
+                                </div>
+                            </div>
+
+                            <div id="dac533-fid4" class="aton-detail-info">
+                                <div>
+                                    <label for="aton">ATON</label>
+                                    <span name="aton" id="det-shiptype">: 1</span>
+                                </div>
+                                <div>
+                                    <label for="atonname">ATON Name</label>
+                                    <span name="atonname" id="det-shipname">: Langkawi</span>
+                                </div>
+                                <div>
+                                    <label for="mmsi">MMSI</label>
+                                    <span name="mmsi" id="det-mmsi">: 533003500</span>
+                                </div>
+
+                                <div>
+                                    <label for="voltage-int">ATON Volt.</label>
+                                    <span name="voltage-int" id="det-voltage-int">: 533003500</span>
+                                </div>
+                                <div>
+                                    <label for="voltage-ext1">Lantern Volt.</label>
+                                    <span name="voltage-ext1" id="det-voltage-ext1">: 533003500</span>
+                                </div>
+                                <div>
+                                    <label for="thermal-temp">Thermal Temp.</label>
+                                    <span name="thermal-temp" id="det-thermal-temp">: 533003500</span>
+                                </div>
+                                <div>
+                                    <label for="off-pos">Off Position</label>
+                                    <span name="off-pos" id="det-off-pos">: 533003500</span>
+                                </div>
+                                <div>
+                                    <label for="ldr">Ambient</label>
+                                    <span name="ldr" id="det-ldr">: 533003500</span>
+                                </div>
+                                <div>
+                                    <label for="racon">Racon</label>
+                                    <span name="racon" id="det-racon">: 533003500</span>
+                                </div>
+                                <div>
+                                    <label for="light">Light</label>
+                                    <span name="light" id="det-light">: 533003500</span>
+                                </div>
+                                <div>
+                                    <label for="health">Health</label>
+                                    <span name="health" id="det-health">: 533003500</span>
+                                </div>
+                                <div>
+                                    <label for="beat">Beat</label>
+                                    <span name="beat" id="det-beat">: 533003500</span>
+                                </div>
+                                <div>
+                                    <label for="alarm-active">AlarmActive</label>
+                                    <span name="alarm-active" id="det-alarm-active">: 533003500</span>
+                                </div>
+                                <div>
+                                    <label for="buoy-led-power">FlshrOffByLedPowerThres</label>
+                                    <span name="buoy-led-power" id="det-buoy-led-power">: 533003500</span>
+                                </div>
+                                <div>
+                                    <label for="buoy-low-vin">FlshrOffByLowVin</label>
+                                    <span name="buoy-low-vin" id="det-buoy-low-vin">: 533003500</span>
+                                </div>
+                                <div>
+                                    <label for="buoy_photocell">FlshrOffByPhotocell</label>
+                                    <span name="buoy_photocell" id="det-buoy-photocell">: 533003500</span>
+                                </div>
+                                <div>
+                                    <label for="buoy-temp">FlshrOffByTemp.</label>
+                                    <span name="buoy-temp" id="det-buoy-temp">: 533003500</span>
+                                </div>
+                                <div>
+                                    <label for="buoy-force-off">FlshrOffByForceOff</label>
+                                    <span name="buoy-force-off" id="det-buoy-force-off">: 533003500</span>
+                                </div>
+                                <div>
+                                    <label for="buoy-islight">IsNight</label>
+                                    <span name="buoy-islight" id="det-buoy-islight">: 533003500</span>
+                                </div>
+                                <div>
+                                    <label for="buoy-errled-short">ErrLedShort</label>
+                                    <span name="buoy-errled-short" id="det-buoy-errled-short">: 533003500</span>
+                                </div>
+                                <div>
+                                    <label for="buoy-errled-open">ErrLedOpen</label>
+                                    <span name="buoy-errled-open" id="det-buoy-errled-open">: 533003500</span>
+                                </div>
+                                <div>
+                                    <label for="buoy-errled-voltlow">ErrLedVoltageLow</label>
+                                    <span name="buoy-errled-voltlow" id="det-buoy-errled-voltlow">: 533003500</span>
+                                </div>
+                                <div>
+                                    <label for="buoy-errled-vinlow">ErrVinLow</label>
+                                    <span name="buoy-errled-vinlow" id="det-buoy-errled-vinlow">: 533003500</span>
+                                </div>
+                                <div>
+                                    <label for="buoy-errled-power">ErrLedPowerThres</label>
+                                    <span name="buoy-errled-power" id="det-buoy-errled-power">: 533003500</span>
+                                </div>
+                                <div>
+                                    <label for="buoy-adjmaxpower">FlshrAdjToLedMaxAvgPwr</label>
+                                    <span name="buoy-adjmaxpower" id="det-buoy-adjmaxpower">: 533003500</span>
+                                </div>
+                                <div>
+                                    <label for="buoy-sensor-interrupt">GsensorInterruptOccurred</label>
+                                    <span name="buoy-sensor-interrupt" id="det-buoy-sensor-interrupt">: 533003500</span>
+                                </div>
+                                <div>
+                                    <label for="buoy-solarcharging">SolarChargingOn</label>
+                                    <span name="buoy-solarcharging" id="det-buoy-solarcharging">: 533003500</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="relative flex w-80 h-full flex-col border-gray-200 bg-gray-700 hidden">
+                            <div class="">
+                                <div class="flex h-16 flex-col justify-center px-6">
+                                    <div class="flex items-baseline space-x-3">
+                                        <h2 class="text-lg font-bold text-gray-300">Condition</h2>
+                                    </div>
+                                </div>
+                            </div>
+                            <nav aria-label="Sub Menu" class="min-h-0 flex-1 overflow-y-auto">
+                                <ul role="" class="divide-y divide-gray-200">
                                     <li class="relative px-6 py-2 focus-within:ring-blue-600">
-                                        <div class="flex justify-between space-x-3 border-gray-200 mb-3">
+                                        <div class="flex justify-between space-x-3 border-b border-gray-200">
                                             <div class="flex-1">
                                                 <a href="#" class="block focus:outline-none">
                                                     <span class="absolute inset-0" aria-hidden="true"></span>
-                                                    <p class="truncate text-sm font-semibold text-gray-300">AtoN
+                                                    <p class="truncate text-sm font-semibold text-gray-300">Structure
                                                     </p>
                                                 </a>
                                             </div>
+                                            <select class="text-sm w-20 mb-3">
+                                                <option value="">All</option>
+                                                <option value="">Lighthouse</option>
+                                                <option value="">Becon</option>
+                                                <option value="">Buoy</option>
+                                            </select>
                                         </div>
-                                        <div class="flex justify-between space-x-3 border-gray-200 mb-2">
-                                            <div class="flex-1">
+
+                                        <div class="flex justify-between space-x-3 border-b border-gray-200 mt-2">
+                                            <div class="min-w-0 flex-1">
                                                 <a href="#" class="block focus:outline-none">
                                                     <span class="absolute inset-0" aria-hidden="true"></span>
-                                                    <p class="truncate text-sm font-semibold text-gray-300">Beacon -
-                                                        Good
+                                                    <p class="truncate text-sm font-semibold text-gray-300">Error
                                                     </p>
                                                 </a>
                                             </div>
+                                            <select class="flex-shrink-0 text-sm w-20 mb-3">
+                                                <option value="">All</option>
+                                                <option value="">OK</option>
+                                                <option value="">NG</option>
+                                                <option value="">NA</option>
+                                            </select>
                                         </div>
-                                        <div class="flex justify-between space-x-3 border-gray-200 mb-2">
-                                            <div class="flex-1">
+
+                                        <div class="flex justify-between space-x-3 border-b border-gray-200 mt-2">
+                                            <div class="min-w-0 flex-1">
                                                 <a href="#" class="block focus:outline-none">
                                                     <span class="absolute inset-0" aria-hidden="true"></span>
-                                                    <p class="truncate text-sm font-semibold text-gray-300">Beacon -
-                                                        Good
+                                                    <p class="truncate text-sm font-semibold text-gray-300">Lantern
+                                                        Model
                                                     </p>
                                                 </a>
                                             </div>
+                                            <select class="flex-shrink-0 text-sm w-20 mb-3">
+                                                <option value="">All</option>
+                                            </select>
                                         </div>
-                                        <div class="flex justify-between space-x-3 border-gray-200 mb-2">
-                                            <div class="flex-1">
+
+                                        <div class="flex justify-between space-x-3 border-b border-gray-200 mt-2">
+                                            <div class="min-w-0 flex-1">
                                                 <a href="#" class="block focus:outline-none">
                                                     <span class="absolute inset-0" aria-hidden="true"></span>
-                                                    <svg class="h-6 w-5 flex-none text-indigo-600" viewBox="0 0 20 20"
-                                                        fill="currentColor" aria-hidden="true">
-                                                        <path fill-rule="evenodd"
-                                                            d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.857-9.809a.75.75 0 00-1.214-.882l-3.483 4.79-1.88-1.88a.75.75 0 10-1.06 1.061l2.5 2.5a.75.75 0 001.137-.089l4-5.5z"
-                                                            clip-rule="evenodd" />
-                                                    </svg>
-                                                    <p class="truncate text-sm font-semibold text-gray-300">Beacon -
-                                                        Good
+                                                    <p class="truncate text-sm font-semibold text-gray-300">Temperature
                                                     </p>
                                                 </a>
                                             </div>
+                                            <select class="text-sm w-20 mb-3">
+                                                <option value="All">All</option>
+                                                <option value=">60">>60</option>
+                                                <option value=">55">>55</option>
+                                                <option value=">50">>50</option>
+                                                <option value=">45">>45</option>
+                                                <option value="<45">
+                                                    <45 </option>
+                                                <option value="NA">NA</option>
+                                            </select>
                                         </div>
-                                        <div class="flex justify-between space-x-3 border-gray-200 mb-2">
-                                            <div class="flex-1">
+
+                                        <div class="flex justify-between space-x-3 border-b border-gray-200 mt-2">
+                                            <div class="min-w-0 flex-1">
                                                 <a href="#" class="block focus:outline-none">
                                                     <span class="absolute inset-0" aria-hidden="true"></span>
-                                                    <p class="truncate text-sm font-semibold text-gray-300">Beacon -
-                                                        Good
+                                                    <p class="truncate text-sm font-semibold text-gray-300">Battery
+                                                        Aton
                                                     </p>
                                                 </a>
                                             </div>
+                                            <select class="flex-shrink-0 text-sm w-20 mb-3">
+                                                <option value="">All</option>
+                                            </select>
+
                                         </div>
-                                        <div class="flex justify-between space-x-3 border-gray-200 mb-2">
-                                            <div class="flex-1">
+
+                                        <div class="flex justify-between space-x-3 border-b border-gray-200 mt-2">
+                                            <div class="min-w-0 flex-1">
                                                 <a href="#" class="block focus:outline-none">
                                                     <span class="absolute inset-0" aria-hidden="true"></span>
-                                                    <p class="truncate text-sm font-semibold text-gray-300">Beacon -
-                                                        Good
+                                                    <p class="truncate text-sm font-semibold text-gray-300">Battery
+                                                        Lantern
                                                     </p>
                                                 </a>
                                             </div>
+                                            <select class="flex-shrink-0 text-sm w-20 mb-3">
+                                                <option value="">All</option>
+                                            </select>
                                         </div>
-                                        <div class="flex justify-between space-x-3 border-gray-200 mb-2">
-                                            <div class="flex-1">
+
+                                        <div class="flex justify-between space-x-3 border-b border-gray-200 mt-2">
+                                            <div class="min-w-0 flex-1">
                                                 <a href="#" class="block focus:outline-none">
                                                     <span class="absolute inset-0" aria-hidden="true"></span>
-                                                    <p class="truncate text-sm font-semibold text-gray-300">Beacon -
-                                                        Good
+                                                    <p class="truncate text-sm font-semibold text-gray-300">Off Position
                                                     </p>
                                                 </a>
                                             </div>
+                                            <select class="flex-shrink-0 text-sm w-20 mb-3">
+                                                <option value="">All</option>
+                                            </select>
+                                        </div>
+
+                                        <div class="flex justify-between space-x-3 border-b border-gray-200 mt-2">
+                                            <div class="min-w-0 flex-1">
+                                                <a href="#" class="block focus:outline-none">
+                                                    <span class="absolute inset-0" aria-hidden="true"></span>
+                                                    <p class="truncate text-sm font-semibold text-gray-300 mb-2">LDR
+                                                        Condition
+                                                    </p>
+                                                </a>
+                                            </div>
+                                            <select class="flex-shrink-0 text-sm w-20 mb-3">
+                                                <option value="">All</option>
+                                            </select>
+                                        </div>
+
+                                        <div class="flex justify-between space-x-3 border-b border-gray-200 mt-2">
+                                            <div class="min-w-0 flex-1">
+                                                <a href="#" class="block focus:outline-none">
+                                                    <span class="absolute inset-0" aria-hidden="true"></span>
+                                                    <p class="truncate text-sm font-semibold text-gray-300 mb-2">
+                                                        Transmission Condition
+                                                    </p>
+                                                </a>
+                                            </div>
+                                            <select class="flex-shrink-0 text-sm w-20 mb-3">
+                                                <option value="">All</option>
+                                            </select>
+                                        </div>
+
+                                        <div class="flex justify-between space-x-3 border-b border-gray-200 mt-2">
+                                            <div class="min-w-0 flex-1">
+                                                <a href="#" class="block focus:outline-none">
+                                                    <span class="absolute inset-0" aria-hidden="true"></span>
+                                                    <p class="truncate text-sm font-semibold text-gray-300 mb-2">Remark
+                                                    </p>
+                                                </a>
+                                            </div>
+                                            <select class="flex-shrink-0 text-sm w-20 mb-3">
+                                                <option value="">All</option>
+                                                <option value="1">OK</option>
+                                                <option value="1">NG</option>
+                                            </select>
+                                        </div>
+
+                                        <div class="flex justify-between space-x-3 border-b border-gray-200 mt-2">
+                                            <button class="w-full bg-white font-semibold text-sm h-8">RESET</button>
                                         </div>
                                     </li>
                                 </ul>
                             </nav>
                         </div>
 
-                    </div>
+                    </aside>
+                </div>
 
-
-                    <!-- Vessel Info Panel -->
-                    <div class="vessel-info text-gray-300">
-                        <div class="vessel-info-title">
-                            <h4>MMSI<span id="det-mmsi-title"></span></h4>
-                        </div>
-                        <div class="close-icon" id="closeVesselInfo">
-                            <i class="fas fa-times fa-2x"></i>
-                        </div>
-
-                        <br>
-
-                        <div id="aton-info" class="aton-detail-info">
-                            <div>
-                                <label for=" atontype">ATON</label>
-                                <span name="atontype" id="det-atontype">: 1</span>
-                            </div>
-                            <div>
-                                <label for="atonname">ATON Name</label>
-                                <span name="atonname" id="det-atonname">: Langkawi</span>
-                            </div>
-                            <div>
-                                <label for="mmsi">MMSI</label>
-                                <span name="mmsi" id="det-atonmmsi">: 533003500</span>
-                            </div>
-                            <div>
-                                <label for="region">Region</label>
-                                <span name="region" id="det-atonregion">: 533003500</span>
-                            </div>
-
-                            <div>
-                                <label for="aidType">ATON Type</label>
-                                <span name="aidType" id="det-aidType">: 1</span>
-                            </div>
-                            <div>
-                                <label for="aidTypeDesc">ATON Type Desc.</label>
-                                <span name="aidTypeDesc" id="det-aidTypeDesc">: Langkawi</span>
-                            </div>
-                            <div>
-                                <label for="aidName">Aid Name</label>
-                                <span name="aidName" id="det-aidName">: 533003500</span>
-                            </div>
-
-
-                            <div>
-                                <label for="positionAccuracyDesc">Position Accuracy Desc.</label>
-                                <span name="positionAccuracyDesc" id="det-positionAccuracyDesc">: 533003500</span>
-                            </div>
-                            <div>
-                                <label for="longitude">Longitude</label>
-                                <span name="longitude" id="det-longitude">: 533003500</span>
-                            </div>
-                            <div>
-                                <label for="latitude">Latitude</label>
-                                <span name="latitude" id="det-latitude">: 533003500</span>
-                            </div>
-
-                            <div>
-                                <label for="to-bow">To-Bow</label>
-                                <span name="to-bow" id="det-to-bow">: 533003500</span>
-                            </div>
-                            <div>
-                                <label for="to-stern">To-Stern</label>
-                                <span name="to-stern" id="det-to-stern">: 533003500</span>
-                            </div>
-                            <div>
-                                <label for="to-port">To-Port</label>
-                                <span name="to-port" id="det-to-port">: 533003500</span>
-                            </div>
-                            <div>
-                                <label for="to-starboard">To-Starboard</label>
-                                <span name="to-starboard" id="det-to-starboard">: 533003500</span>
-                            </div>
-                            <div>
-                                <label for="epfdDesc">EPFD Desc.</label>
-                                <span name="epfdDesc" id="det-epfdDesc">: 533003500</span>
-                            </div>
-                            <div>
-                                <label for="utc-second">UTC Second</label>
-                                <span name="utc-second" id="det-utc-second">: 533003500</span>
-                            </div>
-                            <div>
-                                <label for="utc-second">Off Pos.</label>
-                                <span name="utc-second" id="det-off-position">: 533003500</span>
-                            </div>
-                            <div>
-                                <label for="buoy_photocell">Regional</label>
-                                <span name="buoy_photocell" id="det-regional">: 533003500</span>
-                            </div>
-                            <div>
-                                <label for="regional">Raim Flag</label>
-                                <span name="regional" id="det-raimFlag">: 533003500</span>
-                            </div>
-                            <div>
-                                <label for="virtualAid">Virtual AID</label>
-                                <span name="virtualAid" id="det-virtualAid">: 533003500</span>
-                            </div>
-                            <div>
-                                <label for="assigned">Assigned</label>
-                                <span name="assigned" id="det-assigned">: 533003500</span>
-                            </div>
-                        </div>
-
-                        <div id="dac533-fid1" class="aton-detail-info">
-                            <div>
-                                <label for="aton">ATON</label>
-                                <span name="aton" id="det-shiptype-fid1">: 1</span>
-                            </div>
-                            <div>
-                                <label for="atonname">ATON Name</label>
-                                <span name="atonname" id="det-shipname-fid1">: Langkawi</span>
-                            </div>
-                            <div>
-                                <label for="mmsi">MMSI</label>
-                                <span name="mmsi" id="det-mmsi-fid1">: 533003500</span>
-                            </div>
-
-                            <div>
-                                <label for="voltage-int">ATON Volt.</label>
-                                <span name="voltage-int" id="det-voltage-int-fid1">: 533003500</span>
-                            </div>
-                            <div>
-                                <label for="voltage-ext1">Lantern Volt.</label>
-                                <span name="voltage-ext1" id="det-voltage-ext1-fid1">: 533003500</span>
-                            </div>
-                            <div>
-                                <label for="thermal-temp">Racon Volt.</label>
-                                <span name="thermal-temp" id="det-thermal-temp-fid1">: 533003500</span>
-                            </div>
-
-                            <div>
-                                <label for="racon">Racon</label>
-                                <span name="racon" id="det-racon-fid1">: 533003500</span>
-                            </div>
-                            <div>
-                                <label for="light">Light</label>
-                                <span name="light" id="det-light-fid1">: 533003500</span>
-                            </div>
-                            <div>
-                                <label for="health">Health</label>
-                                <span name="health" id="det-health-fid1">: 533003500</span>
-                            </div>
-                            <div>
-                                <label for="beat">Beat</label>
-                                <span name="beat" id="det-beat-fid1">: 533003500</span>
-                            </div>
-                            <div>
-                                <label for="alarm-active">Lantern Batt</label>
-                                <span name="alarm-active" id="det-alarm-active-fid1">: 533003500</span>
-                            </div>
-                            <div>
-                                <label for="buoy-led-power">Lantern</label>
-                                <span name="buoy-led-power" id="det-buoy-led-power-fid1">: 533003500</span>
-                            </div>
-                            <div>
-                                <label for="buoy-low-vin">Ambient</label>
-                                <span name="buoy-low-vin" id="det-buoy-low-vin-fid1">: 533003500</span>
-                            </div>
-                            <div>
-                                <label for="buoy_photocell">Door</label>
-                                <span name="buoy_photocell" id="det-buoy-photocell-fid1">: 533003500</span>
-                            </div>
-                            <div>
-                                <label for="buoy-temp">Off Position</label>
-                                <span name="buoy-temp" id="det-buoy-temp-fid1">: 533003500</span>
-                            </div>
-                        </div>
-
-                        <div id="dac533-fid2" class="aton-detail-info">
-                            <div>
-                                <label for="aton">ATON</label>
-                                <span name="aton" id="det-shiptype-fid2">: 1</span>
-                            </div>
-                            <div>
-                                <label for="atonname">ATON Name</label>
-                                <span name="atonname" id="det-shipname-fid2">: Langkawi</span>
-                            </div>
-                            <div>
-                                <label for="mmsi">MMSI</label>
-                                <span name="mmsi" id="det-mmsi-fid2">: 533003500</span>
-                            </div>
-
-                            <div>
-                                <label for="voltage-int">ATON Volt.</label>
-                                <span name="voltage-int" id="det-voltage-int-fid2">: 533003500</span>
-                            </div>
-                            <div>
-                                <label for="voltage-ext1">Lantern Volt.</label>
-                                <span name="voltage-ext1" id="det-voltage-ext1-fid2">: 533003500</span>
-                            </div>
-                            <div>
-                                <label for="thermal-temp">Racon Volt.</label>
-                                <span name="thermal-temp" id="det-thermal-temp-fid2">: 533003500</span>
-                            </div>
-                            <div>
-                                <label for="off-pos">Off Position</label>
-                                <span name="off-pos" id="det-off-pos-fid2">: 533003500</span>
-                            </div>
-                            <div>
-                                <label for="ldr">Ambient</label>
-                                <span name="ldr" id="det-ldr-fid2">: 533003500</span>
-                            </div>
-                            <div>
-                                <label for="racon">Racon</label>
-                                <span name="racon" id="det-racon-fid2">: 533003500</span>
-                            </div>
-                            <div>
-                                <label for="light">Light</label>
-                                <span name="light" id="det-light-fid2">: 533003500</span>
-                            </div>
-                            <div>
-                                <label for="health">Health</label>
-                                <span name="health" id="det-health-fid2">: 533003500</span>
-                            </div>
-                            <div>
-                                <label for="beat">Beat</label>
-                                <span name="beat" id="det-beat-fid2">: 533003500</span>
-                            </div>
-                            <div>
-                                <label for="alarm-active">Main Lantern Cond.</label>
-                                <span name="alarm-active" id="det-alarm-active-fid2">: 533003500</span>
-                            </div>
-                            <div>
-                                <label for="buoy-led-power">Main Lantern Status</label>
-                                <span name="buoy-led-power" id="det-buoy-led-power-fid2">: 533003500</span>
-                            </div>
-                            <div>
-                                <label for="buoy-low-vin">Stdby Lantern Cond.</label>
-                                <span name="buoy-low-vin" id="det-buoy-low-vin-fid2">: 533003500</span>
-                            </div>
-                            <div>
-                                <label for="buoy_photocell">Stdby Lantern Status</label>
-                                <span name="buoy_photocell" id="det-buoy-photocell-fid2">: 533003500</span>
-                            </div>
-                            <div>
-                                <label for="buoy-temp">Emerg. Lantern Cond.</label>
-                                <span name="buoy-temp" id="det-buoy-temp-fid2">: 533003500</span>
-                            </div>
-                            <div>
-                                <label for="buoy-force-off">Emerg. Lantern Status</label>
-                                <span name="buoy-force-off" id="det-buoy-force-off-fid2">: 533003500</span>
-                            </div>
-                            <div>
-                                <label for="buoy-islight">Optic Drv A Status</label>
-                                <span name="buoy-islight" id="det-buoy-islight-fid2">: 533003500</span>
-                            </div>
-                            <div>
-                                <label for="buoy-errled-short">Optic Drv A cond.</label>
-                                <span name="buoy-errled-short" id="det-buoy-errled-short-fid2">: 533003500</span>
-                            </div>
-                            <div>
-                                <label for="buoy-errled-open">Optic Drv B Status</label>
-                                <span name="buoy-errled-open" id="det-buoy-errled-open-fid2">: 533003500</span>
-                            </div>
-                            <div>
-                                <label for="buoy-errled-voltlow">Optic Drv B cond.</label>
-                                <span name="buoy-errled-voltlow" id="det-buoy-errled-voltlow-fid2">:
-                                    533003500</span>
-                            </div>
-                            <div>
-                                <label for="buoy-errled-vinlow">Hatch Door</label>
-                                <span name="buoy-errled-vinlow" id="det-buoy-errled-vinlow-fid2">: 533003500</span>
-                            </div>
-                            <div>
-                                <label for="buoy-errled-power">Main Power</label>
-                                <span name="buoy-errled-power" id="det-buoy-errled-power-fid2">: 533003500</span>
-                            </div>
-                            <div>
-                                <label for="buoy-adjmaxpower">Batt. Sys. (BMS)</label>
-                                <span name="buoy-adjmaxpower" id="det-buoy-adjmaxpower-fid2">: 533003500</span>
-                            </div>
-                        </div>
-
-                        <div id="dac533-fid4" class="aton-detail-info">
-                            <div>
-                                <label for="aton">ATON</label>
-                                <span name="aton" id="det-shiptype">: 1</span>
-                            </div>
-                            <div>
-                                <label for="atonname">ATON Name</label>
-                                <span name="atonname" id="det-shipname">: Langkawi</span>
-                            </div>
-                            <div>
-                                <label for="mmsi">MMSI</label>
-                                <span name="mmsi" id="det-mmsi">: 533003500</span>
-                            </div>
-
-                            <div>
-                                <label for="voltage-int">ATON Volt.</label>
-                                <span name="voltage-int" id="det-voltage-int">: 533003500</span>
-                            </div>
-                            <div>
-                                <label for="voltage-ext1">Lantern Volt.</label>
-                                <span name="voltage-ext1" id="det-voltage-ext1">: 533003500</span>
-                            </div>
-                            <div>
-                                <label for="thermal-temp">Thermal Temp.</label>
-                                <span name="thermal-temp" id="det-thermal-temp">: 533003500</span>
-                            </div>
-                            <div>
-                                <label for="off-pos">Off Position</label>
-                                <span name="off-pos" id="det-off-pos">: 533003500</span>
-                            </div>
-                            <div>
-                                <label for="ldr">Ambient</label>
-                                <span name="ldr" id="det-ldr">: 533003500</span>
-                            </div>
-                            <div>
-                                <label for="racon">Racon</label>
-                                <span name="racon" id="det-racon">: 533003500</span>
-                            </div>
-                            <div>
-                                <label for="light">Light</label>
-                                <span name="light" id="det-light">: 533003500</span>
-                            </div>
-                            <div>
-                                <label for="health">Health</label>
-                                <span name="health" id="det-health">: 533003500</span>
-                            </div>
-                            <div>
-                                <label for="beat">Beat</label>
-                                <span name="beat" id="det-beat">: 533003500</span>
-                            </div>
-                            <div>
-                                <label for="alarm-active">AlarmActive</label>
-                                <span name="alarm-active" id="det-alarm-active">: 533003500</span>
-                            </div>
-                            <div>
-                                <label for="buoy-led-power">FlshrOffByLedPowerThres</label>
-                                <span name="buoy-led-power" id="det-buoy-led-power">: 533003500</span>
-                            </div>
-                            <div>
-                                <label for="buoy-low-vin">FlshrOffByLowVin</label>
-                                <span name="buoy-low-vin" id="det-buoy-low-vin">: 533003500</span>
-                            </div>
-                            <div>
-                                <label for="buoy_photocell">FlshrOffByPhotocell</label>
-                                <span name="buoy_photocell" id="det-buoy-photocell">: 533003500</span>
-                            </div>
-                            <div>
-                                <label for="buoy-temp">FlshrOffByTemp.</label>
-                                <span name="buoy-temp" id="det-buoy-temp">: 533003500</span>
-                            </div>
-                            <div>
-                                <label for="buoy-force-off">FlshrOffByForceOff</label>
-                                <span name="buoy-force-off" id="det-buoy-force-off">: 533003500</span>
-                            </div>
-                            <div>
-                                <label for="buoy-islight">IsNight</label>
-                                <span name="buoy-islight" id="det-buoy-islight">: 533003500</span>
-                            </div>
-                            <div>
-                                <label for="buoy-errled-short">ErrLedShort</label>
-                                <span name="buoy-errled-short" id="det-buoy-errled-short">: 533003500</span>
-                            </div>
-                            <div>
-                                <label for="buoy-errled-open">ErrLedOpen</label>
-                                <span name="buoy-errled-open" id="det-buoy-errled-open">: 533003500</span>
-                            </div>
-                            <div>
-                                <label for="buoy-errled-voltlow">ErrLedVoltageLow</label>
-                                <span name="buoy-errled-voltlow" id="det-buoy-errled-voltlow">: 533003500</span>
-                            </div>
-                            <div>
-                                <label for="buoy-errled-vinlow">ErrVinLow</label>
-                                <span name="buoy-errled-vinlow" id="det-buoy-errled-vinlow">: 533003500</span>
-                            </div>
-                            <div>
-                                <label for="buoy-errled-power">ErrLedPowerThres</label>
-                                <span name="buoy-errled-power" id="det-buoy-errled-power">: 533003500</span>
-                            </div>
-                            <div>
-                                <label for="buoy-adjmaxpower">FlshrAdjToLedMaxAvgPwr</label>
-                                <span name="buoy-adjmaxpower" id="det-buoy-adjmaxpower">: 533003500</span>
-                            </div>
-                            <div>
-                                <label for="buoy-sensor-interrupt">GsensorInterruptOccurred</label>
-                                <span name="buoy-sensor-interrupt" id="det-buoy-sensor-interrupt">: 533003500</span>
-                            </div>
-                            <div>
-                                <label for="buoy-solarcharging">SolarChargingOn</label>
-                                <span name="buoy-solarcharging" id="det-buoy-solarcharging">: 533003500</span>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="relative flex w-80 h-full flex-col border-gray-200 bg-gray-700 hidden">
-                        <div class="">
-                            <div class="flex h-16 flex-col justify-center px-6">
-                                <div class="flex items-baseline space-x-3">
-                                    <h2 class="text-lg font-bold text-gray-300">Condition</h2>
-                                </div>
-                            </div>
-                        </div>
-                        <nav aria-label="Sub Menu" class="min-h-0 flex-1 overflow-y-auto">
-                            <ul role="" class="divide-y divide-gray-200">
-                                <li class="relative px-6 py-2 focus-within:ring-blue-600">
-                                    <div class="flex justify-between space-x-3 border-b border-gray-200">
-                                        <div class="flex-1">
-                                            <a href="#" class="block focus:outline-none">
-                                                <span class="absolute inset-0" aria-hidden="true"></span>
-                                                <p class="truncate text-sm font-semibold text-gray-300">Structure
-                                                </p>
-                                            </a>
-                                        </div>
-                                        <select class="text-sm w-20 mb-3">
-                                            <option value="">All</option>
-                                            <option value="">Lighthouse</option>
-                                            <option value="">Becon</option>
-                                            <option value="">Buoy</option>
-                                        </select>
-                                    </div>
-
-                                    <div class="flex justify-between space-x-3 border-b border-gray-200 mt-2">
-                                        <div class="min-w-0 flex-1">
-                                            <a href="#" class="block focus:outline-none">
-                                                <span class="absolute inset-0" aria-hidden="true"></span>
-                                                <p class="truncate text-sm font-semibold text-gray-300">Error
-                                                </p>
-                                            </a>
-                                        </div>
-                                        <select class="flex-shrink-0 text-sm w-20 mb-3">
-                                            <option value="">All</option>
-                                            <option value="">OK</option>
-                                            <option value="">NG</option>
-                                            <option value="">NA</option>
-                                        </select>
-                                    </div>
-
-                                    <div class="flex justify-between space-x-3 border-b border-gray-200 mt-2">
-                                        <div class="min-w-0 flex-1">
-                                            <a href="#" class="block focus:outline-none">
-                                                <span class="absolute inset-0" aria-hidden="true"></span>
-                                                <p class="truncate text-sm font-semibold text-gray-300">Lantern
-                                                    Model
-                                                </p>
-                                            </a>
-                                        </div>
-                                        <select class="flex-shrink-0 text-sm w-20 mb-3">
-                                            <option value="">All</option>
-                                        </select>
-                                    </div>
-
-                                    <div class="flex justify-between space-x-3 border-b border-gray-200 mt-2">
-                                        <div class="min-w-0 flex-1">
-                                            <a href="#" class="block focus:outline-none">
-                                                <span class="absolute inset-0" aria-hidden="true"></span>
-                                                <p class="truncate text-sm font-semibold text-gray-300">Temperature
-                                                </p>
-                                            </a>
-                                        </div>
-                                        <select class="text-sm w-20 mb-3">
-                                            <option value="All">All</option>
-                                            <option value=">60">>60</option>
-                                            <option value=">55">>55</option>
-                                            <option value=">50">>50</option>
-                                            <option value=">45">>45</option>
-                                            <option value="<45">
-                                                <45 </option>
-                                            <option value="NA">NA</option>
-                                        </select>
-                                    </div>
-
-                                    <div class="flex justify-between space-x-3 border-b border-gray-200 mt-2">
-                                        <div class="min-w-0 flex-1">
-                                            <a href="#" class="block focus:outline-none">
-                                                <span class="absolute inset-0" aria-hidden="true"></span>
-                                                <p class="truncate text-sm font-semibold text-gray-300">Battery
-                                                    Aton
-                                                </p>
-                                            </a>
-                                        </div>
-                                        <select class="flex-shrink-0 text-sm w-20 mb-3">
-                                            <option value="">All</option>
-                                        </select>
-
-                                    </div>
-
-                                    <div class="flex justify-between space-x-3 border-b border-gray-200 mt-2">
-                                        <div class="min-w-0 flex-1">
-                                            <a href="#" class="block focus:outline-none">
-                                                <span class="absolute inset-0" aria-hidden="true"></span>
-                                                <p class="truncate text-sm font-semibold text-gray-300">Battery
-                                                    Lantern
-                                                </p>
-                                            </a>
-                                        </div>
-                                        <select class="flex-shrink-0 text-sm w-20 mb-3">
-                                            <option value="">All</option>
-                                        </select>
-                                    </div>
-
-                                    <div class="flex justify-between space-x-3 border-b border-gray-200 mt-2">
-                                        <div class="min-w-0 flex-1">
-                                            <a href="#" class="block focus:outline-none">
-                                                <span class="absolute inset-0" aria-hidden="true"></span>
-                                                <p class="truncate text-sm font-semibold text-gray-300">Off Position
-                                                </p>
-                                            </a>
-                                        </div>
-                                        <select class="flex-shrink-0 text-sm w-20 mb-3">
-                                            <option value="">All</option>
-                                        </select>
-                                    </div>
-
-                                    <div class="flex justify-between space-x-3 border-b border-gray-200 mt-2">
-                                        <div class="min-w-0 flex-1">
-                                            <a href="#" class="block focus:outline-none">
-                                                <span class="absolute inset-0" aria-hidden="true"></span>
-                                                <p class="truncate text-sm font-semibold text-gray-300 mb-2">LDR
-                                                    Condition
-                                                </p>
-                                            </a>
-                                        </div>
-                                        <select class="flex-shrink-0 text-sm w-20 mb-3">
-                                            <option value="">All</option>
-                                        </select>
-                                    </div>
-
-                                    <div class="flex justify-between space-x-3 border-b border-gray-200 mt-2">
-                                        <div class="min-w-0 flex-1">
-                                            <a href="#" class="block focus:outline-none">
-                                                <span class="absolute inset-0" aria-hidden="true"></span>
-                                                <p class="truncate text-sm font-semibold text-gray-300 mb-2">
-                                                    Transmission Condition
-                                                </p>
-                                            </a>
-                                        </div>
-                                        <select class="flex-shrink-0 text-sm w-20 mb-3">
-                                            <option value="">All</option>
-                                        </select>
-                                    </div>
-
-                                    <div class="flex justify-between space-x-3 border-b border-gray-200 mt-2">
-                                        <div class="min-w-0 flex-1">
-                                            <a href="#" class="block focus:outline-none">
-                                                <span class="absolute inset-0" aria-hidden="true"></span>
-                                                <p class="truncate text-sm font-semibold text-gray-300 mb-2">Remark
-                                                </p>
-                                            </a>
-                                        </div>
-                                        <select class="flex-shrink-0 text-sm w-20 mb-3">
-                                            <option value="">All</option>
-                                            <option value="1">OK</option>
-                                            <option value="1">NG</option>
-                                        </select>
-                                    </div>
-
-                                    <div class="flex justify-between space-x-3 border-b border-gray-200 mt-2">
-                                        <button class="w-full bg-white font-semibold text-sm h-8">RESET</button>
-                                    </div>
-                                </li>
-                            </ul>
-                        </nav>
-                    </div>
-
-                </aside>
             </main>
         </div>
     </div>

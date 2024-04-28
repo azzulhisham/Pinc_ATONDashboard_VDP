@@ -253,6 +253,10 @@
     width: 6px;
   }
   
+  #sidebarToggle {
+    cursor: pointer;
+  }
+
   #top-left {
     top: 0;
     left: 0;
@@ -468,6 +472,6 @@ nav .nav-content {
 
   #data-table {
     width: 960px;
-    font-size: smaller;
-    margin-top: 8px;
+    font-size: smaller !important;
+    margin-top: 15px;
   }
