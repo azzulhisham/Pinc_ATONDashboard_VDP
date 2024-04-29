@@ -8,56 +8,25 @@ from datetime import datetime, timedelta
 
 
 class PyCH:
+    # get message count
     def get_init_msg_count():
-        now = datetime.now()
+        now = datetime.now() 
         today = datetime(now.year, now.month, now.day)
         utc_today = today - timedelta(hours=8)
-        utc_next_day = utc_today + timedelta(hours=24)
+        utc_now = now - timedelta(hours=8)
+        utc_yesterday = utc_today - timedelta(hours=24)  
+        utc_last24 = utc_now - timedelta(hours=24)        
 
 
         try:
             # total sites
             client = clickhouse_connect.get_client(host='10.10.20.50', port=8123)
-            result = client.query(
-            f'''
-                with rowcountdata as (
-                    select *, row_number() over (partition by mmsi order by ts desc) as rowcountby_mmsi
-                    from pnav.ais_type21
-                    where ts>='{utc_today.strftime("%Y-%m-%d %H:%M:%S")}' and ts<'{utc_next_day.strftime("%Y-%m-%d %H:%M:%S")}' 
-                )
-                select count()
-                from rowcountdata
-                where rowcountby_mmsi = 1
-            '''
-            )
 
-            aton_cnt = result.result_rows[0][0]       
-
-
-            # total message received from station
-
-            result = client.query(
-            f'''
-                with rowcountdata as (
-                    select *, row_number() over (partition by mmsi order by ts desc) as rowcountby_mmsi
-                    from pnav.ais_type6_533
-                    where ts>='{utc_today.strftime("%Y-%m-%d %H:%M:%S")}' and ts<'{utc_next_day.strftime("%Y-%m-%d %H:%M:%S")}' 
-                )
-                select count()
-                from rowcountdata
-                where rowcountby_mmsi = 1
-            '''
-            )
-
-            msg6_recv_cnt = result.result_rows[0][0]    
-
-
-            # message counting 
-
+            # message counting today
             result = client.query(
             f'''
                 select count(*) from pnav.ais_type21
-                where ts>='{utc_today.strftime("%Y-%m-%d %H:%M:%S")}' and ts<'{utc_next_day.strftime("%Y-%m-%d %H:%M:%S")}' 
+                where ts>='{utc_today.strftime("%Y-%m-%d %H:%M:%S")}' and ts<='{utc_now.strftime("%Y-%m-%d %H:%M:%S")}' 
             '''
             )
             
@@ -67,7 +36,7 @@ class PyCH:
             result = client.query(
             f'''
                 select count(*) from pnav.ais_type6_533
-                where ts>='{utc_today.strftime("%Y-%m-%d %H:%M:%S")}' and ts<'{utc_next_day.strftime("%Y-%m-%d %H:%M:%S")}' 
+                where ts>='{utc_today.strftime("%Y-%m-%d %H:%M:%S")}' and ts<='{utc_now.strftime("%Y-%m-%d %H:%M:%S")}'
             '''
             )
 
@@ -77,124 +46,69 @@ class PyCH:
             result = client.query(
             f'''
                 select count(*) from pnav.ais_meteorological
-                where ts>='{utc_today.strftime("%Y-%m-%d %H:%M:%S")}' and ts<'{utc_next_day.strftime("%Y-%m-%d %H:%M:%S")}' 
+                where ts>='{utc_today.strftime("%Y-%m-%d %H:%M:%S")}' and ts<='{utc_now.strftime("%Y-%m-%d %H:%M:%S")}'
             '''
             )
 
-            msg8_cnt = result.result_rows[0][0]     
+            msg8_cnt = result.result_rows[0][0]   
 
 
-            # Alarm Section   
-
+            # message counting yesterday
             result = client.query(
             f'''
-                with rowcountdata as (
-                    select *, row_number() over (partition by mmsi order by ts desc) as rowcountby_mmsi
-                    from pnav.ais_type6_533
-                    where ts>='{utc_today.strftime("%Y-%m-%d %H:%M:%S")}' and ts<'{utc_next_day.strftime("%Y-%m-%d %H:%M:%S")}' 
-                )
-                select count()
-                from rowcountdata
-                where rowcountby_mmsi = 1 and light=3
+                select count(*) from pnav.ais_type21
+                where ts>='{utc_yesterday.strftime("%Y-%m-%d %H:%M:%S")}' and ts<='{utc_last24.strftime("%Y-%m-%d %H:%M:%S")}' 
             '''
             )
-
-            light_cnt = result.result_rows[0][0] 
+            
+            msg21_cnt_yesterday = result.result_rows[0][0]
 
 
             result = client.query(
             f'''
-                with rowcountdata as (
-                    select *, row_number() over (partition by mmsi order by ts desc) as rowcountby_mmsi
-                    from pnav.ais_type6_533
-                    where ts>='{utc_today.strftime("%Y-%m-%d %H:%M:%S")}' and ts<'{utc_next_day.strftime("%Y-%m-%d %H:%M:%S")}' 
-                )
-                select count()
-                from rowcountdata
-                where rowcountby_mmsi = 1 and ambient=1
+                select count(*) from pnav.ais_type6_533
+                where ts>='{utc_yesterday.strftime("%Y-%m-%d %H:%M:%S")}' and ts<='{utc_last24.strftime("%Y-%m-%d %H:%M:%S")}' 
             '''
             )
 
-            ldr_cnt = result.result_rows[0][0] 
-
-            result = client.query(
-            f'''
-                with rowcountdata as (
-                    select *, row_number() over (partition by mmsi order by ts desc) as rowcountby_mmsi
-                    from pnav.ais_type6_533
-                    where ts>='{utc_today.strftime("%Y-%m-%d %H:%M:%S")}' and ts<'{utc_next_day.strftime("%Y-%m-%d %H:%M:%S")}' 
-                )
-                select count()
-                from rowcountdata
-                where rowcountby_mmsi = 1 and off_pos=1
-            '''
-            )
-
-            offpos_cnt = result.result_rows[0][0] 
+            msg6_cnt_yesterday = result.result_rows[0][0]
 
 
             result = client.query(
             f'''
-                with rowcountdata as (
-                    select *, row_number() over (partition by mmsi order by ts desc) as rowcountby_mmsi
-                    from pnav.ais_type6_533
-                    where ts>='{utc_today.strftime("%Y-%m-%d %H:%M:%S")}' and ts<'{utc_next_day.strftime("%Y-%m-%d %H:%M:%S")}' 
-                )
-                select count()
-                from rowcountdata
-                where rowcountby_mmsi = 1 and volt_int<12.5
+                select count(*) from pnav.ais_meteorological
+                where ts>='{utc_yesterday.strftime("%Y-%m-%d %H:%M:%S")}' and ts<='{utc_last24.strftime("%Y-%m-%d %H:%M:%S")}' 
             '''
             )
 
-            battAton_cnt = result.result_rows[0][0] 
-
-
-            result = client.query(
-            f'''
-                with rowcountdata as (
-                    select *, row_number() over (partition by mmsi order by ts desc) as rowcountby_mmsi
-                    from pnav.ais_type6_533
-                    where ts>='{utc_today.strftime("%Y-%m-%d %H:%M:%S")}' and ts<'{utc_next_day.strftime("%Y-%m-%d %H:%M:%S")}' 
-                )
-                select count()
-                from rowcountdata
-                where rowcountby_mmsi = 1 and volt_ex1<12.5
-            '''
-            )
-
-            battLant_cnt = result.result_rows[0][0] 
-
+            msg8_cnt_yesterday = result.result_rows[0][0]               
 
             result = {
-                'aton_cnt': aton_cnt,
+                'ts1': now.strftime("%Y-%m-%d %H:%M:%S")[:11],
+                'ts2': now.strftime("%Y-%m-%d %H:%M:%S")[11:],
                 'msg21_cnt': msg21_cnt,
                 'msg6_cnt': msg6_cnt,
                 'msg8_cnt': msg8_cnt,
-                'light_cnt': light_cnt,
-                'ldr_cnt': ldr_cnt,
-                'offpos_cnt': offpos_cnt,
-                'battAton_cnt': battAton_cnt,
-                'battLant_cnt': battLant_cnt,
-                'no_msg6_cnt': aton_cnt - msg6_recv_cnt
+                'msg21_cnt_yesterday': msg21_cnt_yesterday,
+                'msg6_cnt_yesterday': msg6_cnt_yesterday,
+                'msg8_cnt_yesterday': msg8_cnt_yesterday,
             }
 
         except:
              result = {
-                'aton_cnt': 0,
+                'ts': '',
                 'msg21_cnt': 0,
                 'msg6_cnt': 0,
                 'msg8_cnt': 0,
-                'light_cnt': 0,
-                'ldr_cnt': 0,
-                'offpos_cnt': 0,
-                'battAton_cnt': 0,
-                'battLant_cnt': 0,
-                'no_msg6_cnt': 0 
+                'msg21_cnt_yesterday': 0,
+                'msg6_cnt_yesterday': 0,
+                'msg8_cnt_yesterday': 0,
             }
 
         return result           
 
 
+    # get all aton from message 6 merge with message 21
     def get_all_aton():
         now = datetime.now()
         today = datetime(now.year, now.month, now.day)
@@ -308,6 +222,7 @@ class PyCH:
         return ret_result    
 
 
+    # get all aton from message 6
     def get_all_aton_msg():
         now = datetime.now()
         today = datetime(now.year, now.month, now.day)
@@ -374,6 +289,7 @@ class PyCH:
 
         return ret_result     
 
+    # get statisitcal data
     def get_aton_statistic():
         now = datetime.now() 
         #today = datetime(now.year, now.month, now.day)
@@ -461,7 +377,39 @@ class PyCH:
 
         return ret_result   
 
+    # get aton volt data for last 24 hours
+    def get_aton_voltdata(mmsi):
+        now = datetime.now() 
+        #today = datetime(now.year, now.month, now.day)
+        utc_today = now - timedelta(hours=8)
+        utc_last24 = utc_today - timedelta(hours=24)
 
+
+        client = clickhouse_connect.get_client(host='10.10.20.50', port=8123)
+        result = client.query(
+        f'''
+            select ts, volt_int, volt_ex1 
+            from pnav.ais_type6_533
+            where ts >= '{utc_last24.strftime("%Y-%m-%d %H:%M:%S")}' and mmsi = {mmsi} 
+            order by ts
+        '''
+        )
+
+        ret_result = []  
+
+        for i in result.result_rows:
+            data = {
+                'ts': i[0].strftime("%Y-%m-%d %H:%M:%S"),
+                'volt_int': round(i[1], 2),
+                'volt_ex1': round(i[2], 2)
+            }
+
+            ret_result.append(data)   
+
+        return ret_result   
+
+
+    # get water level
     def get_weather_waterLevel():
         client = clickhouse_connect.get_client(host='10.10.20.50', port=8123)
         result = client.query(

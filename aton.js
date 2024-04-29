@@ -7,9 +7,21 @@ lst_voltdata = [];
 
 // DOM Objects
 const closeVesselInfo = document.getElementById("closeVesselInfo")
-const vesselInfo = document.querySelector('.vessel-info')
+// const vesselInfo = document.querySelector('.vessel-info')
+const vesselInfo = document.getElementById('aton-info-panel')
+const msg_count_container = document.getElementById('msg-count-container')
+const chartdev1 = document.getElementById("summary-chart1")
+const chartdev2 = document.getElementById("summary-chart2")
+const chartdev3 = document.getElementById("summary-chart3")
+const cnt_msg_6 = document.getElementById('cnt-msg-6')
+const cnt_msg_8 = document.getElementById('cnt-msg-8')
+const cnt_msg_21 = document.getElementById('cnt-msg-21')
+const cnt_msg_6_yest = document.getElementById('cnt-msg-6-yest')
+const cnt_msg_8_yest = document.getElementById('cnt-msg-8-yest')
+const cnt_msg_21_yest = document.getElementById('cnt-msg-21-yest')
 
 const inp_search = document.getElementById("inp-search")
+const btn_search_clear = document.getElementById("btn-search-clr")
 const search_mmsi = document.getElementById("search_mmsi")
 const meas_dist_func = document.getElementById("distance")
 const meas_dist = document.getElementById('meas_dist')
@@ -57,8 +69,7 @@ const closeReportButton = document.getElementById('closeReport');
 // Javascript show hide sidebar menu
 const sidebarMenu = document.getElementById('sidebarMenu');
 const sidebarToggle = document.getElementById('sidebarToggle');
-sidebarToggle.addEventListener("click", () => { 
-    // sidebarMenu.classList.add("hidden");
+sidebarToggle.addEventListener("click", () => {     
     if (sidebarMenu.style.display !== "none") {
         sidebarMenu.style.display = "none";
     } else { 
@@ -363,7 +374,27 @@ infoOptions.addEventListener('mouseleave', () => {
 
 // Dialog Cart Handling
 showChart.addEventListener('click', () => {
-    dialogShowChart.classList.remove('hidden');
+    // dialogShowChart.classList.remove('hidden');
+    if (msg_count_container.classList.contains('openwide')) {
+        msg_count_container.classList.remove('openwide')
+
+        map.flyTo({
+            center: [102.211728, 3.515546],
+            zoom: 6.5,
+            duration: 3000,
+            essential: true // this animation is considered essential with respect to prefers-reduced-motion
+        });
+    }
+    else {
+        msg_count_container.classList.add('openwide')
+
+        map.flyTo({
+            center: [101.7, 3.515546],
+            zoom: 6.5,
+            duration: 3000,
+            essential: true // this animation is considered essential with respect to prefers-reduced-motion
+        });
+    }
 });
 
 closeChartButton.addEventListener('click', () => {
@@ -385,6 +416,10 @@ closeReportButton.addEventListener('click', () => {
     dialogShowReport.classList.add('hidden');
 });
 
+btn_search_clear.addEventListener('click', () => {
+    inp_search.value = ''
+})
+
 
 ///////////////////
 //     mapbox
@@ -392,7 +427,7 @@ closeReportButton.addEventListener('click', () => {
 // Create a popup, but don't add it to the map yet.
 const popup = new mapboxgl.Popup({
     closeButton: false,
-    closeOnClick: false
+    closeOnClick: false,   
 });
 
 
@@ -863,11 +898,11 @@ function showVesselPopup(e) {
     const coordinates = get_mmsi.getLngLat()
 
     if (!toggleBtn.classList.contains('open')) {
-        const description = '<div class="bg-gray-700 text-gray-300"><h4 class="font-bold">' + elemid_text[1] + '</h4>' +
+        const description = '<div class="text-gray-900"><h4 class="font-bold">' + elemid_text[1] + '</h4>' +
                             '<small> Name &nbsp;: ' + get_atoninfo['atonname'] + '</small><br>' +
                             '<small> Region &nbsp;: ' + get_atoninfo['region']  + '</small><br>' +
-                            '<small> Latitude &nbsp;: ' + coordinates.lat + '</small><br>' +
-                            '<small> Longitude &nbsp;: ' + coordinates.lng + '</small></div>'
+                            '<small> Latitude &nbsp;: ' + coordinates.lat.toFixed(6) + '</small><br>' +
+                            '<small> Longitude &nbsp;: ' + coordinates.lng.toFixed(6) + '</small></div>'
        
         popup.setLngLat(coordinates).setHTML(description).addTo(map);
     }
@@ -1151,7 +1186,11 @@ function init_WebSocket2(){
         startHeartbeat2();
         
         ws2.send('getallaton:0')
-        //ws2.send('getallatonmsg:0')
+        ws2.send('getatonmsgcount:')
+        
+        setInterval(() => {
+            ws2.send('getatonmsgcount:')
+        }, 30000)
     });
 
     // Add an event listener for when a message is received from the server
@@ -1305,7 +1344,11 @@ function init_WebSocket2(){
             data_table.innerHTML = ''
             build_chart()
             dialogShowReport.classList.remove('hidden');
-        }          
+        }  
+        
+        if (obj['payload'] === 'getatonmsgcount') {
+            updateChart(obj.items)
+        } 
 
         if (obj['payload'] === 'getallatonmsg') {
             if (obj['messageType'] == 6) {
@@ -1457,7 +1500,7 @@ function build_tabulator_table() {
             {title:"No", field:"no"},
             {title:"Site Name", field:"atonname", headerFilter:"input", width:100},
             {title:"MMSI", field:"mmsi", headerFilter:"input", width:100},
-            {title:"Structure", field:"type"},
+            {title:"Structure", field:"type", headerFilter:"input", width:100},
             {title:"Region", field:"region", headerFilter:"input", width:120},
             {title:"Min.<br>Temp.", field:"minTemp"},
             {title:"Max.<br>Temp.", field:"maxTemp"},
@@ -1575,3 +1618,283 @@ function build_chart(){
         }
     });
 }
+
+
+// message counting 
+// Add data to the chart
+function addData(chart, label, newData) {
+    chart.data.labels.push(label);
+    dscnt = 0;
+    chart.data.datasets.forEach((dataset) => {
+        dataset.data.push(newData[dscnt]);
+        dscnt += 1;
+    });
+    chart.update();
+}
+
+// Remove data from the chart
+function removeData(chart) {
+    chart.data.labels.shift();
+    chart.data.datasets.forEach((dataset) => {
+        dataset.data.shift();
+    });
+    chart.update();
+}
+
+const chart = new Chart(chartdev1, {
+    type: 'line',
+    data: {
+        labels: ['1', '2', '3', '4', '5', '6', '7', '8', '9', '10'],
+        datasets: [
+            {
+                label: 'Message 6',
+                data: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+                borderColor: '#ff796f',
+                borderWidth: 1
+            },
+            {
+                label: 'Message 8',
+                data: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+                borderColor: 'rgb(129, 255, 129)',
+                borderWidth: 1
+            },
+            {
+                label: 'Message 21',
+                data: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+                borderColor: '#5d70ff',
+                borderWidth: 1
+            }                         
+        ]
+    },
+    options: {
+        responsive: true,
+        scales: {
+            x: {
+                ticks: {
+                    //autoSkip: false,
+                    maxRotation: 90,
+                    minRotation: 90,
+                    color: "#fff",
+                    font: {
+                        size: 9, // Adjust the font size for x-axis ticks,
+                    }                     
+                }
+            },
+            y: {
+                display: true,
+                ticks: {
+                    // beginAtZero: true,
+                    //steps: 5,
+                    //stepValue: 5,
+                    suggestedMin: 30.0,
+                    suggestedMax: 130.0,
+                    color: "#fff",
+                    font: {
+                        size: 9, // Adjust the font size for x-axis ticks,
+                        color: "#fff"
+                    } 
+                }
+            }                        
+        },
+        plugins: {
+            title: {
+                display: false,
+                text: 'Last 100 minutes'
+            },
+            legend: {
+                display: true,
+                labels: {
+                    color: '#fff', 
+                    font: {
+                        size: 9 
+                    }
+                }
+            }            
+        }        
+    }    
+})
+
+const chart1 = new Chart(chartdev2, {
+    type: 'line',
+    data: {
+        labels: ['1', '2', '3', '4', '5', '6', '7', '8', '9', '10'],
+        datasets: [
+            {
+                label: 'Message 6',
+                data: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+                borderColor: '#ff796f',
+                borderWidth: 1
+            },
+            {
+                label: 'Message 8',
+                data: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+                borderColor: 'rgb(129, 255, 129)',
+                borderWidth: 1
+            },
+            {
+                label: 'Message 21',
+                data: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+                borderColor: '#5d70ff',
+                borderWidth: 1
+            }                         
+        ]
+    },
+    options: {
+        responsive: true,
+        scales: {
+            x: {
+                ticks: {
+                    //autoSkip: false,
+                    maxRotation: 90,
+                    minRotation: 90,
+                    color: "#fff",
+                    font: {
+                        size: 9, // Adjust the font size for x-axis ticks,
+                    }                     
+                }
+            },
+            y: {
+                display: true,
+                ticks: {
+                    // beginAtZero: true,
+                    //steps: 5,
+                    //stepValue: 5,
+                    suggestedMin: 30.0,
+                    suggestedMax: 130.0,
+                    color: "#fff",
+                    font: {
+                        size: 9, // Adjust the font size for x-axis ticks,
+                        color: "#fff"
+                    } 
+                }
+            }                        
+        },
+        plugins: {
+            title: {
+                display: false,
+                text: 'Last 100 minutes'
+            },
+            legend: {
+                display: true,
+                labels: {
+                    color: '#fff',
+                    font: {
+                        size: 9 
+                    }
+                }
+            }            
+        }        
+    }    
+})
+
+const chart2 = new Chart(chartdev3, {
+    type: 'line',
+    data: {
+        labels: ['1', '2', '3', '4', '5', '6', '7', '8', '9', '10'],
+        datasets: [
+            {
+                label: 'Message 6',
+                data: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+                borderColor: '#ff796f',
+                borderWidth: 1
+            },
+            {
+                label: 'Message 8',
+                data: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+                borderColor: 'rgb(129, 255, 129)',
+                borderWidth: 1
+            },
+            {
+                label: 'Message 21',
+                data: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+                borderColor: '#5d70ff',
+                borderWidth: 1
+            }                         
+        ]
+    },
+    options: {
+        responsive: true,
+        scales: {
+            x: {
+                ticks: {
+                    //autoSkip: false,
+                    maxRotation: 90,
+                    minRotation: 90,
+                    color: "#fff",
+                    font: {
+                        size: 9, // Adjust the font size for x-axis ticks,
+                    }                     
+                }
+            },
+            y: {
+                display: true,
+                ticks: {
+                    // beginAtZero: true,
+                    //steps: 5,
+                    //stepValue: 5,
+                    suggestedMin: 30.0,
+                    suggestedMax: 130.0,
+                    color: "#fff",
+                    font: {
+                        size: 9, // Adjust the font size for x-axis ticks,
+                        color: "#fff"
+                    } 
+                }
+            }                        
+        },
+        plugins: {
+            title: {
+                display: false,
+                text: 'Last 100 minutes'
+            },
+            legend: {
+                display: true,
+                labels: {
+                    color: '#fff',
+                    font: {
+                        size: 9 
+                    }
+                }
+            }            
+        }        
+    }    
+})
+
+const updateChart = (data) => {
+    const date = new Date();
+    const isoString = date.toISOString();
+
+    date.setHours(date.getHours() + 0);
+    datestr = date.toLocaleTimeString('en-MY', { hour12: false });
+
+    n = data.msg6_cnt
+    s = data.msg8_cnt
+    t = data.msg21_cnt
+
+    cnt_msg_6.innerText = ": " + data.msg6_cnt
+    cnt_msg_8.innerText = ": " + data.msg8_cnt
+    cnt_msg_21.innerText = ": " + data.msg21_cnt
+
+    addData(chart, data.ts2, [n, s, t])
+    removeData(chart)
+
+    n = data.msg6_cnt_yesterday
+    s = data.msg8_cnt_yesterday
+    t = data.msg21_cnt_yesterday
+
+    cnt_msg_6_yest.innerText = ": " + data.msg6_cnt_yesterday
+    cnt_msg_8_yest.innerText = ": " + data.msg8_cnt_yesterday
+    cnt_msg_21_yest.innerText = ": " + data.msg21_cnt_yesterday
+
+    addData(chart1, data.ts2, [n, s, t])
+    removeData(chart1)  
+    
+    n = data.msg6_cnt - data.msg6_cnt_yesterday
+    s = data.msg8_cnt - data.msg8_cnt_yesterday
+    t = data.msg21_cnt - data.msg21_cnt_yesterday
+
+    addData(chart2, data.ts2, [n, s, t])
+    removeData(chart2)      
+};
+
+

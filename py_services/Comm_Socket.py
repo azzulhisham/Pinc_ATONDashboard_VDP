@@ -204,7 +204,17 @@ async def handler(websocket, path):
                         }
 
                         data.update(i)
-                        await websocket.send(json.dumps(data))       
+                        await websocket.send(json.dumps(data))    
+
+
+            if msg[0] == 'getatonmsgcount':
+                message_cnt_result = PyCH.get_init_msg_count()
+                data = {
+                    'payload': 'getatonmsgcount',
+                    'items': message_cnt_result
+                } 
+                 
+                await websocket.send(json.dumps(data))  
 
 
             if msg[0] == 'getweatherwaterlevel':
