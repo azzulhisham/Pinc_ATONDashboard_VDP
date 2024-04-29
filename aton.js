@@ -68,8 +68,7 @@ const closeReportButton = document.getElementById('closeReport');
 // Javascript show hide sidebar menu
 const sidebarMenu = document.getElementById('sidebarMenu');
 const sidebarToggle = document.getElementById('sidebarToggle');
-sidebarToggle.addEventListener("click", () => { 
-    // sidebarMenu.classList.add("hidden");
+sidebarToggle.addEventListener("click", () => {     
     if (sidebarMenu.style.display !== "none") {
         sidebarMenu.style.display = "none";
     } else { 

@@ -129,7 +129,7 @@
   /* color: rgb(198, 172, 254); */
   width: 330px;
   height: 100vh;
-  background-color: #343533;
+  /* background-color: #343533; */
   color: rgba(209, 213, 219, 1);
   padding: 20px;
   opacity: 0;
@@ -154,7 +154,7 @@
 }
 
 .msg-count-detail-info {
-  background-color: #404140;
+  /* background-color: #404140; */
   border-radius: 10px;
   margin-top: 10px;
   margin-right: 10px;
