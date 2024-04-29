@@ -1075,7 +1075,7 @@
 
 
                     <!-- Vessel Info Panel -->
-                    <div class="vessel-info text-gray-300">
+                    <div id="aton-info-panel" class="vessel-info text-gray-300">
                         <div class="vessel-info-title">
                             <h4>MMSI<span id="det-mmsi-title"></span></h4>
                         </div>
@@ -1629,11 +1629,67 @@
                         </nav>
                     </div>
 
+
+                    <!-- Message Count -->
+                    <div id="msg-count-container" class="aton-msg-cnt-container">
+                        <div class="vessel-info-title">
+                            <h4 class="text-lg font-bold">Message 6, 8, 21 counting...</h4>
+
+                            <div class="title">
+                                <h4 text-gray-300>Last 5 minutes</h4>
+                            </div>                
+            
+                            <canvas id="summary-chart1" class="msg-count-container-chart"></canvas>
+                            
+                            <div class="msg-count-detail-info">
+                                <div>
+                                    <label for="message6">Message 6</label>
+                                    <span name="message6" id="cnt-msg-6">: 1</span>
+                                </div>
+                                <div>
+                                    <label for="message8">Message 8</label>
+                                    <span name="message8" id="cnt-msg-8">: 1</span>
+                                </div>
+                                <div>
+                                    <label for="message21">Message 21</label>
+                                    <span name="message21" id="cnt-msg-21">: 1</span>
+                                </div>
+                            </div>
+
+                            <div class="title">
+                                <h4 text-gray-300>Yesterday, at these time</h4>
+                            </div>                
+            
+                            <canvas id="summary-chart2" class="msg-count-container-chart"></canvas>
+                            
+                            <div class="msg-count-detail-info">
+                                <div>
+                                    <label for="message6">Message 6</label>
+                                    <span name="message6" id="cnt-msg-6-yest">: 1</span>
+                                </div>
+                                <div>
+                                    <label for="message8">Message 8</label>
+                                    <span name="message8" id="cnt-msg-8-yest">: 1</span>
+                                </div>
+                                <div>
+                                    <label for="message21">Message 21</label>
+                                    <span name="message21" id="cnt-msg-21-yest">: 1</span>
+                                </div>
+                            </div>
+                            
+                            <div class="title">
+                                <h4 text-gray-300>Diferrent Today and Yesterday</h4>
+                            </div>                
+            
+                            <canvas id="summary-chart3" class="msg-count-container-chart"></canvas>                           
+                        </div>
+                    </div>
                 </aside>
             </main>
         </div>
     </div>
 
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <script src="aton.js"></script>
 </body>
 

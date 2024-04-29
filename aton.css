@@ -121,6 +121,55 @@
     color: #EF4444 !important;
 }
 
+/* aton message counting container */
+.aton-msg-cnt-container {
+  position: absolute;
+  left: -300px;
+  top: 65px;
+  /* color: rgb(198, 172, 254); */
+  width: 330px;
+  height: 100vh;
+  background-color: #343533;
+  color: rgba(209, 213, 219, 1);
+  padding: 20px;
+  opacity: 0;
+  z-index: 1;
+  transition: 0.6s all;
+}
+
+.aton-msg-cnt-container.openwide {
+  opacity: 0.8;
+  transform: translateX(700px);
+}
+
+.aton-msg-cnt-container .title {
+  display: flex;
+  justify-content: center;
+  margin-bottom: 2px;
+  margin-top: 13px;
+}
+
+.msg-count-container .msg-count-container-chart {
+  color: white;
+}
+
+.msg-count-detail-info {
+  background-color: #404140;
+  border-radius: 10px;
+  margin-top: 10px;
+  margin-right: 10px;
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 10px;
+  font-size: small;
+}
+
+.msg-count-detail-info label {
+  display: inline-block;
+  width: 100px;
+}
+
+
 /* vessel info panel */
 .vessel-info {
     position: absolute;
@@ -387,7 +436,7 @@ nav .nav-content {
     box-shadow: 0px 0px 30px rgba(255,255,255,1.0);
   }
 
-  /********************
+/********************
       Search Bar   
 /*******************/
 .container {
