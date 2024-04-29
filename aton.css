@@ -178,7 +178,7 @@
     /* color: rgb(198, 172, 254); */
     width: 330px;
     height: 100vh;
-    background-color: #343533;
+    /* background-color: #343533; */
     /* border-radius: 10px; */
     padding: 20px;
     opacity: 0;
@@ -257,7 +257,8 @@
 /* Info Panel for ATON */
 /***********************/
 .aton-detail-info {
-    background-color: #404140;
+    /* background-color: #404140; */
+    background-color: #4B5563;
     border-radius: 10px;
     padding-top: 10px;
     padding-bottom: 10px;
