@@ -1492,7 +1492,7 @@ function clearHeartbeat2() {
 function build_tabulator_table() {
     //Build Tabulator
     var table = new Tabulator("#data-table", {
-        height: "300px",
+        height: "400px",
         resizableColumnFit:true,
         renderHorizontal:"virtual",
         data:lst_statistic,
