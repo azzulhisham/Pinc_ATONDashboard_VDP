@@ -21,6 +21,7 @@ const cnt_msg_8_yest = document.getElementById('cnt-msg-8-yest')
 const cnt_msg_21_yest = document.getElementById('cnt-msg-21-yest')
 
 const inp_search = document.getElementById("inp-search")
+const btn_search_clear = document.getElementById("btn-search-clr")
 const search_mmsi = document.getElementById("search_mmsi")
 const meas_dist_func = document.getElementById("distance")
 const meas_dist = document.getElementById('meas_dist')
@@ -415,6 +416,10 @@ closeReportButton.addEventListener('click', () => {
     dialogShowReport.classList.add('hidden');
 });
 
+btn_search_clear.addEventListener('click', () => {
+    inp_search.value = ''
+})
+
 
 ///////////////////
 //     mapbox
@@ -422,7 +427,7 @@ closeReportButton.addEventListener('click', () => {
 // Create a popup, but don't add it to the map yet.
 const popup = new mapboxgl.Popup({
     closeButton: false,
-    closeOnClick: false
+    closeOnClick: false,   
 });
 
 
@@ -893,11 +898,11 @@ function showVesselPopup(e) {
     const coordinates = get_mmsi.getLngLat()
 
     if (!toggleBtn.classList.contains('open')) {
-        const description = '<div class="bg-gray-700 text-gray-300"><h4 class="font-bold">' + elemid_text[1] + '</h4>' +
+        const description = '<div class="text-gray-900"><h4 class="font-bold">' + elemid_text[1] + '</h4>' +
                             '<small> Name &nbsp;: ' + get_atoninfo['atonname'] + '</small><br>' +
                             '<small> Region &nbsp;: ' + get_atoninfo['region']  + '</small><br>' +
-                            '<small> Latitude &nbsp;: ' + coordinates.lat + '</small><br>' +
-                            '<small> Longitude &nbsp;: ' + coordinates.lng + '</small></div>'
+                            '<small> Latitude &nbsp;: ' + coordinates.lat.toFixed(6) + '</small><br>' +
+                            '<small> Longitude &nbsp;: ' + coordinates.lng.toFixed(6) + '</small></div>'
        
         popup.setLngLat(coordinates).setHTML(description).addTo(map);
     }
@@ -1495,7 +1500,7 @@ function build_tabulator_table() {
             {title:"No", field:"no"},
             {title:"Site Name", field:"atonname", headerFilter:"input", width:100},
             {title:"MMSI", field:"mmsi", headerFilter:"input", width:100},
-            {title:"Structure", field:"type"},
+            {title:"Structure", field:"type", headerFilter:"input", width:100},
             {title:"Region", field:"region", headerFilter:"input", width:120},
             {title:"Min.<br>Temp.", field:"minTemp"},
             {title:"Max.<br>Temp.", field:"maxTemp"},
