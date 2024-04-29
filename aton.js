@@ -405,6 +405,11 @@ closeChartButton.addEventListener('click', () => {
 // Dialog Report Handling
 showReport.addEventListener('click', () => {
     data_table.innerHTML = ''
+
+    if (data_table.classList.contains("highcharts-dark")) {
+        data_table.classList.remove("highcharts-dark")
+    }
+
     build_tabulator_table()
     dialogShowReport.classList.remove('hidden');
     download_csv.classList.remove('hidden')
@@ -1342,6 +1347,7 @@ function init_WebSocket2(){
 
         if (obj['payload'] === 'getallatonvoltdata_done') {
             data_table.innerHTML = ''
+            data_table.classList.add("highcharts-dark")
             build_chart()
             dialogShowReport.classList.remove('hidden');
         }  
@@ -1569,6 +1575,9 @@ function build_chart(){
     })
 
     Highcharts.chart('data-table', {
+        chart: {
+            styledMode: true
+        },
 
         title: {
             text: 'ATON Battery Voltage and Lantern Voltage for last 24 hours of ' + lst_voltdata[0].mmsi,
