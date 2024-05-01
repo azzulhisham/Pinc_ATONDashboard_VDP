@@ -1171,7 +1171,9 @@ function vessel_info_panel(mmsi){
 // JavaScript example using WebSocket object
 // Create a WebSocket object for historical data
 /////////////////////////////////////////////////////////
-const ws2_URL = "ws://localhost:38381";
+//const ws2_URL = "ws://localhost:38381";
+const ws2_URL = "ws://10.10.20.200:38389";
+
 // Define a heartbeat interval in milliseconds
 const HEARTBEAT_INTERVAL2 = 30000;
 
@@ -1511,21 +1513,72 @@ function build_tabulator_table() {
             {title:"Min.<br>Temp.", field:"minTemp"},
             {title:"Max.<br>Temp.", field:"maxTemp"},
 
-            {title:"Min. Batt<br>ATON", field:"minBattAton"},
-            {title:"Min. Batt<br>ATON", field:"maxBattAton"},
+            {title:"Min. Batt<br>ATON", field:"minBattAton", formatter:function(cell, formatterParams){
+                var value = cell.getValue();
+                if(value < 12.0){
+                    cell.getElement().style.backgroundColor = "rgba(29, 78, 216, 1)";
+                    return value;
+                }else{
+                    return value;
+                } 
+            }},
+            {title:"Max. Batt<br>ATON", field:"maxBattAton", formatter:function(cell, formatterParams){
+                var value = cell.getValue();
+                if(value > 15.0){
+                    cell.getElement().style.backgroundColor = "rgba(29, 78, 216, 1)";
+                    return value;
+                }else{
+                    return value;
+                } 
+            }},
             {title:"Avg. Batt<br>ATON", field:"meanBattAton"},
             {title:"Stddev<br>Batt ATON", field:"stddevBattAton"},
             {title:"Skew Batt<br>ATON.", field:"skewBattAton"},
             {title:"Kurt Batt<br>ATON", field:"kurtBattAton"},
 
-            {title:"Min. Batt<br>Lantern", field:"minBattLant"},
-            {title:"Min. Batt<br>Lantern", field:"maxBattLant"},
+            {title:"Min. Batt<br>Lantern", field:"minBattLant", formatter:function(cell, formatterParams){
+                var value = cell.getValue();
+                if(value < 12.0){
+                    cell.getElement().style.backgroundColor = "rgba(29, 78, 216, 1)";
+                    return value;
+                }else{
+                    return value;
+                } 
+            }},
+            {title:"Max. Batt<br>Lantern", field:"maxBattLant", formatter:function(cell, formatterParams){
+                var value = cell.getValue();
+                if(value > 15){
+                    cell.getElement().style.backgroundColor = "rgba(29, 78, 216, 1)";
+                    return value;
+                }else{
+                    return value;
+                } 
+            }},
             {title:"Avg. Batt<br>Lantern", field:"meanBattLant"},
             {title:"Stddev<br>Batt Lantern", field:"stddevBattLant"},
             {title:"Skew Batt<br>Lantern.", field:"skewBattLant"},
             {title:"Kurt Batt<br>Lantern", field:"kurtBattLant"},
 
-            {title:"Message 6<br>Counting", field:"msg6Count"},
+            {title:"off<br>Position", field:"off_pos", headerFilter:"input", formatter:function(cell, formatterParams){
+                var value = cell.getValue();
+                if(value == 'NG'){
+                    cell.getElement().style.backgroundColor = "rgba(29, 78, 216, 1)";
+                    return 'NG';
+                }else{
+                    return 'OK';
+                } 
+            }},
+            {title:"Message 6<br>Counting", field:"msg6Count", formatter:function(cell, formatterParams){
+                var value = cell.getValue();
+                if(value < 100){
+                    cell.getElement().style.backgroundColor = "rgba(29, 78, 216, 1)";
+                    return value;
+                }else{
+                    return value;
+                } 
+            }},
+            {title:"Last Seen<br>(Second)", field:"at_ts"},
+            {title:"Last<br>Maintain", field:"last_maintain"}
         ],
     });
 

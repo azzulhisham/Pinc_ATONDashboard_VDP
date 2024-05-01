@@ -4,6 +4,7 @@ import pandas as pd
 import sqlalchemy as sa
 import clickhouse_connect
 import math
+import requests
 from datetime import datetime, timedelta
 
 
@@ -296,6 +297,18 @@ class PyCH:
         utc_today = now - timedelta(hours=8)
         utc_last24 = utc_today - timedelta(hours=24)
 
+        url = 'https://script.google.com/macros/s/AKfycby_0eK24X153QquX7gb-KIvczqFlEcscRd8U70PyY-wPN5sUvHJYycLczwtfKppoMj2/exec?op=lastmtndate'
+
+        headers = {
+                    'Content-type': 'application/json', 
+                }
+
+
+        resp = requests.get(url, headers=headers)
+        result = json.loads(resp.text)
+
+        lst_mmsi = result['mmsi']
+        lst_rslt = result['result']
 
         client = clickhouse_connect.get_client(host='10.10.20.50', port=8123)
         result = client.query(
@@ -324,6 +337,7 @@ class PyCH:
                 skewPop(volt_ex1) over (PARTITION BY mmsi) as skewBattLant,
                 kurtPop(volt_ex1) over (PARTITION BY mmsi) as kurtBattLant,
                 
+                sum(off_pos) over (PARTITION BY mmsi) as off_pos,
                 count() over (PARTITION BY mmsi) as msg6,
                 row_number() over (PARTITION BY mmsi  order by ts desc) as rownum
                 
@@ -346,6 +360,22 @@ class PyCH:
         ret_result = []  
 
         for i in result.result_rows:
+            if len(lst_mmsi) > 0 and len(lst_rslt) > 0:
+                try:
+                    search_idx = lst_mmsi.index(str(i[1]))
+
+                    if search_idx >= 0 :
+                        search = lst_rslt[search_idx]
+                        items = search.split(' ')
+                        mtn_date = datetime.strptime(items[1], "%d/%m/%Y").date().strftime("%Y-%m-%d")
+                    else:
+                        mtn_date = ''
+                except:
+                    mtn_date = ''
+            else:
+                mtn_date = ''
+
+
             data = {
                 'ts': i[0].strftime("%Y-%m-%d %H:%M:%S"),
                 'mmsi':	i[1],
@@ -365,12 +395,14 @@ class PyCH:
                 'stddevBattLant': round(i[15], 2),
                 'skewBattLant':	round(i[16], 2) if not math.isnan(i[16]) else -999, 
                 'kurtBattLant':	round(i[17], 2) if not math.isnan(i[16]) else -999,
-                'msg6Count': i[18],
-                'rownum': i[19],
-                'at.ts': i[20].strftime("%Y-%m-%d %H:%M:%S"),
-                'at.mmsi': i[21],
-                'at.rownum': i[22],
-                'lastseen':	i[23]
+                'off_pos': 'NG' if i[18] > 0 else 'OK',
+                'msg6Count': i[19],
+                'rownum': i[20],
+                'at_ts': (i[21] + timedelta(hours=8)).strftime("%Y-%m-%d %H:%M:%S"),
+                'at_mmsi': i[22],
+                'at_rownum': i[23],
+                'lastseen':	i[24],
+                'last_maintain': mtn_date
             }
 
             ret_result.append(data)   

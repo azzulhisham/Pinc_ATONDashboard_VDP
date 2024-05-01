@@ -16,7 +16,11 @@ from datetime import datetime, timedelta
 
 def loaddata():
     global df
-    df = pd.read_csv('/Users/zultan/sources/python/Pinc_ATONDashboard_VDP/docs/atonlist.csv') 
+
+    # f_loc = '/Users/zultan/sources/python/Pinc_ATONDashboard_VDP/docs/atonlist.csv'
+    f_loc = '/home/srvadmin/vdp/Pinc_ATONDashboard_VDP/docs/atonlist.csv'
+    df = pd.read_csv(f_loc) 
+
 
 
 def getAton(mmsi):
@@ -243,7 +247,8 @@ async def send_ping(websocket):
 
 
 # Create a WebSocket server using the handler function
-server = websockets.serve(handler, "localhost", 38381)
+# server = websockets.serve(handler, "localhost", 38381)
+server = websockets.serve(handler, "10.10.20.200", 38389)
 
 # Run the server using the asyncio event loop
 asyncio.get_event_loop().run_until_complete(server)
