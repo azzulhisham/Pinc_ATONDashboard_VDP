@@ -627,7 +627,24 @@ function measurementMousemove(e) {
 }
 
 function searchVessel(mmsi){
-    get_mmsi = lst_vessel[mmsi]
+    if (typeof(mmsi) === "number") {
+        get_mmsi = lst_vessel[mmsi]
+    }
+    else {
+        var keys = Object.keys(lst_atoninfo);
+
+        for (let i = 0; i < keys.length; i++) {
+            key = keys[i]
+            aton = lst_atoninfo[key]
+            atonName = aton.atonname.toLowerCase()     
+            
+            if (atonName.includes(mmsi.toLowerCase())){
+                mmsi = aton.mmsi
+                get_mmsi = lst_vessel[mmsi]
+                break
+            }
+        }
+    }
 
     if (get_mmsi != undefined){
         setFocusVessel(mmsi)
@@ -641,6 +658,7 @@ function searchVessel(mmsi){
         });
     }
 }
+
 
 // Radical Menu
 function addVesselRadicalPopupMenu(mmsi){
