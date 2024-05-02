@@ -120,8 +120,8 @@ inp_search.addEventListener('focusout', () => {
 })
 
 inp_search.addEventListener('keypress', (e) => {
-    e.preventDefault()
     if (e.which === 13){
+        e.preventDefault()
         searchVessel(inp_search.value)
     }  
 })
