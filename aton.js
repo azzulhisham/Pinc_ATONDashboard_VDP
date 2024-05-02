@@ -119,11 +119,12 @@ inp_search.addEventListener('focusout', () => {
     searchVessel(inp_search.value)
 })
 
-// inp_search.addEventListener('keypress', (e) => {
-//     if (e.which === 13){
-//         searchVessel(search_mmsi.value)
-//     }  
-// })
+inp_search.addEventListener('keypress', (e) => {
+    e.preventDefault()
+    if (e.which === 13){
+        searchVessel(inp_search.value)
+    }  
+})
 
 chk_select_beacon.addEventListener('click', (e) => {
     // lst_vessel[mmsi] = marker1
