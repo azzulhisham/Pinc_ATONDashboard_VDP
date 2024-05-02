@@ -628,7 +628,9 @@ function measurementMousemove(e) {
 }
 
 function searchVessel(mmsi){
-    if (typeof(mmsi) === "number") {
+    get_mmsi = undefined
+
+    if (isNaN(mmsi) === false) {
         get_mmsi = lst_vessel[mmsi]
     }
     else {
