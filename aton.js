@@ -2138,7 +2138,7 @@ function build_chart(){
         },
 
         title: {
-            text: 'ATON Battery Voltage and Lantern Voltage for last 24 hours of ' + lst_voltdata[0].mmsi,
+            text: 'ATON Battery Voltage and Lantern Voltage for last 72 hours of ' + lst_voltdata[0].mmsi,
             align: 'center'
         },
   

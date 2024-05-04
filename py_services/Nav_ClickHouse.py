@@ -432,7 +432,7 @@ class PyCH:
         now = datetime.now() 
         #today = datetime(now.year, now.month, now.day)
         utc_today = now - timedelta(hours=8)
-        utc_last24 = utc_today - timedelta(hours=24)
+        utc_last24 = utc_today - timedelta(hours=72)
 
 
         client = clickhouse_connect.get_client(host='10.10.20.50', port=8123)
@@ -449,7 +449,7 @@ class PyCH:
 
         for i in result.result_rows:
             data = {
-                'ts': i[0].strftime("%Y-%m-%d %H:%M:%S"),
+                'ts': (i[0] + timedelta(hours=8)).strftime("%Y-%m-%d %H:%M:%S"),
                 'volt_int': round(i[1], 2),
                 'volt_ex1': round(i[2], 2)
             }
