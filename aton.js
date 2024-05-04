@@ -1232,19 +1232,19 @@ function compute_summary_details(atonInfo, data){
     if (atonInfo['ss_rowcountby_mmsi'] == 0) {
         data.no_msg6_cnt += 1 
     }
-    else if (atonInfo['light'] == 3){
+    if (atonInfo['light'] == 3){
         data.light_err_cnt += 1
     }
-    else if (atonInfo['volt_int'] < 12.0) {
+    if (atonInfo['volt_int'] < 12.0) {
         data.battAton_cnt += 1
     }
-    else if (atonInfo['volt_ex1'] < 12.0) {
+    if (atonInfo['volt_ex1'] < 12.0) {
         data.battLant_cnt += 1
     }
-    else if (atonInfo['off_pos'] != 0) {
+    if (atonInfo['off_pos'] != 0) {
         data.offpos_cnt += 1
     }
-    else if (atonInfo['ambient'] == 0) {
+    if (atonInfo['ambient'] == 0) {
         data.ldr_cnt += 1
     }
 
