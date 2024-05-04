@@ -28,6 +28,7 @@ class PyCH:
             f'''
                 select count(*) from pnav.ais_type21
                 where ts>='{utc_today.strftime("%Y-%m-%d %H:%M:%S")}' and ts<='{utc_now.strftime("%Y-%m-%d %H:%M:%S")}' 
+                and mmsi in (select mmsi from pnav.atonlist)
             '''
             )
             
@@ -38,6 +39,7 @@ class PyCH:
             f'''
                 select count(*) from pnav.ais_type6_533
                 where ts>='{utc_today.strftime("%Y-%m-%d %H:%M:%S")}' and ts<='{utc_now.strftime("%Y-%m-%d %H:%M:%S")}'
+                and mmsi in (select mmsi from pnav.atonlist)
             '''
             )
 
@@ -48,6 +50,7 @@ class PyCH:
             f'''
                 select count(*) from pnav.ais_meteorological
                 where ts>='{utc_today.strftime("%Y-%m-%d %H:%M:%S")}' and ts<='{utc_now.strftime("%Y-%m-%d %H:%M:%S")}'
+                --and mmsi in (select mmsi from pnav.atonlist)
             '''
             )
 
@@ -59,6 +62,7 @@ class PyCH:
             f'''
                 select count(*) from pnav.ais_type21
                 where ts>='{utc_yesterday.strftime("%Y-%m-%d %H:%M:%S")}' and ts<='{utc_last24.strftime("%Y-%m-%d %H:%M:%S")}' 
+                and mmsi in (select mmsi from pnav.atonlist)
             '''
             )
             
@@ -69,6 +73,7 @@ class PyCH:
             f'''
                 select count(*) from pnav.ais_type6_533
                 where ts>='{utc_yesterday.strftime("%Y-%m-%d %H:%M:%S")}' and ts<='{utc_last24.strftime("%Y-%m-%d %H:%M:%S")}' 
+                and mmsi in (select mmsi from pnav.atonlist)
             '''
             )
 
@@ -79,6 +84,7 @@ class PyCH:
             f'''
                 select count(*) from pnav.ais_meteorological
                 where ts>='{utc_yesterday.strftime("%Y-%m-%d %H:%M:%S")}' and ts<='{utc_last24.strftime("%Y-%m-%d %H:%M:%S")}' 
+                --and mmsi in (select mmsi from pnav.atonlist)
             '''
             )
 
@@ -125,7 +131,7 @@ class PyCH:
                     with rowcountdata as (
                         select *, row_number() over (partition by mmsi order by ts desc) as rowcountby_mmsi
                         from pnav.ais_type21
-                        where ts>='{utc_n_day_b4_x.strftime("%Y-%m-%d %H:%M:%S")}' and ts<'{utc_now.strftime("%Y-%m-%d %H:%M:%S")}' 
+                        where ts>='{utc_n_day_b4_x.strftime("%Y-%m-%d %H:%M:%S")}' and ts<='{utc_now.strftime("%Y-%m-%d %H:%M:%S")}' 
                     )
                     select *
                     from rowcountdata
@@ -135,15 +141,16 @@ class PyCH:
                     with rowcountdata as (
                         select *, row_number() over (partition by mmsi order by ts desc) as rowcountby_mmsi
                         from pnav.ais_type6_533
-                        where ts>='{utc_n_day_b4.strftime("%Y-%m-%d %H:%M:%S")}' and ts<'{utc_now.strftime("%Y-%m-%d %H:%M:%S")}' 
+                        where ts>='{utc_n_day_b4.strftime("%Y-%m-%d %H:%M:%S")}' and ts<='{utc_now.strftime("%Y-%m-%d %H:%M:%S")}' 
                     )
                     select *
                     from rowcountdata
                     where rowcountby_mmsi = 1
                 )
-            select *
-            from aton_meas aa
-            join aton_static ss on aa.mmsi = ss.mmsi
+                select *
+                from aton_meas aa
+                join aton_static ss on aa.mmsi = ss.mmsi
+                right join pnav.atonlist al on al.mmsi=ss.mmsi
         '''
         )
 
@@ -152,13 +159,14 @@ class PyCH:
         for i in result.result_rows:
             data = {
                 'ts': i[0].strftime("%Y-%m-%d %H:%M:%S"),
+                'lcl_ts': (i[0] + timedelta(hours=8)).strftime("%Y-%m-%d %H:%M:%S"),
                 'packageType': i[1],
                 'packageID': i[2],
                 'packageCh': i[3],
                 'messageType': i[4],
                 'messageTypeDesc': i[5],
                 'repeat': i[6],
-                'mmsi': i[7],
+                'mmsi': i[68],
                 'seqno': i[8],
                 'dest_mmsi': i[9],
                 'retransmit': i[10],
@@ -196,7 +204,7 @@ class PyCH:
                 'ss_messageType': i[42],
                 'ss_messageTypeDesc': i[43],
                 'ss_repeat': i[44],
-                'ss_mmsi': i[45],
+                'ss_mmsi': i[68],
                 'ss_aidType': i[46],
                 'ss_aidTypeDesc': i[47],
                 'ss_aidName': i[48],
@@ -215,7 +223,12 @@ class PyCH:
                 'ss_regional': i[61],
                 'ss_raimFlag': i[62],
                 'ss_virtualAid': i[63],
-                'ss_assigned': i[64]
+                'ss_assigned': i[64],
+                'ss_rowcountby_mmsi': i[65],
+                'al_name': i[67],
+                'al_mmsi': i[68],
+                'al_region': i[69],
+                'al_type': i[70]
             }
 
             ret_result.append(data)
@@ -240,7 +253,8 @@ class PyCH:
             )
             select *
             from rowcountdata
-            where rowcountby_mmsi = 1
+            right join pnav.atonlist al on al.mmsi=rowcountdata.mmsi
+            where rowcountby_mmsi = 1 or rowcountby_mmsi = 0
         '''
         )
 
@@ -353,7 +367,8 @@ class PyCH:
             select *, age('second', toDateTime(at.ts), now()) as lastseen
             from anal aa
             join aton_alive at on aa.rownum=1 and at.rownum=1 and aa.mmsi=at.mmsi
-            order by mmsi
+            right join pnav.atonlist al on al.mmsi=at.mmsi
+            order by al.mmsi
         '''
         )
 
@@ -378,7 +393,7 @@ class PyCH:
 
             data = {
                 'ts': i[0].strftime("%Y-%m-%d %H:%M:%S"),
-                'mmsi':	i[1],
+                'mmsi':	i[26],
                 'minTemp': round(i[2], 2),
                 'maxTemp': round(i[3], 2),
                 'minBattAton': round(i[4], 2),
@@ -397,11 +412,14 @@ class PyCH:
                 'kurtBattLant':	round(i[17], 2) if not math.isnan(i[16]) else -999,
                 'off_pos': 'NG' if i[18] > 0 else 'OK',
                 'msg6Count': i[19],
+                'siteTx': 'OK' if i[19] > 0 else 'NG',
                 'rownum': i[20],
                 'at_ts': (i[21] + timedelta(hours=8)).strftime("%Y-%m-%d %H:%M:%S"),
-                'at_mmsi': i[22],
-                'at_rownum': i[23],
-                'lastseen':	i[24],
+                'al_name': i[25],
+                'al_mmsi': i[26],
+                'al_region': i[27],
+                'al_type': i[28],
+                'lastseen':	i[29],
                 'last_maintain': mtn_date
             }
 

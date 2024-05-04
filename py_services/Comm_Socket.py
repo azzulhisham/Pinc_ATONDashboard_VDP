@@ -14,18 +14,18 @@ import time
 from datetime import datetime, timedelta
 
 
-def loaddata():
-    global df
+# def loaddata():
+#     global df
 
-    # f_loc = '/Users/zultan/sources/python/Pinc_ATONDashboard_VDP/docs/atonlist.csv'
-    f_loc = '/home/srvadmin/vdp/Pinc_ATONDashboard_VDP/docs/atonlist.csv'
-    df = pd.read_csv(f_loc) 
+#     f_loc = '/Users/zultan/sources/python/Pinc_ATONDashboard_VDP/docs/atonlist.csv'
+#     # f_loc = '/home/srvadmin/vdp/Pinc_ATONDashboard_VDP/docs/atonlist.csv'
+#     df = pd.read_csv(f_loc) 
 
 
 
-def getAton(mmsi):
-    aton = df[df['mmsi'] == mmsi]
-    return aton
+# def getAton(mmsi):
+#     aton = df[df['mmsi'] == mmsi]
+#     return aton
 
 
 
@@ -50,7 +50,7 @@ aton_summary = {
     'no_msg6_cnt_p': 0
 }
 
-loaddata()
+
 print('Server is running.....')
 
 
@@ -83,60 +83,62 @@ async def handler(websocket, path):
                 battLant_cnt = 0
                 offpos_cnt = 0
                 ldr_cnt = 0
+                no_msg6_cnt = 0
 
-                for i in atons:
-                    aton = getAton(i["mmsi"])
-                    
-                    if aton.shape[0] > 0 :
-                        aton_info = {
-                            'atonname': aton.iloc[0]['name'],
-                            'region': aton.iloc[0]['region'],
-                            'type': aton.iloc[0]['type'],
-                            'status': 1
-                        }
+                for i in atons:                  
+                    aton_info = {
+                        'atonname': i['al_name'],
+                        'region': i['al_region'],
+                        'type': i['al_type'],
+                        'status': 1
+                    }
 
-                        # generate counting summary
-                        atons_cnt += 1
+                    # generate counting summary
+                    atons_cnt += 1
 
-                        if i['light'] == 3:
-                            light_err_cnt += 1
-                            aton_info['status'] = 0
-                        elif i['volt_int'] < 12.5:
-                            battAton_cnt += 1
-                            aton_info['status'] = 0
-                        elif i['volt_ex1'] < 12.5:
-                            battLant_cnt += 1
-                            aton_info['status'] = 0
-                        elif i['off_pos'] != 0:
-                            offpos_cnt += 1
-                            aton_info['status'] = 0
-                        elif i['ambient'] == 0:
-                            ldr_cnt += 1
-                            aton_info['status'] = 0
+                    if i['ss_rowcountby_mmsi'] == 0:
+                        no_msg6_cnt += 1
+                        aton_info['status'] = 0  
+                    elif i['light'] == 3:
+                        light_err_cnt += 1
+                        aton_info['status'] = 0
+                    elif i['volt_int'] < 12.0:
+                        battAton_cnt += 1
+                        aton_info['status'] = 0
+                    elif i['volt_ex1'] < 12.0:
+                        battLant_cnt += 1
+                        aton_info['status'] = 0
+                    elif i['off_pos'] != 0:
+                        offpos_cnt += 1
+                        aton_info['status'] = 0
+                    elif i['ambient'] == 0:
+                        ldr_cnt += 1
+                        aton_info['status'] = 0
+                      
 
-                        i.update(aton_info)
+                    i.update(aton_info)
 
-                        data = {
-                            'payload': 'getallaton'
-                        }
+                    data = {
+                        'payload': 'getallaton'
+                    }
 
-                        data.update(i)
-                        await websocket.send(json.dumps(data))    
-
+                    data.update(i)
+                    await websocket.send(json.dumps(data))  
+  
                 
                 aton_summary['aton_cnt'] = atons_cnt
-                aton_summary['no_msg6_cnt'] = df.shape[0] - atons_cnt
-                aton_summary['no_msg6_cnt_p'] = "{:.2f}%".format(((df.shape[0] - atons_cnt) / df.shape[0]) * 100)
+                aton_summary['no_msg6_cnt'] = no_msg6_cnt
+                aton_summary['no_msg6_cnt_p'] = "{:.2f}%".format((no_msg6_cnt / atons_cnt) * 100)
                 aton_summary['light_cnt'] = light_err_cnt
-                aton_summary['light_cnt_p'] = "{:.2f}%".format(((light_err_cnt) / df.shape[0]) * 100)
+                aton_summary['light_cnt_p'] = "{:.2f}%".format(((light_err_cnt) / atons_cnt) * 100)
                 aton_summary['battAton_cnt'] = battAton_cnt
-                aton_summary['battAton_cnt_p'] = "{:.2f}%".format(((battAton_cnt) / df.shape[0]) * 100)
+                aton_summary['battAton_cnt_p'] = "{:.2f}%".format(((battAton_cnt) / atons_cnt) * 100)
                 aton_summary['battLant_cnt'] = battLant_cnt
-                aton_summary['battLant_cnt_p'] = "{:.2f}%".format(((battLant_cnt) / df.shape[0]) * 100)
+                aton_summary['battLant_cnt_p'] = "{:.2f}%".format(((battLant_cnt) / atons_cnt) * 100)
                 aton_summary['offpos_cnt'] = offpos_cnt
-                aton_summary['offpos_cnt_p'] = "{:.2f}%".format(((offpos_cnt) / df.shape[0]) * 100)
+                aton_summary['offpos_cnt_p'] = "{:.2f}%".format(((offpos_cnt) / atons_cnt) * 100)
                 aton_summary['ldr_cnt'] = ldr_cnt
-                aton_summary['ldr_cnt_p'] = "{:.2f}%".format(((ldr_cnt) / df.shape[0]) * 100)
+                aton_summary['ldr_cnt_p'] = "{:.2f}%".format(((ldr_cnt) / atons_cnt) * 100)
 
                 summary = {
                     'payload': 'getatoninitialcount'
@@ -150,25 +152,15 @@ async def handler(websocket, path):
                 data_cnt = 0
 
                 for i in atons_statistic:
-                    statistic = getAton(i["mmsi"])
-                    
-                    if statistic.shape[0] > 0 :
-                        aton_info = {
-                            'atonname': statistic.iloc[0]['name'],
-                            'region': statistic.iloc[0]['region'],
-                            'type': statistic.iloc[0]['type']
-                        }
+                    data_cnt += 1
 
-                        i.update(aton_info)
-                        data_cnt += 1
+                    data = {
+                        'payload': 'getatonstatistic',
+                        'no': data_cnt
+                    }
 
-                        data = {
-                            'payload': 'getatonstatistic',
-                            'no': data_cnt
-                        }
-
-                        data.update(i)
-                        await websocket.send(json.dumps(data))    
+                    data.update(i)
+                    await websocket.send(json.dumps(data))  
 
                 data = {
                     'payload': 'getatonstatistic_done'
@@ -200,15 +192,12 @@ async def handler(websocket, path):
                 atons = PyCH.get_all_aton_msg()
 
                 for i in atons:
-                    aton = getAton(i["mmsi"])
+                    data = {
+                        'payload': 'getallatonmsg'
+                    }
 
-                    if aton.shape[0] > 0 :
-                        data = {
-                            'payload': 'getallatonmsg'
-                        }
-
-                        data.update(i)
-                        await websocket.send(json.dumps(data))    
+                    data.update(i)
+                    await websocket.send(json.dumps(data))    
 
 
             if msg[0] == 'getatonmsgcount':

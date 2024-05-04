@@ -1,9 +1,12 @@
 // Global Variable
 lst_vessel = {};
 lst_atoninfo = {};
+lst_ngatoninfo = {};
 lst_atonData = {};
 lst_statistic = [];
 lst_voltdata = [];
+summary_det = undefined
+
 
 // DOM Objects
 const closeVesselInfo = document.getElementById("closeVesselInfo")
@@ -162,6 +165,8 @@ chk_select_beacon.addEventListener('click', (e) => {
             }
         }
     }  
+
+    cal_summary_details()
 })
 
 chk_select_buoy.addEventListener('click', (e) => {
@@ -200,6 +205,8 @@ chk_select_buoy.addEventListener('click', (e) => {
             }
         }
     }  
+
+    cal_summary_details()
 })
 
 chk_select_lighthouse.addEventListener('click', (e) => {
@@ -237,7 +244,9 @@ chk_select_lighthouse.addEventListener('click', (e) => {
                 }
             }
         }
-    }  
+    } 
+    
+    cal_summary_details()
 })
 
 
@@ -260,6 +269,8 @@ rad_aton_all.addEventListener('click', (e) => {
             marker.addTo(map)
         } 
     }
+
+    cal_summary_details()
 })
 
 rad_aton_ok.addEventListener('click', (e) => {
@@ -299,6 +310,8 @@ rad_aton_ok.addEventListener('click', (e) => {
             }            
         }
     }
+
+    cal_summary_details()
 })
 
 rad_aton_ng.addEventListener('click', (e) => {
@@ -338,6 +351,8 @@ rad_aton_ng.addEventListener('click', (e) => {
             }            
         }
     }
+
+    cal_summary_details()
 })
 
 
@@ -923,12 +938,22 @@ function showVesselPopup(e) {
     const toggleBtn = document.getElementById("tog_btn_" + elemid_text[1])
     const coordinates = get_mmsi.getLngLat()
 
+    const ambient = ['No LDR', 'Dark', 'Dim', 'Bright']
+    const lightstatus = ['No Light', 'Light ON', 'Light OFF', 'Light Error']
+
     if (!toggleBtn.classList.contains('open')) {
         const description = '<div class="text-gray-900"><h4 class="font-bold">' + elemid_text[1] + '</h4>' +
                             '<small> Name &nbsp;: ' + get_atoninfo['atonname'] + '</small><br>' +
                             '<small> Region &nbsp;: ' + get_atoninfo['region']  + '</small><br>' +
                             '<small> Latitude &nbsp;: ' + coordinates.lat.toFixed(6) + '</small><br>' +
-                            '<small> Longitude &nbsp;: ' + coordinates.lng.toFixed(6) + '</small></div>'
+                            '<small> Longitude &nbsp;: ' + coordinates.lng.toFixed(6) + '</small><br>' +
+                            '<small> ATON Batt &nbsp;: ' + get_atoninfo['volt_int'].toFixed(2)  + '</small><br>' +
+                            '<small> Lantern Batt &nbsp;: ' + get_atoninfo['volt_ex1'].toFixed(2)  + '</small><br>' +
+                            '<small> Off Position &nbsp;: ' + (get_atoninfo['off_pos'] == 0 ? 'OK' : 'NG')  + '</small><br>' +
+                            '<small> Ambient &nbsp;: ' + ambient[get_atoninfo['ambient']]  + '</small><br>' +
+                            '<small> Light &nbsp;: ' + lightstatus[get_atoninfo['light']]  + '</small><br>' +
+                            '<small> local Time &nbsp;: ' + get_atoninfo['lcl_ts'] + '</small><br>' +
+                            '<small> UTC Time &nbsp;: ' + get_atoninfo['ts'] + '</small></div>'
        
         popup.setLngLat(coordinates).setHTML(description).addTo(map);
     }
@@ -1187,12 +1212,454 @@ function vessel_info_panel(mmsi){
     }
 }
 
+function summary_details(obj) {
+    cnt_in_aton.innerText = obj['aton_cnt']
+    // cnt_in_msg6.innerText = obj['msg6_cnt']
+    // cnt_in_msg21.innerText = obj['msg21_cnt']
+    // cnt_in_msg8.innerText = obj['msg8_cnt']
+
+    cnt_in_nomsg6.innerText = obj['no_msg6_cnt'] + ' (' + obj['no_msg6_cnt_p'] + ')'
+    cnt_in_offpos.innerText = obj['offpos_cnt'] + ' (' + obj['offpos_cnt_p'] + ')'
+    cnt_in_light.innerText = obj['light_cnt'] + ' (' + obj['light_cnt_p'] + ')'
+    cnt_in_ldr.innerText = obj['ldr_cnt'] + ' (' + obj['ldr_cnt_p'] + ')'
+    cnt_in_battAton.innerText = obj['battAton_cnt'] + ' (' + obj['battAton_cnt_p'] + ')'
+    cnt_in_battLant.innerText = obj['battLant_cnt'] + ' (' + obj['battLant_cnt_p'] + ')'    
+}
+
+function compute_summary_details(atonInfo, data){
+    data.atons_cnt += 1
+    
+    if (atonInfo['ss_rowcountby_mmsi'] == 0) {
+        data.no_msg6_cnt += 1 
+    }
+    else if (atonInfo['light'] == 3){
+        data.light_err_cnt += 1
+    }
+    else if (atonInfo['volt_int'] < 12.0) {
+        data.battAton_cnt += 1
+    }
+    else if (atonInfo['volt_ex1'] < 12.0) {
+        data.battLant_cnt += 1
+    }
+    else if (atonInfo['off_pos'] != 0) {
+        data.offpos_cnt += 1
+    }
+    else if (atonInfo['ambient'] == 0) {
+        data.ldr_cnt += 1
+    }
+
+    return data
+}
+
+
+
+function cal_summary_details() {
+    let summary_data = {
+        atons_cnt: 0,
+        light_err_cnt: 0,
+        battAton_cnt: 0,
+        battLant_cnt: 0,
+        offpos_cnt: 0,
+        ldr_cnt: 0,
+        no_msg6_cnt: 0,
+    }
+
+
+    if (chk_select_beacon.checked && chk_select_buoy.checked && chk_select_lighthouse.checked && rad_aton_all.checked) {
+        summary_details(summary_det)
+    }
+    else {
+        if (chk_select_beacon.checked && chk_select_buoy.checked && chk_select_lighthouse.checked && rad_aton_ok.checked) {
+            for (let i in lst_atoninfo) {
+                atonInfo = lst_atoninfo[i]
+    
+                if (atonInfo['status'] == 1) {
+                    summary_data = compute_summary_details(atonInfo, summary_data)
+                }
+            }
+
+            for (let i in lst_ngatoninfo) {
+                atonInfo = lst_ngatoninfo[i]
+    
+                if (atonInfo['status'] == 1) {
+                    summary_data = compute_summary_details(atonInfo, summary_data)
+                }
+            }
+
+            console.log(summary_data)
+        }      
+
+        if (chk_select_beacon.checked && chk_select_buoy.checked && chk_select_lighthouse.checked && rad_aton_ng.checked) {
+            for (let i in lst_atoninfo) {
+                atonInfo = lst_atoninfo[i]
+
+                if (atonInfo['status'] == 0) {
+                    summary_data = compute_summary_details(atonInfo, summary_data)
+                }
+            }
+
+            for (let i in lst_ngatoninfo) {
+                atonInfo = lst_ngatoninfo[i]
+
+                if (atonInfo['status'] == 0) {
+                    summary_data = compute_summary_details(atonInfo, summary_data)
+                }
+            }            
+        }  
+        
+        /// ok
+        if (chk_select_beacon.checked && chk_select_buoy.checked && !chk_select_lighthouse.checked && rad_aton_ok.checked) {
+            for (let i in lst_atoninfo) {
+                atonInfo = lst_atoninfo[i]
+    
+                if (atonInfo['status'] == 1 && (atonInfo['type'].toLowerCase() == 'beacon' || atonInfo['type'].toLowerCase() == 'buoy')) {
+                    summary_data = compute_summary_details(atonInfo, summary_data)
+                }
+            }
+
+            for (let i in lst_ngatoninfo) {
+                atonInfo = lst_ngatoninfo[i]
+    
+                if (atonInfo['status'] == 1 && (atonInfo['type'].toLowerCase() == 'beacon' || atonInfo['type'].toLowerCase() == 'buoy')) {
+                    summary_data = compute_summary_details(atonInfo, summary_data)
+                }
+            }
+        }  
+        
+        if (chk_select_beacon.checked && !chk_select_buoy.checked && chk_select_lighthouse.checked && rad_aton_ok.checked) {
+            for (let i in lst_atoninfo) {
+                atonInfo = lst_atoninfo[i]
+    
+                if (atonInfo['status'] == 1 && (atonInfo['type'].toLowerCase() == 'beacon' || atonInfo['type'].toLowerCase() == 'lighthouse')) {
+                    summary_data = compute_summary_details(atonInfo, summary_data)
+                }
+            }
+
+            for (let i in lst_ngatoninfo) {
+                atonInfo = lst_ngatoninfo[i]
+    
+                if (atonInfo['status'] == 1 && (atonInfo['type'].toLowerCase() == 'beacon' || atonInfo['type'].toLowerCase() == 'lighthouse')) {
+                    summary_data = compute_summary_details(atonInfo, summary_data)
+                }
+            }
+        } 
+        
+        if (chk_select_beacon.checked && !chk_select_buoy.checked && !chk_select_lighthouse.checked && rad_aton_ok.checked) {
+            for (let i in lst_atoninfo) {
+                atonInfo = lst_atoninfo[i]
+    
+                if (atonInfo['status'] == 1 && atonInfo['type'].toLowerCase() == 'beacon') {
+                    summary_data = compute_summary_details(atonInfo, summary_data)
+                }
+            }
+
+            for (let i in lst_ngatoninfo) {
+                atonInfo = lst_ngatoninfo[i]
+    
+                if (atonInfo['status'] == 1 && atonInfo['type'].toLowerCase() == 'beacon') {
+                    summary_data = compute_summary_details(atonInfo, summary_data)
+                }
+            }
+        } 
+        
+        if (!chk_select_beacon.checked && chk_select_buoy.checked && chk_select_lighthouse.checked && rad_aton_ok.checked) {
+            for (let i in lst_atoninfo) {
+                atonInfo = lst_atoninfo[i]
+    
+                if (atonInfo['status'] == 1 && (atonInfo['type'].toLowerCase() == 'buoy' || atonInfo['type'].toLowerCase() == 'lighthouse')) {
+                    summary_data = compute_summary_details(atonInfo, summary_data)
+                }
+            }
+
+            for (let i in lst_ngatoninfo) {
+                atonInfo = lst_ngatoninfo[i]
+    
+                if (atonInfo['status'] == 1 && (atonInfo['type'].toLowerCase() == 'buoy' || atonInfo['type'].toLowerCase() == 'lighthouse')) {
+                    summary_data = compute_summary_details(atonInfo, summary_data)
+                }
+            }
+        }          
+
+        if (!chk_select_beacon.checked && chk_select_buoy.checked && !chk_select_lighthouse.checked && rad_aton_ok.checked) {
+            for (let i in lst_atoninfo) {
+                atonInfo = lst_atoninfo[i]
+    
+                if (atonInfo['status'] == 1 && atonInfo['type'].toLowerCase() == 'buoy') {
+                    summary_data = compute_summary_details(atonInfo, summary_data)
+                }
+            }
+
+            for (let i in lst_ngatoninfo) {
+                atonInfo = lst_ngatoninfo[i]
+    
+                if (atonInfo['status'] == 1 && atonInfo['type'].toLowerCase() == 'buoy') {
+                    summary_data = compute_summary_details(atonInfo, summary_data)
+                }
+            }
+        }  
+
+        if (!chk_select_beacon.checked && !chk_select_buoy.checked && chk_select_lighthouse.checked && rad_aton_ok.checked) {
+            for (let i in lst_atoninfo) {
+                atonInfo = lst_atoninfo[i]
+    
+                if (atonInfo['status'] == 1 && atonInfo['type'].toLowerCase() == 'lighthouse') {
+                    summary_data = compute_summary_details(atonInfo, summary_data)
+                }
+            }
+
+            for (let i in lst_ngatoninfo) {
+                atonInfo = lst_ngatoninfo[i]
+    
+                if (atonInfo['status'] == 1 && atonInfo['type'].toLowerCase() == 'lighthouse') {
+                    summary_data = compute_summary_details(atonInfo, summary_data)
+                }
+            }
+        }  
+
+        /// ng
+        if (chk_select_beacon.checked && chk_select_buoy.checked && !chk_select_lighthouse.checked && rad_aton_ng.checked) {
+            for (let i in lst_atoninfo) {
+                atonInfo = lst_atoninfo[i]
+    
+                if (atonInfo['status'] == 0 && (atonInfo['type'].toLowerCase() == 'beacon' || atonInfo['type'].toLowerCase() == 'buoy')) {
+                    summary_data = compute_summary_details(atonInfo, summary_data)
+                }
+            }
+
+            for (let i in lst_ngatoninfo) {
+                atonInfo = lst_ngatoninfo[i]
+    
+                if (atonInfo['status'] == 0 && (atonInfo['type'].toLowerCase() == 'beacon' || atonInfo['type'].toLowerCase() == 'buoy')) {
+                    summary_data = compute_summary_details(atonInfo, summary_data)
+                }
+            }
+        }  
+        
+        if (chk_select_beacon.checked && !chk_select_buoy.checked && chk_select_lighthouse.checked && rad_aton_ng.checked) {
+            for (let i in lst_atoninfo) {
+                atonInfo = lst_atoninfo[i]
+    
+                if (atonInfo['status'] == 0 && (atonInfo['type'].toLowerCase() == 'beacon' || atonInfo['type'].toLowerCase() == 'lighthouse')) {
+                    summary_data = compute_summary_details(atonInfo, summary_data)
+                }
+            }
+
+            for (let i in lst_ngatoninfo) {
+                atonInfo = lst_ngatoninfo[i]
+    
+                if (atonInfo['status'] == 0 && (atonInfo['type'].toLowerCase() == 'beacon' || atonInfo['type'].toLowerCase() == 'lighthouse')) {
+                    summary_data = compute_summary_details(atonInfo, summary_data)
+                }
+            }
+        } 
+        
+        if (chk_select_beacon.checked && !chk_select_buoy.checked && !chk_select_lighthouse.checked && rad_aton_ng.checked) {
+            for (let i in lst_atoninfo) {
+                atonInfo = lst_atoninfo[i]
+    
+                if (atonInfo['status'] == 0 && atonInfo['type'].toLowerCase() == 'beacon') {
+                    summary_data = compute_summary_details(atonInfo, summary_data)
+                }
+            }
+
+            for (let i in lst_ngatoninfo) {
+                atonInfo = lst_ngatoninfo[i]
+    
+                if (atonInfo['status'] == 0 && atonInfo['type'].toLowerCase() == 'beacon') {
+                    summary_data = compute_summary_details(atonInfo, summary_data)
+                }
+            }
+        } 
+        
+        if (!chk_select_beacon.checked && chk_select_buoy.checked && chk_select_lighthouse.checked && rad_aton_ng.checked) {
+            for (let i in lst_atoninfo) {
+                atonInfo = lst_atoninfo[i]
+    
+                if (atonInfo['status'] == 0 && (atonInfo['type'].toLowerCase() == 'buoy' || atonInfo['type'].toLowerCase() == 'lighthouse')) {
+                    summary_data = compute_summary_details(atonInfo, summary_data)
+                }
+            }
+
+            for (let i in lst_ngatoninfo) {
+                atonInfo = lst_ngatoninfo[i]
+    
+                if (atonInfo['status'] == 0 && (atonInfo['type'].toLowerCase() == 'buoy' || atonInfo['type'].toLowerCase() == 'lighthouse')) {
+                    summary_data = compute_summary_details(atonInfo, summary_data)
+                }
+            }
+        }          
+
+        if (!chk_select_beacon.checked && chk_select_buoy.checked && !chk_select_lighthouse.checked && rad_aton_ng.checked) {
+            for (let i in lst_atoninfo) {
+                atonInfo = lst_atoninfo[i]
+    
+                if (atonInfo['status'] == 0 && atonInfo['type'].toLowerCase() == 'buoy') {
+                    summary_data = compute_summary_details(atonInfo, summary_data)
+                }
+            }
+
+            for (let i in lst_ngatoninfo) {
+                atonInfo = lst_ngatoninfo[i]
+    
+                if (atonInfo['status'] == 0 && atonInfo['type'].toLowerCase() == 'buoy') {
+                    summary_data = compute_summary_details(atonInfo, summary_data)
+                }
+            }
+        }  
+
+        if (!chk_select_beacon.checked && !chk_select_buoy.checked && chk_select_lighthouse.checked && rad_aton_ng.checked) {
+            for (let i in lst_atoninfo) {
+                atonInfo = lst_atoninfo[i]
+    
+                if (atonInfo['status'] == 0 && atonInfo['type'].toLowerCase() == 'lighthouse') {
+                    summary_data = compute_summary_details(atonInfo, summary_data)
+                }
+            }
+
+            for (let i in lst_ngatoninfo) {
+                atonInfo = lst_ngatoninfo[i]
+    
+                if (atonInfo['status'] == 0 && atonInfo['type'].toLowerCase() == 'lighthouse') {
+                    summary_data = compute_summary_details(atonInfo, summary_data)
+                }
+            }
+        } 
+
+        /// all
+        if (chk_select_beacon.checked && chk_select_buoy.checked && !chk_select_lighthouse.checked && rad_aton_all.checked) {
+            for (let i in lst_atoninfo) {
+                atonInfo = lst_atoninfo[i]
+    
+                if (atonInfo['type'].toLowerCase() == 'beacon' || atonInfo['type'].toLowerCase() == 'buoy') {
+                    summary_data = compute_summary_details(atonInfo, summary_data)
+                }
+            }
+
+            for (let i in lst_ngatoninfo) {
+                atonInfo = lst_ngatoninfo[i]
+    
+                if (atonInfo['type'].toLowerCase() == 'beacon' || atonInfo['type'].toLowerCase() == 'buoy') {
+                    summary_data = compute_summary_details(atonInfo, summary_data)
+                }
+            }
+        }  
+        
+        if (chk_select_beacon.checked && !chk_select_buoy.checked && chk_select_lighthouse.checked && rad_aton_all.checked) {
+            for (let i in lst_atoninfo) {
+                atonInfo = lst_atoninfo[i]
+    
+                if (atonInfo['type'].toLowerCase() == 'beacon' || atonInfo['type'].toLowerCase() == 'lighthouse') {
+                    summary_data = compute_summary_details(atonInfo, summary_data)
+                }
+            }
+
+            for (let i in lst_ngatoninfo) {
+                atonInfo = lst_ngatoninfo[i]
+    
+                if (atonInfo['type'].toLowerCase() == 'beacon' || atonInfo['type'].toLowerCase() == 'lighthouse') {
+                    summary_data = compute_summary_details(atonInfo, summary_data)
+                }
+            }
+        } 
+        
+        if (chk_select_beacon.checked && !chk_select_buoy.checked && !chk_select_lighthouse.checked && rad_aton_all.checked) {
+            for (let i in lst_atoninfo) {
+                atonInfo = lst_atoninfo[i]
+    
+                if (atonInfo['type'].toLowerCase() == 'beacon') {
+                    summary_data = compute_summary_details(atonInfo, summary_data)
+                }
+            }
+
+            for (let i in lst_ngatoninfo) {
+                atonInfo = lst_ngatoninfo[i]
+    
+                if (atonInfo['type'].toLowerCase() == 'beacon') {
+                    summary_data = compute_summary_details(atonInfo, summary_data)
+                }
+            }
+        } 
+        
+        if (!chk_select_beacon.checked && chk_select_buoy.checked && chk_select_lighthouse.checked && rad_aton_all.checked) {
+            for (let i in lst_atoninfo) {
+                atonInfo = lst_atoninfo[i]
+    
+                if (atonInfo['type'].toLowerCase() == 'buoy' || atonInfo['type'].toLowerCase() == 'lighthouse') {
+                    summary_data = compute_summary_details(atonInfo, summary_data)
+                }
+            }
+
+            for (let i in lst_ngatoninfo) {
+                atonInfo = lst_ngatoninfo[i]
+    
+                if (atonInfo['type'].toLowerCase() == 'buoy' || atonInfo['type'].toLowerCase() == 'lighthouse') {
+                    summary_data = compute_summary_details(atonInfo, summary_data)
+                }
+            }
+        }          
+
+        if (!chk_select_beacon.checked && chk_select_buoy.checked && !chk_select_lighthouse.checked && rad_aton_all.checked) {
+            for (let i in lst_atoninfo) {
+                atonInfo = lst_atoninfo[i]
+    
+                if (atonInfo['type'].toLowerCase() == 'buoy') {
+                    summary_data = compute_summary_details(atonInfo, summary_data)
+                }
+            }
+
+            for (let i in lst_ngatoninfo) {
+                atonInfo = lst_ngatoninfo[i]
+    
+                if (atonInfo['type'].toLowerCase() == 'buoy') {
+                    summary_data = compute_summary_details(atonInfo, summary_data)
+                }
+            }
+        }  
+
+        if (!chk_select_beacon.checked && !chk_select_buoy.checked && chk_select_lighthouse.checked && rad_aton_all.checked) {
+            for (let i in lst_atoninfo) {
+                atonInfo = lst_atoninfo[i]
+    
+                if (atonInfo['type'].toLowerCase() == 'lighthouse') {
+                    summary_data = compute_summary_details(atonInfo, summary_data)
+                }
+            }
+
+            for (let i in lst_ngatoninfo) {
+                atonInfo = lst_ngatoninfo[i]
+    
+                if (atonInfo['type'].toLowerCase() == 'lighthouse') {
+                    summary_data = compute_summary_details(atonInfo, summary_data)
+                }
+            }
+        } 
+
+        aton_summary = {
+            'aton_cnt': summary_data.atons_cnt,
+            'no_msg6_cnt': summary_data.no_msg6_cnt,
+            'no_msg6_cnt_p': ((summary_data.no_msg6_cnt / summary_data.atons_cnt) * 100).toFixed(2) + '%',
+            'light_cnt': summary_data.light_err_cnt,
+            'light_cnt_p': (((summary_data.light_err_cnt) / summary_data.atons_cnt) * 100).toFixed(2) + '%',
+            'battAton_cnt': summary_data.battAton_cnt,
+            'battAton_cnt_p': (((summary_data.battAton_cnt) / summary_data.atons_cnt) * 100).toFixed(2) + '%',
+            'battLant_cnt': summary_data.battLant_cnt,
+            'battLant_cnt_p': (((summary_data.battLant_cnt) / summary_data.atons_cnt) * 100).toFixed(2) + '%',
+            'offpos_cnt': summary_data.offpos_cnt,
+            'offpos_cnt_p': (((summary_data.offpos_cnt) / summary_data.atons_cnt) * 100).toFixed(2) + '%',
+            'ldr_cnt': summary_data.ldr_cnt,
+            'ldr_cnt_p': (((summary_data.ldr_cnt) / summary_data.atons_cnt) * 100).toFixed(2) + '%',
+        }
+    
+        summary_details(aton_summary)
+    }
+}
+
 
 /////////////////////////////////////////////////////////
 // JavaScript example using WebSocket object
 // Create a WebSocket object for historical data
 /////////////////////////////////////////////////////////
-//const ws2_URL = "ws://localhost:38381";
+// const ws2_URL = "ws://localhost:38381";
 const ws2_URL = "ws://10.10.20.200:38389";
 
 // Define a heartbeat interval in milliseconds
@@ -1226,21 +1693,12 @@ function init_WebSocket2(){
         let obj = JSON.parse(event.data);
 
         if (obj['payload'] === 'getatoninitialcount') {
-            cnt_in_aton.innerText = obj['aton_cnt']
-            // cnt_in_msg6.innerText = obj['msg6_cnt']
-            // cnt_in_msg21.innerText = obj['msg21_cnt']
-            // cnt_in_msg8.innerText = obj['msg8_cnt']
-
-            cnt_in_nomsg6.innerText = obj['no_msg6_cnt'] + ' (' + obj['no_msg6_cnt_p'] + ')'
-            cnt_in_offpos.innerText = obj['offpos_cnt'] + ' (' + obj['offpos_cnt_p'] + ')'
-            cnt_in_light.innerText = obj['light_cnt'] + ' (' + obj['light_cnt_p'] + ')'
-            cnt_in_ldr.innerText = obj['ldr_cnt'] + ' (' + obj['ldr_cnt_p'] + ')'
-            cnt_in_battAton.innerText = obj['battAton_cnt'] + ' (' + obj['battAton_cnt_p'] + ')'
-            cnt_in_battLant.innerText = obj['battLant_cnt'] + ' (' + obj['battLant_cnt_p'] + ')'
+            summary_details(obj)
+            summary_det = JSON.parse(event.data);
         }
 
         if (obj['payload'] === 'getallaton') {
-            if (obj['ss_messageType'] == 21) {
+            if (obj['ss_messageType'] == 21 && obj['ss_rowcountby_mmsi'] > 0) {
                 lat = obj['ss_latitude']
                 lng = obj['ss_longitude']
                 mmsi = obj['mmsi']
@@ -1352,7 +1810,24 @@ function init_WebSocket2(){
                         // get_mmsi.setLngLat([lng, lat])
                         // get_mmsi.setRotation(cog)
                     }
-                }    
+                } 
+                else
+                {
+                    mmsi = obj['mmsi']
+                    get_ngaton = lst_ngatoninfo[mmsi]
+        
+                    if (get_ngaton === undefined){
+                        lst_ngatoninfo[mmsi] = obj
+                    }
+                }   
+            }
+            else {
+                mmsi = obj['mmsi']
+                get_ngaton = lst_ngatoninfo[mmsi]
+        
+                if ( get_ngaton === undefined){
+                    lst_ngatoninfo[mmsi] = obj
+                }                
             }
         }
 
@@ -1527,10 +2002,10 @@ function build_tabulator_table() {
         data:lst_statistic,
         columns:[
             {title:"No", field:"no"},
-            {title:"Site Name", field:"atonname", headerFilter:"input", width:100},
+            {title:"Site Name", field:"al_name", headerFilter:"input", width:100},
             {title:"MMSI", field:"mmsi", headerFilter:"input", width:100},
-            {title:"Structure", field:"type", headerFilter:"input", width:100},
-            {title:"Region", field:"region", headerFilter:"input", width:120},
+            {title:"Structure", field:"al_type", headerFilter:"input", width:100},
+            {title:"Region", field:"al_region", headerFilter:"input", width:120},
             {title:"Min.<br>Temp.", field:"minTemp"},
             {title:"Max.<br>Temp.", field:"maxTemp"},
 
@@ -1591,13 +2066,22 @@ function build_tabulator_table() {
             }},
             {title:"Message 6<br>Counting", field:"msg6Count", formatter:function(cell, formatterParams){
                 var value = cell.getValue();
-                if(value < 100){
+                if(value <= 0){
                     cell.getElement().style.backgroundColor = "rgba(29, 78, 216, 1)";
                     return value;
                 }else{
                     return value;
                 } 
             }},
+            {title:"Site with<br>Message 6", field:"siteTx", headerFilter:"input", formatter:function(cell, formatterParams){
+                var value = cell.getValue();
+                if(value == 'NG'){
+                    cell.getElement().style.backgroundColor = "rgba(29, 78, 216, 1)";
+                    return 'NG';
+                }else{
+                    return 'OK';
+                } 
+            }},            
             {title:"Last Seen<br>(Second)", field:"at_ts"},
             {title:"Last<br>Maintain", field:"last_maintain"}
         ],
