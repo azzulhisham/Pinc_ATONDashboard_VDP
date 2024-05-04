@@ -99,19 +99,24 @@ async def handler(websocket, path):
                     if i['ss_rowcountby_mmsi'] == 0:
                         no_msg6_cnt += 1
                         aton_info['status'] = 0  
-                    elif i['light'] == 3:
+                    
+                    if i['light'] == 3:
                         light_err_cnt += 1
                         aton_info['status'] = 0
-                    elif i['volt_int'] < 12.0:
+                    
+                    if i['volt_int'] < 12.0:
                         battAton_cnt += 1
                         aton_info['status'] = 0
-                    elif i['volt_ex1'] < 12.0:
+                    
+                    if i['volt_ex1'] < 12.0:
                         battLant_cnt += 1
                         aton_info['status'] = 0
-                    elif i['off_pos'] != 0:
+                    
+                    if i['off_pos'] != 0:
                         offpos_cnt += 1
                         aton_info['status'] = 0
-                    elif i['ambient'] == 0:
+                    
+                    if i['ambient'] == 0:
                         ldr_cnt += 1
                         aton_info['status'] = 0
                       
