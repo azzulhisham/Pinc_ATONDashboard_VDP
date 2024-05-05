@@ -943,6 +943,7 @@ function showVesselPopup(e) {
 
     if (!toggleBtn.classList.contains('open')) {
         const description = '<div class="text-gray-900"><h4 class="font-bold">' + elemid_text[1] + '</h4>' +
+                            '<small> Structure &nbsp;: ' + get_atoninfo['type'] + '</small><br>' +
                             '<small> Name &nbsp;: ' + get_atoninfo['atonname'] + '</small><br>' +
                             '<small> Region &nbsp;: ' + get_atoninfo['region']  + '</small><br>' +
                             '<small> Latitude &nbsp;: ' + coordinates.lat.toFixed(6) + '</small><br>' +
