@@ -14,7 +14,7 @@ class PyCH:
         now = datetime.now() 
         today = datetime(now.year, now.month, now.day)
         utc_today = today - timedelta(hours=8)
-        utc_now = now - timedelta(hours=8)
+        # utc_now = now - timedelta(hours=8)
         utc_yesterday = utc_today - timedelta(hours=24)  
         utc_last24 = utc_now - timedelta(hours=24)        
 
@@ -119,7 +119,7 @@ class PyCH:
     def get_all_aton():
         now = datetime.now()
         today = datetime(now.year, now.month, now.day)
-        utc_now = now - timedelta(hours=8)
+        # utc_now = now - timedelta(hours=8)
         utc_n_day_b4 = utc_now - timedelta(hours=168)
         utc_n_day_b4_x = utc_now - timedelta(hours=192)
 
@@ -240,7 +240,7 @@ class PyCH:
     def get_all_aton_msg():
         now = datetime.now()
         today = datetime(now.year, now.month, now.day)
-        utc_today = today - timedelta(hours=8)
+        # utc_today = today - timedelta(hours=8)
         utc_next_day = utc_today + timedelta(hours=48)
 
         client = clickhouse_connect.get_client(host='10.10.20.50', port=8123)
@@ -308,7 +308,7 @@ class PyCH:
     def get_aton_statistic():
         now = datetime.now() 
         #today = datetime(now.year, now.month, now.day)
-        utc_today = now - timedelta(hours=8)
+        # utc_today = now - timedelta(hours=8)
         utc_last24 = utc_today - timedelta(hours=24)
 
         url = 'https://script.google.com/macros/s/AKfycby_0eK24X153QquX7gb-KIvczqFlEcscRd8U70PyY-wPN5sUvHJYycLczwtfKppoMj2/exec?op=lastmtndate'
@@ -431,7 +431,7 @@ class PyCH:
     def get_aton_voltdata(mmsi):
         now = datetime.now() 
         #today = datetime(now.year, now.month, now.day)
-        utc_today = now - timedelta(hours=8)
+        # utc_today = now - timedelta(hours=8)
         utc_last24 = utc_today - timedelta(hours=72)
 
 
