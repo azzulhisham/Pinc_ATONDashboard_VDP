@@ -35,12 +35,24 @@
 
 
 /* Dashboard Properties */
+.main-container {
+  position: absolute;
+  top: 0;
+  left: 0;
+}
+
 .module-title {
     letter-spacing: 4px;
 }
 
 .mapContainer {
     height: 90vh;
+}
+
+.dashboard-title {
+  margin-left: 32px;
+  letter-spacing: 3px !important;
+  font-weight: 500;
 }
 
 
@@ -519,9 +531,63 @@ nav .nav-content {
   
   
   /* Tabulator Table Styling */
+  .tabulate-container {
+    position: absolute;
+    top: 65px;
+    left: -2000px;
+    /* color: rgb(198, 172, 254); */
+    width: 96%;
+    height: 100vh;
+    background-color: #343533;
+    color: rgba(209, 213, 219, 1);
+    padding-left: 20px;
+    padding-right: 20px;
+    padding-bottom: 20px;
+    opacity: 1;
+    /* z-index: 1; */
+    transition: 0.6s all;
+  }
+
+  .tabulate-container.openwide {
+    opacity: 1;
+    transform: translateX(2080px);
+  }
 
   #data-table {
-    width: 1200px;
+    /* width: 95%; */
     font-size: smaller !important;
     margin-top: 15px;
+  }
+
+  .tabulate-func-container {
+    display:flex; 
+    justify-content:space-between; 
+    align-items: center; 
+    margin-right: 30px;
+  }
+
+  .tabulate-func-button-container {
+    display: inline-block;
+  }
+
+  .tabulate-func-button-container select {
+    height: 40px;
+    background: transparent;
+    border: 1px solid white;
+    border-radius: 5px;
+    margin-top: 15px;
+    margin-right: 8px;
+    padding-left: 8px;
+    padding-right: 8px;
+  }
+
+  .tabulate-func-button-container input {
+    height: 40px;
+    background: transparent;
+    border: 1px solid white;
+    border-radius: 5px;
+    margin-top: 15px;
+    margin-right: 8px;
+    padding-left: 8px;
+    padding-right: 8px;
   }

@@ -49,11 +49,11 @@
         <header class="relative flex h-16 flex-shrink-0 items-center bg-gray-800">
             <!-- Logo area -->
             <div class="absolute inset-y-0 left-0 lg:static lg:flex-shrink-0">
-                <a href="#"
-                    class="flex h-16 w-16 items-center justify-center bg-cyan-400 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-blue-600 lg:w-20">
+                <a href="#" onclick="close_analytic()"
+                    class="flex h-16 w-160 items-center bg-cyan-400 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-blue-600 dashboard-title">
                     <!-- <img class="h-8 w-auto" src="https://tailwindui.com/img/logos/mark.svg?color=white"
                         alt="Your Company"> -->
-                    <h2 class="text-3xl font-semibold text-gray-300">A</h2>
+                    <h2 id="dashboard-title-label" class="text-2xl text-gray-300">ATON MONITORING</h2>
                 </a>
             </div>
 
@@ -344,7 +344,7 @@
                                                     <div class="sm:flex sm:items-start justify-center ">
                                                         <div class=" mt-3 text-center sm:ml-4 sm:mt-0 sm:text-left">
 
-                                                            <div>
+                                                            <!-- <div>
                                                                 <button id="download-csv"
                                                                     class="text-white bg-blue-700 px-4 py-2 mt-4 rounded">Download
                                                                     CSV</button>
@@ -354,9 +354,9 @@
                                                                 <button id="download-pdf"
                                                                     class="text-white bg-blue-700 px-4 py-2 mt-4 rounded">Download
                                                                     PDF</button>
-                                                            </div>
+                                                            </div> -->
 
-                                                            <div id="data-table"></div>
+                                                            <!-- <div id="data-table"></div> -->
                                                         </div>
                                                     </div>
                                                 </div>
@@ -2150,6 +2150,64 @@
 
                         <canvas id="summary-chart3" class="msg-count-container-chart"></canvas>
                     </div>
+                </div>
+
+                <div id="tabulate-container" class="tabulate-container">
+                    <div class="tabulate-func-container">
+                        <div class="tabulate-func-button-container">
+                            <select id="filter-field">
+                                <option></option>
+                                <option value="minTemp">Min. Temp.</option>
+                                <option value="maxTemp">Max. Temp.</option>
+                                <option value="minBattAton">Min. Battery ATON</option>
+                                <option value="maxBattAton">Max. Battery ATON</option>
+                                <option value="meanBattAton">Avg. Battery ATON</option>
+                                <option value="stddevBattAton">Std. dev. Battery ATON</option>
+                                <option value="skewBattAton">Skew Battery ATON</option>
+                                <option value="kurtBattAton">Skew Battery ATON</option>
+
+                                <option value="minBattLant">Min. Battery Lantern</option>
+                                <option value="maxBattLant">Max. Battery Lantern</option>
+                                <option value="meanBattLant">Avg. Battery Lantern</option>
+                                <option value="stddevBattLant">Std. dev. Battery Lantern</option>
+                                <option value="skewBattLant">Skew Battery Lantern</option>
+                                <option value="kurtBattLant">Skew Battery Lantern</option>  
+                                
+                                <option value="msg6Count">Message 6 Counting</option>
+
+                                <!-- <option value="function">Drives & Rating < 3</option> -->
+                            </select>
+                            
+                            <select id="filter-type">
+                                <option value="=">=</option>
+                                <option value="<"><</option>
+                                <option value="<="><=</option>
+                                <option value=">">></option>
+                                <option value=">=">>=</option>
+                                <option value="!=">!=</option>
+                                <option value="like">like</option>
+                            </select>
+    
+                            <input id="filter-value" type="text" placeholder="value to filter">        
+                            <button id="filter-clear" class="text-white bg-blue-700 px-4 py-2 mt-4 rounded">Clear Filter</button>
+                        </div>
+      
+                        <div class="tabulate-func-button-container">
+                            <button id="download-csv"
+                                class="text-white bg-blue-700 px-4 py-2 mt-4 rounded">Download
+                                CSV</button>
+                            <button id="download-json"
+                                class="text-white bg-blue-700 px-4 py-2 mt-4 rounded">Download
+                                JSON</button>
+                            <button id="download-pdf"
+                                class="text-white bg-blue-700 px-4 py-2 mt-4 rounded">Download
+                                PDF</button>
+                        </div>
+                    </div>
+                
+                    <div id="data-table">
+
+                    </div>                
                 </div>
                 </aside>
             </main>

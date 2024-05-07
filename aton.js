@@ -5,10 +5,13 @@ lst_ngatoninfo = {};
 lst_atonData = {};
 lst_statistic = [];
 lst_voltdata = [];
+
 summary_det = undefined
+analytic_table = undefined
 
 
 // DOM Objects
+const aton_map = document.getElementById('map')
 const closeVesselInfo = document.getElementById("closeVesselInfo")
 // const vesselInfo = document.querySelector('.vessel-info')
 const vesselInfo = document.getElementById('aton-info-panel')
@@ -68,6 +71,16 @@ const showReport = document.getElementById('showReport');
 const dialogShowReport = document.getElementById('dialogShowReport');
 dialogShowReport.classList.add("hidden");
 const closeReportButton = document.getElementById('closeReport');
+
+
+
+//Define variables for input elements
+const tabulate_container = document.getElementById('tabulate-container')
+const dashboard_title_label = document.getElementById('dashboard-title-label')
+const fieldEl = document.getElementById("filter-field");
+const typeEl = document.getElementById("filter-type");
+const valueEl = document.getElementById("filter-value");
+
 
 // Javascript show hide sidebar menu
 const sidebarMenu = document.getElementById('sidebarMenu');
@@ -390,27 +403,7 @@ infoOptions.addEventListener('mouseleave', () => {
 
 // Dialog Cart Handling
 showChart.addEventListener('click', () => {
-    // dialogShowChart.classList.remove('hidden');
-    if (msg_count_container.classList.contains('openwide')) {
-        msg_count_container.classList.remove('openwide')
-
-        map.flyTo({
-            center: [102.211728, 3.515546],
-            zoom: 6.5,
-            duration: 3000,
-            essential: true // this animation is considered essential with respect to prefers-reduced-motion
-        });
-    }
-    else {
-        msg_count_container.classList.add('openwide')
-
-        map.flyTo({
-            center: [101.7, 3.515546],
-            zoom: 6.5,
-            duration: 3000,
-            essential: true // this animation is considered essential with respect to prefers-reduced-motion
-        });
-    }
+    toggle_msg_counting_chart_panel()
 });
 
 closeChartButton.addEventListener('click', () => {
@@ -420,17 +413,21 @@ closeChartButton.addEventListener('click', () => {
 
 // Dialog Report Handling
 showReport.addEventListener('click', () => {
-    data_table.innerHTML = ''
+    //data_table.innerHTML = ''
 
     if (data_table.classList.contains("highcharts-dark")) {
         data_table.classList.remove("highcharts-dark")
     }
 
-    build_tabulator_table()
-    dialogShowReport.classList.remove('hidden');
-    download_csv.classList.remove('hidden')
-    download_json.classList.remove('hidden')
-    download_pdf.classList.remove('hidden')
+    // build_tabulator_table()
+    // dialogShowReport.classList.remove('hidden');
+    // download_csv.classList.remove('hidden')
+    // download_json.classList.remove('hidden')
+    // download_pdf.classList.remove('hidden')
+
+    aton_map.classList.add('hidden')
+    dashboard_title_label.innerText = 'ATON ANALYTICS'
+    tabulate_container.classList.add('openwide')
 });
 
 closeReportButton.addEventListener('click', () => {
@@ -440,6 +437,21 @@ closeReportButton.addEventListener('click', () => {
 btn_search_clear.addEventListener('click', () => {
     inp_search.value = ''
 })
+
+
+//Update filters on value change
+document.getElementById("filter-field").addEventListener("change", updateFilter);
+document.getElementById("filter-type").addEventListener("change", updateFilter);
+document.getElementById("filter-value").addEventListener("keyup", updateFilter);
+
+//Clear filters on "Clear Filters" button click
+document.getElementById("filter-clear").addEventListener("click", function(){
+  fieldEl.value = "";
+  typeEl.value = "=";
+  valueEl.value = "";
+
+  analytic_table.clearFilter();
+});
 
 
 ///////////////////
@@ -516,11 +528,64 @@ map.on('load', ()=> {
 });
 
 
-
-
 /////////////////////////////////////////////////////////
 // General Purpose Functions
 /////////////////////////////////////////////////////////
+function toggle_msg_counting_chart_panel() {
+    // dialogShowChart.classList.remove('hidden');
+    if (msg_count_container.classList.contains('openwide')) {
+        msg_count_container.classList.remove('openwide')
+
+        map.flyTo({
+            center: [102.211728, 3.515546],
+            zoom: 6.5,
+            duration: 3000,
+            essential: true // this animation is considered essential with respect to prefers-reduced-motion
+        });
+    }
+    else {
+        msg_count_container.classList.add('openwide')
+
+        map.flyTo({
+            center: [101.7, 3.515546],
+            zoom: 6.5,
+            duration: 3000,
+            essential: true // this animation is considered essential with respect to prefers-reduced-motion
+        });
+    }    
+}
+
+function close_analytic() {
+    aton_map.classList.remove('hidden')
+    dashboard_title_label.innerText = 'ATON MONITORING'
+    tabulate_container.classList.remove('openwide')
+}
+
+//Custom filter example
+function customFilter(data){
+    return data.car && data.rating < 3;
+}
+
+//Trigger setFilter function with correct parameters
+function updateFilter(){
+    var filterVal = fieldEl.options[fieldEl.selectedIndex].value;
+    var typeVal = typeEl.options[typeEl.selectedIndex].value;
+  
+    var filter = filterVal == "function" ? customFilter : filterVal;
+  
+    if(filterVal == "function" ){
+      typeEl.disabled = true;
+      valueEl.disabled = true;
+    }else{
+      typeEl.disabled = false;
+      valueEl.disabled = false;
+    }
+  
+    if(filterVal){
+      analytic_table.setFilter(filter,typeVal, valueEl.value);
+    }
+  }
+
 meas_dist_func.addEventListener('click', () => {
     // trigger distance measurement
     if (meas_dist_func.classList.contains('distance-bar-deactive')){
@@ -1837,7 +1902,7 @@ function init_WebSocket2(){
         }
 
         if (obj['payload'] === 'getatonstatistic_done') {
-            build_tabulator_table()
+            analytic_table = build_tabulator_table()
         } 
         
         if (obj['payload'] === 'getallatonvoltdata') {
@@ -1997,7 +2062,7 @@ function clearHeartbeat2() {
 function build_tabulator_table() {
     //Build Tabulator
     var table = new Tabulator("#data-table", {
-        height: "400px",
+        height: "86%",
         resizableColumnFit:true,
         renderHorizontal:"virtual",
         data:lst_statistic,
@@ -2030,7 +2095,7 @@ function build_tabulator_table() {
             }},
             {title:"Avg. Batt<br>ATON", field:"meanBattAton"},
             {title:"Stddev<br>Batt ATON", field:"stddevBattAton"},
-            {title:"Skew Batt<br>ATON.", field:"skewBattAton"},
+            {title:"Skew Batt<br>ATON", field:"skewBattAton"},
             {title:"Kurt Batt<br>ATON", field:"kurtBattAton"},
 
             {title:"Min. Batt<br>Lantern", field:"minBattLant", formatter:function(cell, formatterParams){
@@ -2115,6 +2180,8 @@ function build_tabulator_table() {
     // document.getElementById("download-html").addEventListener("click", function(){
     //     table.download("html", "data.html", {style:true});
     // });
+
+    return table
 }
 
 
@@ -2466,3 +2533,4 @@ const updateChart = (data) => {
 };
 
 
+setTimeout(toggle_msg_counting_chart_panel, 5000)
