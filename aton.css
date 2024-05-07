@@ -133,6 +133,15 @@
     color: #EF4444 !important;
 }
 
+#dashboard-title-label {
+  display: inline-block;
+  margin-right: 40px;
+  font-weight: 600;
+  font-size: larger;
+  letter-spacing: 4px;
+}
+
+
 /* aton message counting container */
 .aton-msg-cnt-container {
   position: absolute;
@@ -551,6 +560,12 @@ nav .nav-content {
   .tabulate-container.openwide {
     opacity: 1;
     transform: translateX(2080px);
+  }
+
+  #chart-data {
+    width: 1200px;
+    font-size: smaller !important;
+    margin-top: 15px;
   }
 
   #data-table {

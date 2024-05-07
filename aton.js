@@ -72,6 +72,7 @@ const dialogShowReport = document.getElementById('dialogShowReport');
 dialogShowReport.classList.add("hidden");
 const closeReportButton = document.getElementById('closeReport');
 
+const chart_data = document.getElementById('chart-data')
 
 
 //Define variables for input elements
@@ -426,7 +427,7 @@ showReport.addEventListener('click', () => {
     // download_pdf.classList.remove('hidden')
 
     aton_map.classList.add('hidden')
-    dashboard_title_label.innerText = 'ATON ANALYTICS'
+    //dashboard_title_label.innerText = 'ATON ANALYTICS'
     tabulate_container.classList.add('openwide')
 });
 
@@ -557,7 +558,7 @@ function toggle_msg_counting_chart_panel() {
 
 function close_analytic() {
     aton_map.classList.remove('hidden')
-    dashboard_title_label.innerText = 'ATON MONITORING'
+    //dashboard_title_label.innerText = 'ATON MONITORING'
     tabulate_container.classList.remove('openwide')
 }
 
@@ -1910,8 +1911,8 @@ function init_WebSocket2(){
         }
 
         if (obj['payload'] === 'getallatonvoltdata_done') {
-            data_table.innerHTML = ''
-            data_table.classList.add("highcharts-dark")
+            chart_data.innerHTML = ''
+            chart_data.classList.add("highcharts-dark")
             build_chart()
             dialogShowReport.classList.remove('hidden');
         }  
@@ -2200,7 +2201,7 @@ function build_chart(){
         y2.push(elem.volt_ex1)
     })
 
-    Highcharts.chart('data-table', {
+    Highcharts.chart('chart-data', {
         chart: {
             styledMode: true
         },

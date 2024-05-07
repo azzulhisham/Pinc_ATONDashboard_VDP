@@ -39,6 +39,7 @@
     <!-- Style Sheet -->
     <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
     <link href="aton.css" rel="stylesheet">
+    <!-- <link href="https://code.highcharts.com/dashboards/css/dashboards.css" rel="stylesheet"> -->
     <link href="highchart.css" rel="stylesheet">
 </head>
 
@@ -50,10 +51,10 @@
             <!-- Logo area -->
             <div class="absolute inset-y-0 left-0 lg:static lg:flex-shrink-0">
                 <a href="#" onclick="close_analytic()"
-                    class="flex h-16 w-160 items-center bg-cyan-400 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-blue-600 dashboard-title">
+                    class="flex h-16 w-16 items-center justify-center bg-cyan-400 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-blue-600 lg:w-20">
                     <!-- <img class="h-8 w-auto" src="https://tailwindui.com/img/logos/mark.svg?color=white"
                         alt="Your Company"> -->
-                    <h2 id="dashboard-title-label" class="text-2xl text-gray-300">ATON MONITORING</h2>
+                    <h2 class="text-3xl font-semibold text-gray-300">A</h2>
                 </a>
             </div>
 
@@ -356,7 +357,7 @@
                                                                     PDF</button>
                                                             </div> -->
 
-                                                            <!-- <div id="data-table"></div> -->
+                                                            <div id="chart-data"></div>
                                                         </div>
                                                     </div>
                                                 </div>
@@ -2155,6 +2156,7 @@
                 <div id="tabulate-container" class="tabulate-container">
                     <div class="tabulate-func-container">
                         <div class="tabulate-func-button-container">
+                            <h1 id="dashboard-title-label">ATON ANALYTICS</h1>
                             <select id="filter-field">
                                 <option></option>
                                 <option value="minTemp">Min. Temp.</option>
