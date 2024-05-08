@@ -2187,9 +2187,9 @@ function build_tabulator_table() {
 
 
 function build_chart(){
-    download_csv.classList.add('hidden')
-    download_json.classList.add('hidden')
-    download_pdf.classList.add('hidden')
+    // download_csv.classList.add('hidden')
+    // download_json.classList.add('hidden')
+    // download_pdf.classList.add('hidden')
 
     x = []
     y1 = []
