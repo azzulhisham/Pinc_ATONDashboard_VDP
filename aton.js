@@ -2068,7 +2068,7 @@ function build_tabulator_table() {
         renderHorizontal:"virtual",
         data:lst_statistic,
         columns:[
-            {title:"No", field:"no"},
+            {title:"No", field:"no", formatter:"rownum"},
             {title:"Site Name", field:"al_name", headerFilter:"input", width:100},
             {title:"MMSI", field:"mmsi", headerFilter:"input", width:100},
             {title:"Structure", field:"al_type", headerFilter:"input", width:100},
