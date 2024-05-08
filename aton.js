@@ -8,6 +8,7 @@ lst_voltdata = [];
 
 summary_det = undefined
 analytic_table = undefined
+analytic_row_number = 0
 
 
 // DOM Objects
@@ -457,11 +458,13 @@ document.getElementById("filter-clear").addEventListener("click", function(){
 
 //trigger download of data.csv file
 document.getElementById("download-csv").addEventListener("click", function(){
+    analytic_row_number = 0
     analytic_table.download("csv", "data.csv");
 });
 
 //trigger download of data.json file
 document.getElementById("download-json").addEventListener("click", function(){
+    analytic_row_number = 0
     analytic_table.download("json", "data.json");
 });
 
@@ -472,6 +475,7 @@ document.getElementById("download-json").addEventListener("click", function(){
 
 //trigger download of data.pdf file
 document.getElementById("download-pdf").addEventListener("click", function(){
+    analytic_row_number = 0
     analytic_table.download("pdf", "data.pdf", {
         orientation:"landscape", //set page orientation to portrait
         title:"Report", //add title to report
@@ -2082,6 +2086,20 @@ function clearHeartbeat2() {
 
 // setInterval(updateDashboard, 30000);
 
+var customAccessor = function(value, data, type, params, column, row){
+    //value - original value of the cell
+    //data - the data for the row
+    //type - the type of access occurring  (data|download|clipboard)
+    //params - the accessorParams object passed from the column definition
+    //column - column component for the column this accessor is bound to
+    //row - row component for the row
+
+    //return Math.floor(value); //return the new value for the cell data.
+
+    analytic_row_number += 1
+    console.log(analytic_row_number)
+    return analytic_row_number
+}
 
 function build_tabulator_table() {
     //Build Tabulator
@@ -2093,7 +2111,7 @@ function build_tabulator_table() {
         // responsiveLayout:"hide",
         data:lst_statistic,
         columns:[
-            {title:"No", field:"no", formatter:"rownum"},
+            {title:"No", field:"no", formatter:"rownum", accessor:customAccessor},
             {title:"Site Name", field:"al_name", headerFilter:"input", width:100},
             {title:"MMSI", field:"mmsi", headerFilter:"input", width:100},
             {title:"Structure", field:"al_type", headerFilter:"input", width:100},
