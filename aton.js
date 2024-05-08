@@ -455,6 +455,29 @@ document.getElementById("filter-clear").addEventListener("click", function(){
 });
 
 
+//trigger download of data.csv file
+document.getElementById("download-csv").addEventListener("click", function(){
+    analytic_table.download("csv", "data.csv");
+});
+
+//trigger download of data.json file
+document.getElementById("download-json").addEventListener("click", function(){
+    analytic_table.download("json", "data.json");
+});
+
+//trigger download of data.xlsx file
+//document.getElementById("download-xlsx").addEventListener("click", function(){
+//     table.download("xlsx", "data.xlsx", {sheetName:"My Data"});
+// });
+
+//trigger download of data.pdf file
+document.getElementById("download-pdf").addEventListener("click", function(){
+    analytic_table.download("pdf", "data.pdf", {
+        orientation:"landscape", //set page orientation to portrait
+        title:"Report", //add title to report
+    });
+});
+
 ///////////////////
 //     mapbox
 ///////////////////
@@ -2066,6 +2089,8 @@ function build_tabulator_table() {
         height: "86%",
         resizableColumnFit:true,
         renderHorizontal:"virtual",
+        clipboard:true,
+        // responsiveLayout:"hide",
         data:lst_statistic,
         columns:[
             {title:"No", field:"no", formatter:"rownum"},
@@ -2152,29 +2177,6 @@ function build_tabulator_table() {
             {title:"Last Seen<br>(Second)", field:"at_ts"},
             {title:"Last<br>Maintain", field:"last_maintain"}
         ],
-    });
-
-    //trigger download of data.csv file
-    document.getElementById("download-csv").addEventListener("click", function(){
-        table.download("csv", "data.csv");
-    });
-
-    //trigger download of data.json file
-    document.getElementById("download-json").addEventListener("click", function(){
-        table.download("json", "data.json");
-    });
-
-    //trigger download of data.xlsx file
-    //document.getElementById("download-xlsx").addEventListener("click", function(){
-    //     table.download("xlsx", "data.xlsx", {sheetName:"My Data"});
-    // });
-
-    //trigger download of data.pdf file
-    document.getElementById("download-pdf").addEventListener("click", function(){
-        table.download("pdf", "data.pdf", {
-            orientation:"portrait", //set page orientation to portrait
-            title:"Example Report", //add title to report
-        });
     });
 
     //trigger download of data.html file
