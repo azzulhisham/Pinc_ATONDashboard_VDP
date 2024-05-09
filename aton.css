@@ -606,3 +606,11 @@ nav .nav-content {
     padding-left: 8px;
     padding-right: 8px;
   }
+
+  .selected-summary-elem-OK {
+    color: var(--color-success);
+  }
+
+  .selected-summary-elem-NG {
+    color: var(--color-danger);
+  }

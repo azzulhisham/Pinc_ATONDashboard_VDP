@@ -96,7 +96,7 @@ async def handler(websocket, path):
                     # generate counting summary
                     atons_cnt += 1
 
-                    if i['ss_rowcountby_mmsi'] == 0:
+                    if i['aa_rowcountby_mmsi'] == 0:
                         no_msg6_cnt += 1
                         aton_info['status'] = 0  
                     

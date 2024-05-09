@@ -149,7 +149,7 @@ class PyCH:
                 )
                 select *
                 from aton_meas aa
-                join aton_static ss on aa.mmsi = ss.mmsi
+                right join aton_static ss on aa.mmsi = ss.mmsi
                 right join pnav.atonlist al on al.mmsi=ss.mmsi
         '''
         )
@@ -196,7 +196,7 @@ class PyCH:
                 'buoy_adjmaxpower': i[34],
                 'buoy_sensor_interrupt': i[35],
                 'buoy_solarcharging': i[36],
-
+                'aa_rowcountby_mmsi': i[37],
                 'ss_ts': i[38].strftime("%Y-%m-%d %H:%M:%S"),
                 'ss_packageType': i[39],
                 'ss_packageID': i[40],
@@ -309,7 +309,8 @@ class PyCH:
         now = datetime.now() 
         #today = datetime(now.year, now.month, now.day)
         utc_today = now - timedelta(hours=0)
-        utc_last24 = utc_today - timedelta(hours=24)
+        utc_last24 = utc_today - timedelta(hours=168)
+        utc_last24x = utc_today - timedelta(hours=192)
 
         url = 'https://script.google.com/macros/s/AKfycby_0eK24X153QquX7gb-KIvczqFlEcscRd8U70PyY-wPN5sUvHJYycLczwtfKppoMj2/exec?op=lastmtndate'
 
@@ -362,7 +363,7 @@ class PyCH:
                 select ts, mmsi,
                 row_number() over (PARTITION BY mmsi  order by ts desc) as rownum
                 from pnav.ais_type6_533
-                where ts >= '{utc_last24.strftime("%Y-%m-%d %H:%M:%S")}'
+                where ts >= '{utc_last24x.strftime("%Y-%m-%d %H:%M:%S")}'
             )
             select *, age('second', toDateTime(at.ts), now()) as lastseen
             from anal aa

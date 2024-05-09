@@ -6,9 +6,17 @@ lst_atonData = {};
 lst_statistic = [];
 lst_voltdata = [];
 
+lst_light_err = {};
+lst_battAton_ng = {};
+lst_battLant_ng = {};
+lst_offpos_ng = {};
+lst_ldr_ng = {};
+lst_no_msg6 = {};
+
 summary_det = undefined
 analytic_table = undefined
 analytic_row_number = 0
+selected_data_to_update_map = 0
 
 
 // DOM Objects
@@ -96,6 +104,7 @@ sidebarToggle.addEventListener("click", () => {
 });
 
 // sidebarMenu.classList.add("hidden");
+
 
 menuTimeoutId = undefined;
 optsTimeoutId = undefined;
@@ -481,6 +490,51 @@ document.getElementById("download-pdf").addEventListener("click", function(){
         title:"Report", //add title to report
     });
 });
+
+
+
+const update_aton_on_map0 = document.getElementById('update-aton-on-map0')
+update_aton_on_map0.addEventListener('click', (e) => {
+    selected_data_to_update_map = 0
+    update_aton_on_map(update_aton_on_map0, selected_data_to_update_map)
+})
+
+const update_aton_on_map1 = document.getElementById('update-aton-on-map1')
+update_aton_on_map1.addEventListener('click', (e) => {
+    selected_data_to_update_map = 1
+    update_aton_on_map(update_aton_on_map1, selected_data_to_update_map)
+})
+
+const update_aton_on_map2 = document.getElementById('update-aton-on-map2')
+update_aton_on_map2.addEventListener('click', (e) => {
+    selected_data_to_update_map = 2
+    update_aton_on_map(update_aton_on_map2, selected_data_to_update_map)
+})
+
+const update_aton_on_map3 = document.getElementById('update-aton-on-map3')
+update_aton_on_map3.addEventListener('click', (e) => {
+    selected_data_to_update_map = 3
+    update_aton_on_map(update_aton_on_map3, selected_data_to_update_map)
+})
+
+const update_aton_on_map4 = document.getElementById('update-aton-on-map4')
+update_aton_on_map4.addEventListener('click', (e) => {
+    selected_data_to_update_map = 4
+    update_aton_on_map(update_aton_on_map4, selected_data_to_update_map)
+})
+
+const update_aton_on_map5 = document.getElementById('update-aton-on-map5')
+update_aton_on_map5.addEventListener('click', (e) => {
+    selected_data_to_update_map = 5
+    update_aton_on_map(update_aton_on_map5, selected_data_to_update_map)
+})
+
+const update_aton_on_map6 = document.getElementById('update-aton-on-map6')
+update_aton_on_map6.addEventListener('click', (e) => {
+    selected_data_to_update_map = 6
+    update_aton_on_map(update_aton_on_map6, selected_data_to_update_map)
+})
+
 
 ///////////////////
 //     mapbox
@@ -1323,23 +1377,29 @@ function summary_details(obj) {
 function compute_summary_details(atonInfo, data){
     data.atons_cnt += 1
     
-    if (atonInfo['ss_rowcountby_mmsi'] == 0) {
+    if (atonInfo['aa_rowcountby_mmsi'] == 0) {
         data.no_msg6_cnt += 1 
+        lst_no_msg6[atonInfo['mmsi']] = atonInfo
     }
     if (atonInfo['light'] == 3){
         data.light_err_cnt += 1
+        lst_light_err[atonInfo['mmsi']] = atonInfo
     }
     if (atonInfo['volt_int'] < 12.0) {
         data.battAton_cnt += 1
+        lst_battAton_ng[atonInfo['mmsi']] = atonInfo
     }
     if (atonInfo['volt_ex1'] < 12.0) {
         data.battLant_cnt += 1
+        lst_battLant_ng[atonInfo['mmsi']] = atonInfo
     }
     if (atonInfo['off_pos'] != 0) {
         data.offpos_cnt += 1
+        lst_offpos_ng[atonInfo['mmsi']] = atonInfo
     }
     if (atonInfo['ambient'] == 0) {
         data.ldr_cnt += 1
+        lst_ldr_ng[atonInfo['mmsi']] = atonInfo
     }
 
     return data
@@ -1358,9 +1418,21 @@ function cal_summary_details() {
         no_msg6_cnt: 0,
     }
 
+    lst_light_err = {};
+    lst_battAton_ng = {};
+    lst_battLant_ng = {};
+    lst_offpos_ng = {};
+    lst_ldr_ng = {};
+    lst_no_msg6 = {};
+
 
     if (chk_select_beacon.checked && chk_select_buoy.checked && chk_select_lighthouse.checked && rad_aton_all.checked) {
         summary_details(summary_det)
+
+        for (let i in lst_atoninfo){
+            atonInfo = lst_atoninfo[i]
+            summary_data = compute_summary_details(atonInfo, summary_data)
+        }   
     }
     else {
         if (chk_select_beacon.checked && chk_select_buoy.checked && chk_select_lighthouse.checked && rad_aton_ok.checked) {
@@ -1379,8 +1451,6 @@ function cal_summary_details() {
                     summary_data = compute_summary_details(atonInfo, summary_data)
                 }
             }
-
-            console.log(summary_data)
         }      
 
         if (chk_select_beacon.checked && chk_select_buoy.checked && chk_select_lighthouse.checked && rad_aton_ng.checked) {
@@ -1746,8 +1816,225 @@ function cal_summary_details() {
     
         summary_details(aton_summary)
     }
+
+    if (selected_data_to_update_map == 0) {
+        update_aton_on_map(update_aton_on_map0, selected_data_to_update_map)
+    }
+    else if (selected_data_to_update_map == 1) {
+        update_aton_on_map(update_aton_on_map1, selected_data_to_update_map)
+    }
+    else if (selected_data_to_update_map == 2) {
+        update_aton_on_map(update_aton_on_map3, selected_data_to_update_map)
+    }
+    else if (selected_data_to_update_map == 3) {
+        update_aton_on_map(update_aton_on_map3, selected_data_to_update_map)
+    }
+    else if (selected_data_to_update_map == 4) {
+        update_aton_on_map(update_aton_on_map4, selected_data_to_update_map)
+    }
+    else if (selected_data_to_update_map == 5) {
+        update_aton_on_map(update_aton_on_map5, selected_data_to_update_map)
+    }
+    else if (selected_data_to_update_map == 6) {
+        update_aton_on_map(update_aton_on_map6, selected_data_to_update_map)
+    }
 }
 
+
+
+function update_aton_on_map(elem, dataNo) {
+    update_aton_on_map0.children[1].classList.remove('selected-summary-elem-OK')
+    update_aton_on_map1.children[1].classList.remove('selected-summary-elem-NG')
+    update_aton_on_map2.children[1].classList.remove('selected-summary-elem-NG')
+    update_aton_on_map3.children[1].classList.remove('selected-summary-elem-NG')
+    update_aton_on_map4.children[1].classList.remove('selected-summary-elem-NG')
+    update_aton_on_map5.children[1].classList.remove('selected-summary-elem-NG')
+    update_aton_on_map6.children[1].classList.remove('selected-summary-elem-NG')
+
+
+    if (dataNo === 0) {
+        elem.children[1].classList.add('selected-summary-elem-OK')
+    }
+    else {
+        elem.children[1].classList.add('selected-summary-elem-NG')
+    }
+    
+
+    for (let i in lst_atoninfo) {
+        atonInfo = lst_atoninfo[i]
+        marker = lst_vessel[i]
+        selected_aton = undefined
+
+        if (dataNo === 1) {
+            selected_aton =  lst_no_msg6[i]
+        }
+        else if (dataNo === 2) {
+            selected_aton =  lst_light_err[i]
+        }
+        else if (dataNo === 3) {
+            selected_aton =  lst_battAton_ng[i]
+        }
+        else if (dataNo === 4) {
+            selected_aton =  lst_battLant_ng[i]
+        }
+        else if (dataNo === 5) {
+            selected_aton =  lst_ldr_ng[i]
+        }
+        else if (dataNo === 6) {
+            selected_aton =  lst_offpos_ng[i]
+        }
+        else if (dataNo === 0) {
+            selected_aton =  atonInfo
+        }
+        
+        
+        if (selected_aton == undefined){
+            marker.remove()
+        }
+        else{
+            let chkElem = document.getElementById('vessels-on-sea_' + atonInfo['mmsi'])
+
+            if (chkElem == null) {
+                if (dataNo != 0){
+                    marker.addTo(map)
+                }
+                else {
+                    if (chk_select_beacon.checked && chk_select_buoy.checked && chk_select_lighthouse.checked && rad_aton_all.checked) {
+                        if (atonInfo['status'] == 1 && (atonInfo['type'].toLowerCase() == 'beacon' || atonInfo['type'].toLowerCase() == 'buoy' || atonInfo['type'].toLowerCase() == 'lighthouse')){
+                            marker.addTo(map)
+                        }
+                    }
+                    else {
+                        if (chk_select_beacon.checked && chk_select_buoy.checked && chk_select_lighthouse.checked && rad_aton_ok.checked) {
+                            if (atonInfo['status'] == 1) {
+                                marker.addTo(map)
+                            }
+                        }      
+                
+                        if (chk_select_beacon.checked && chk_select_buoy.checked && chk_select_lighthouse.checked && rad_aton_ng.checked) {
+                            if (atonInfo['status'] == 0) {
+                                marker.addTo(map)
+                            }       
+                        } 
+
+                        /// ok
+                        if (chk_select_beacon.checked && chk_select_buoy.checked && !chk_select_lighthouse.checked && rad_aton_ok.checked) {
+                            if (atonInfo['status'] == 1 && (atonInfo['type'].toLowerCase() == 'beacon' || atonInfo['type'].toLowerCase() == 'buoy')) {
+                                marker.addTo(map)
+                            }
+                        }  
+                        
+                        if (chk_select_beacon.checked && !chk_select_buoy.checked && chk_select_lighthouse.checked && rad_aton_ok.checked) {
+                            if (atonInfo['status'] == 1 && (atonInfo['type'].toLowerCase() == 'beacon' || atonInfo['type'].toLowerCase() == 'lighthouse')) {
+                                marker.addTo(map)
+                            }
+                        } 
+                        
+                        if (chk_select_beacon.checked && !chk_select_buoy.checked && !chk_select_lighthouse.checked && rad_aton_ok.checked) {
+                            if (atonInfo['status'] == 1 && atonInfo['type'].toLowerCase() == 'beacon') {
+                                marker.addTo(map)
+                            }
+                        } 
+                        
+                        if (!chk_select_beacon.checked && chk_select_buoy.checked && chk_select_lighthouse.checked && rad_aton_ok.checked) {
+                            if (atonInfo['status'] == 1 && (atonInfo['type'].toLowerCase() == 'buoy' || atonInfo['type'].toLowerCase() == 'lighthouse')) {
+                                marker.addTo(map)
+                            }
+                        }          
+
+                        if (!chk_select_beacon.checked && chk_select_buoy.checked && !chk_select_lighthouse.checked && rad_aton_ok.checked) {
+                            if (atonInfo['status'] == 1 && atonInfo['type'].toLowerCase() == 'buoy') {
+                                marker.addTo(map)
+                            }
+                        }  
+
+                        if (!chk_select_beacon.checked && !chk_select_buoy.checked && chk_select_lighthouse.checked && rad_aton_ok.checked) {
+                            if (atonInfo['status'] == 1 && atonInfo['type'].toLowerCase() == 'lighthouse') {
+                                marker.addTo(map)
+                            }
+                        } 
+                        
+
+                        /// ng
+                        if (chk_select_beacon.checked && chk_select_buoy.checked && !chk_select_lighthouse.checked && rad_aton_ng.checked) {
+                            if (atonInfo['status'] == 0 && (atonInfo['type'].toLowerCase() == 'beacon' || atonInfo['type'].toLowerCase() == 'buoy')) {
+                                marker.addTo(map)
+                            }
+                        }  
+                        
+                        if (chk_select_beacon.checked && !chk_select_buoy.checked && chk_select_lighthouse.checked && rad_aton_ng.checked) {
+                            if (atonInfo['status'] == 0 && (atonInfo['type'].toLowerCase() == 'beacon' || atonInfo['type'].toLowerCase() == 'lighthouse')) {
+                                marker.addTo(map)
+                            }
+                        } 
+                        
+                        if (chk_select_beacon.checked && !chk_select_buoy.checked && !chk_select_lighthouse.checked && rad_aton_ng.checked) {
+                            if (atonInfo['status'] == 0 && atonInfo['type'].toLowerCase() == 'beacon') {
+                                marker.addTo(map)
+                            }
+                        } 
+                        
+                        if (!chk_select_beacon.checked && chk_select_buoy.checked && chk_select_lighthouse.checked && rad_aton_ng.checked) {
+                            if (atonInfo['status'] == 0 && (atonInfo['type'].toLowerCase() == 'buoy' || atonInfo['type'].toLowerCase() == 'lighthouse')) {
+                                marker.addTo(map)
+                            }
+                        }          
+
+                        if (!chk_select_beacon.checked && chk_select_buoy.checked && !chk_select_lighthouse.checked && rad_aton_ng.checked) {
+                            if (atonInfo['status'] == 0 && atonInfo['type'].toLowerCase() == 'buoy') {
+                                marker.addTo(map)
+                            }
+                        }  
+
+                        if (!chk_select_beacon.checked && !chk_select_buoy.checked && chk_select_lighthouse.checked && rad_aton_ng.checked) {
+                            if (atonInfo['status'] == 0 && atonInfo['type'].toLowerCase() == 'lighthouse') {
+                                marker.addTo(map)
+                            }
+                        } 
+                        
+                        
+                        /// all
+                        if (chk_select_beacon.checked && chk_select_buoy.checked && !chk_select_lighthouse.checked && rad_aton_all.checked) {
+                            if (atonInfo['type'].toLowerCase() == 'beacon' || atonInfo['type'].toLowerCase() == 'buoy') {
+                                marker.addTo(map)
+                            }
+                        }  
+                        
+                        if (chk_select_beacon.checked && !chk_select_buoy.checked && chk_select_lighthouse.checked && rad_aton_all.checked) {
+                            if (atonInfo['type'].toLowerCase() == 'beacon' || atonInfo['type'].toLowerCase() == 'lighthouse') {
+                                marker.addTo(map)
+                            } 
+                        }
+                        
+                        if (chk_select_beacon.checked && !chk_select_buoy.checked && !chk_select_lighthouse.checked && rad_aton_all.checked) {
+                            if (atonInfo['type'].toLowerCase() == 'beacon') {
+                                marker.addTo(map)
+                            }
+                        } 
+                        
+                        if (!chk_select_beacon.checked && chk_select_buoy.checked && chk_select_lighthouse.checked && rad_aton_all.checked) {
+                            if (atonInfo['type'].toLowerCase() == 'buoy' || atonInfo['type'].toLowerCase() == 'lighthouse') {
+                                marker.addTo(map)
+                            }
+                        }          
+
+                        if (!chk_select_beacon.checked && chk_select_buoy.checked && !chk_select_lighthouse.checked && rad_aton_all.checked) {
+                            if (atonInfo['type'].toLowerCase() == 'buoy') {
+                                marker.addTo(map)
+                            }
+                        }  
+
+                        if (!chk_select_beacon.checked && !chk_select_buoy.checked && chk_select_lighthouse.checked && rad_aton_all.checked) {
+                            if (atonInfo['type'].toLowerCase() == 'lighthouse') {
+                                marker.addTo(map)
+                            }
+                        }                         
+                    }
+                }
+            }
+        }
+    }
+}
 
 /////////////////////////////////////////////////////////
 // JavaScript example using WebSocket object
@@ -1789,6 +2076,7 @@ function init_WebSocket2(){
         if (obj['payload'] === 'getatoninitialcount') {
             summary_details(obj)
             summary_det = JSON.parse(event.data);
+            cal_summary_details()
         }
 
         if (obj['payload'] === 'getallaton') {
@@ -2097,7 +2385,7 @@ var customAccessor = function(value, data, type, params, column, row){
     //return Math.floor(value); //return the new value for the cell data.
 
     analytic_row_number += 1
-    console.log(analytic_row_number)
+
     return analytic_row_number
 }
 
