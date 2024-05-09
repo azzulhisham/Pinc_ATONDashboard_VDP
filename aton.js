@@ -1900,7 +1900,7 @@ function update_aton_on_map(elem, dataNo) {
                 }
                 else {
                     if (chk_select_beacon.checked && chk_select_buoy.checked && chk_select_lighthouse.checked && rad_aton_all.checked) {
-                        if (atonInfo['status'] == 1 && (atonInfo['type'].toLowerCase() == 'beacon' || atonInfo['type'].toLowerCase() == 'buoy' || atonInfo['type'].toLowerCase() == 'lighthouse')){
+                        if ((atonInfo['type'].toLowerCase() == 'beacon' || atonInfo['type'].toLowerCase() == 'buoy' || atonInfo['type'].toLowerCase() == 'lighthouse')){
                             marker.addTo(map)
                         }
                     }
