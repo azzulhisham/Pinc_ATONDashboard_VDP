@@ -428,19 +428,20 @@ class PyCH:
 
         return ret_result   
 
-    # get aton volt data for last 24 hours
+    # get aton volt data for last 7 days
     def get_aton_voltdata(mmsi):
         now = datetime.now() 
         #today = datetime(now.year, now.month, now.day)
         utc_today = now - timedelta(hours=0)
-        utc_last24 = utc_today - timedelta(hours=72)
+        utc_last24 = utc_today - timedelta(hours=168)
 
 
         client = clickhouse_connect.get_client(host='10.10.20.50', port=8123)
         result = client.query(
         f'''
-            select ts, volt_int, volt_ex1 
-            from pnav.ais_type6_533
+            select ts, volt_int, volt_ex1, al.name 
+            from pnav.ais_type6_533 at
+            join pnav.atonlist al on al.mmsi=at.mmsi
             where ts >= '{utc_last24.strftime("%Y-%m-%d %H:%M:%S")}' and mmsi = {mmsi} 
             order by ts
         '''
@@ -452,12 +453,45 @@ class PyCH:
             data = {
                 'ts': (i[0] + timedelta(hours=8)).strftime("%Y-%m-%d %H:%M:%S"),
                 'volt_int': round(i[1], 2),
-                'volt_ex1': round(i[2], 2)
+                'volt_ex1': round(i[2], 2),
+                'atonname': i[3]
             }
 
             ret_result.append(data)   
 
         return ret_result   
+
+    # get aton volt data for last 7 days
+    def get_aton_beatdata(mmsi):
+        now = datetime.now() 
+        #today = datetime(now.year, now.month, now.day)
+        utc_today = now - timedelta(hours=0)
+        utc_last24 = utc_today - timedelta(hours=168)
+
+
+        client = clickhouse_connect.get_client(host='10.10.20.50', port=8123)
+        result = client.query(
+        f'''
+            select ts, beat, al.name 
+            from pnav.ais_type6_533 at
+            join pnav.atonlist al on al.mmsi=at.mmsi
+            where ts >= '{utc_last24.strftime("%Y-%m-%d %H:%M:%S")}' and mmsi = {mmsi} 
+            order by ts
+        '''
+        )
+
+        ret_result = []  
+
+        for i in result.result_rows:
+            data = {
+                'ts': (i[0] + timedelta(hours=8)).strftime("%Y-%m-%d %H:%M:%S"),
+                'beat': i[1],
+                'atonname': i[2]
+            }
+
+            ret_result.append(data)   
+
+        return ret_result  
 
 
     # get water level

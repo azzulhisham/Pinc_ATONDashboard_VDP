@@ -1073,6 +1073,11 @@ async function radicalMenuClick(e) {
             lst_voltdata = []
             ws2.send('getallatonvoltdata:' + elemid_text[1])
         }
+
+        if (elemid_text[0] == 'sp7'){
+            lst_voltdata = []
+            ws2.send('getallatonbeatdata:' + elemid_text[1])
+        }        
     }
 }
 
@@ -2245,6 +2250,17 @@ function init_WebSocket2(){
             build_chart()
             dialogShowReport.classList.remove('hidden');
         }  
+
+        if (obj['payload'] === 'getallatonbeatdata') {
+            lst_voltdata.push(obj) 
+        }
+
+        if (obj['payload'] === 'getallatonbeatdata_done') {
+            chart_data.innerHTML = ''
+            chart_data.classList.add("highcharts-dark")
+            build_chart_beat()
+            dialogShowReport.classList.remove('hidden');
+        }         
         
         if (obj['payload'] === 'getatonmsgcount') {
             updateChart(obj.items)
@@ -2529,7 +2545,7 @@ function build_chart(){
         },
 
         title: {
-            text: 'ATON Battery Voltage and Lantern Voltage for last 72 hours of ' + lst_voltdata[0].mmsi,
+            text:  lst_voltdata[0].mmsi + ' - ' + lst_voltdata[0].atonname + '<br>ATON Battery Voltage and Lantern Voltage for last 7 days',
             align: 'center'
         },
   
@@ -2577,6 +2593,70 @@ function build_chart(){
     });
 }
 
+function build_chart_beat(){
+    // download_csv.classList.add('hidden')
+    // download_json.classList.add('hidden')
+    // download_pdf.classList.add('hidden')
+
+    x = []
+    y1 = []
+    y2 = []
+
+    lst_voltdata.forEach(elem => {
+        x.push(elem.ts)
+        y1.push(elem.beat)
+    })
+
+    Highcharts.chart('chart-data', {
+        chart: {
+            styledMode: true
+        },
+
+        title: {
+            text:  lst_voltdata[0].mmsi + ' - ' + lst_voltdata[0].atonname + '<br>ATON Beat for last 7 days',
+            align: 'center'
+        },
+  
+        yAxis: {
+            title: {
+                text: 'State'
+            }
+        },
+    
+        xAxis: {
+            categories: x
+            
+            // type: 'datetime',
+            // offset: 40
+        },
+    
+        legend: {
+            layout: 'vertical',
+            align: 'right',
+            verticalAlign: 'middle'
+        },
+    
+        series: [{
+            name: 'ATON Beat',
+            data: y1
+        }],
+    
+        responsive: {
+            rules: [{
+                condition: {
+                    maxWidth: 500
+                },
+                chartOptions: {
+                    legend: {
+                        layout: 'horizontal',
+                        align: 'center',
+                        verticalAlign: 'bottom'
+                    }
+                }
+            }]
+        }
+    });
+}
 
 // message counting 
 // Add data to the chart
