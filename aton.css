@@ -291,13 +291,14 @@
   }
   
   .aton-detail-info span {
-    font-size: small
+    font-size: 10px;
   }
   
   .aton-detail-info label {
-    font-size: small;
+    font-size: 10px;
     display: inline-block;
-    width: 160px;
+    width: 150px;
+    height: 18px;
   }
   
   .hide-container {

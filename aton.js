@@ -1113,13 +1113,14 @@ function removeVesselPopup(e) {
 
 function vessel_info_panel(mmsi){
     const ambient = ["No LDR", "Dark", "Dim", "Bright"]
-    const lantern = ["No Light", "Primary", "secandary", "Emergency"]
+    const lantern = ["No Monitoring", "Primary", "secandary", "Emergency"]
     const lantern_batt = ["Unknown", "Bad", "Low", "Good"]
     const racon = ["Not Installed", "Not Monitor", "Operating", "Error"]
     const light = ["Not Installed", "Light ON", "Light OFF", "Error"]
 
     get_atoninfo = lst_atoninfo[mmsi]   // data from message 21
     //get_atonData = lst_atonData[mmsi]   // data from message 6
+    console.log(get_atoninfo)
 
     rms = false;
     elems = document.querySelectorAll('.aton-detail-info')
@@ -1193,7 +1194,10 @@ function vessel_info_panel(mmsi){
 
             const detShiptype = document.getElementById('det-shiptype-fid1')
             const detShipname = document.getElementById('det-shipname-fid1')
-            const detMMSI = document.getElementById('det-mmsi-fid2')
+            const detMMSI = document.getElementById('det-mmsi-fid1')
+            const detLastSeen = document.getElementById('det-lastseen-fid1')
+            const detLongitude = document.getElementById('det-longitude-fid1')
+            const detLatitude = document.getElementById('det-latitude-fid1')
 
             const det_voltage_int = document.getElementById('det-voltage-int-fid1')
             const det_voltage_ext1 = document.getElementById('det-voltage-ext1-fid1')
@@ -1211,8 +1215,11 @@ function vessel_info_panel(mmsi){
             const det_buoy_temp = document.getElementById('det-buoy-temp-fid1')
 
             detShiptype.innerText = ": " + get_atoninfo['type']
-            detShipname.innerText = ": " + get_atoninfo['atonname']
+            detShipname.innerText = ": " + (get_atoninfo['atonname'].length > 15 ? get_atoninfo['atonname'].substring(0, 15) + '...' : get_atoninfo['atonname'])
             detMMSI.innerText = ": " + get_atoninfo['mmsi']  
+            detLastSeen.innerText = ": " + get_atoninfo['lcl_ts'] 
+            detLongitude.innerText = ": " + get_atoninfo['ss_longitude'].toFixed(6) 
+            detLatitude.innerText = ": " + get_atoninfo['ss_latitude'].toFixed(6)
 
             det_voltage_int.innerText = ": " + get_atoninfo['volt_int'].toFixed(6)
             det_voltage_ext1.innerText = ": " + get_atoninfo['volt_ex1'].toFixed(6)
@@ -1223,10 +1230,10 @@ function vessel_info_panel(mmsi){
             det_health.innerText = ": " + (get_atoninfo['health'] == 0 ? "Good" : "Alarm")
         
             det_beat.innerText = ": " + (get_atoninfo['beat'] == 0 ? "Tick" : "Tock")
-            det_alarm_active.innerText = ": " + lantern_batt[get_atoninfo['lantern_batt']]
-            det_buoy_led_power.innerText = ": " + lantern[get_atoninfo['lantern']]
+            det_alarm_active.innerText = ": " + lantern_batt[get_atoninfo['buoy_led_power']]
+            det_buoy_led_power.innerText = ": " + lantern[get_atoninfo['buoy_low_vin']]
             det_buoy_low_vin.innerText = ": " + ambient[get_atoninfo['ambient']]
-            det_buoy_photocell.innerText = ": " + (get_atoninfo['hatch_door'] == 0 ? "Close" : "Open")
+            det_buoy_photocell.innerText = ": " + (get_atoninfo['buoy_photocell'] == 0 ? "Close" : "Open")
             det_buoy_temp.innerText = ": " + (get_atoninfo['off_pos'] == 0 ? "On Pos." : "Off Pos.")
         }
 
@@ -1237,6 +1244,9 @@ function vessel_info_panel(mmsi){
             const detShiptype = document.getElementById('det-shiptype-fid2')
             const detShipname = document.getElementById('det-shipname-fid2')
             const detMMSI = document.getElementById('det-mmsi-fid2')
+            const detLastSeen = document.getElementById('det-lastseen-fid2')
+            const detLongitude = document.getElementById('det-longitude-fid2')
+            const detLatitude = document.getElementById('det-latitude-fid2')
 
             const det_voltage_int = document.getElementById('det-voltage-int-fid2')
             const det_voltage_ext1 = document.getElementById('det-voltage-ext1-fid2')
@@ -1262,9 +1272,13 @@ function vessel_info_panel(mmsi){
             const det_buoy_errled_power = document.getElementById('det-buoy-errled-power-fid2')
             const det_buoy_adjmaxpower = document.getElementById('det-buoy-adjmaxpower-fid2')
 
+
             detShiptype.innerText = ": " + get_atoninfo['type']
-            detShipname.innerText = ": " + get_atoninfo['atonname']
+            detShipname.innerText = ": " + (get_atoninfo['atonname'].length > 15 ? get_atoninfo['atonname'].substring(0, 15) + '...' : get_atoninfo['atonname'])
             detMMSI.innerText = ": " + get_atoninfo['mmsi']  
+            detLastSeen.innerText = ": " + get_atoninfo['lcl_ts']  
+            detLongitude.innerText = ": " + get_atoninfo['ss_longitude'].toFixed(6) 
+            detLatitude.innerText = ": " + get_atoninfo['ss_latitude'].toFixed(6)
 
             det_voltage_int.innerText = ": " + get_atoninfo['volt_int'].toFixed(6)
             det_voltage_ext1.innerText = ": " + get_atoninfo['volt_ex1'].toFixed(6)
@@ -1276,19 +1290,19 @@ function vessel_info_panel(mmsi){
             det_health.innerText = ": " + (get_atoninfo['health'] == 0 ? "Good" : "Alarm")
         
             det_beat.innerText = ": " + (get_atoninfo['beat'] == 0 ? "Tick" : "Tock")
-            det_alarm_active.innerText = ": " + (get_atoninfo['main_lantern_cond'] == 0 ? "Normal" : "Fail")
-            det_buoy_led_power.innerText = ": " + (get_atoninfo['main_lantern_stat'] == 0 ? "Off" : "On")
-            det_buoy_low_vin.innerText = ": " + (get_atoninfo['stdby_lantern_cond'] == 0 ? "Normal" : "Fail")
-            det_buoy_photocell.innerText = ": " + (get_atoninfo['stdby_lantern_stat'] == 0 ? "Off" : "On")
-            det_buoy_temp.innerText = ": " + (get_atoninfo['emerg_lantern_cond'] == 0 ? "Normal" : "Fail")
-            det_buoy_force_off.innerText = ": " + (get_atoninfo['emerg_lantern_stat'] == 0 ? "Off" : "On")
-            det_buoy_islight.innerText = ": " + (get_atoninfo['opticA_drive_stat'] == 0 ? "Off" : "On")
-            det_buoy_errled_short.innerText = ": " + (get_atoninfo['opticA_drive_cond'] == 0 ? "Normal" : "Fail")
-            det_buoy_errled_open.innerText = ": " + (get_atoninfo['opticB_drive_stat'] == 0 ? "Off" : "On")
-            det_buoy_errled_voltlow.innerText = ": " + (get_atoninfo['opticB_drive_cond'] == 0 ? "Normal" : "Fail")
-            det_buoy_errled_vinlow.innerText = ": " + (get_atoninfo['hatch_door'] == 0 ? "Close" : "Open")
-            det_buoy_errled_power.innerText = ": " + (get_atoninfo['main_power'] == 0 ? "Off" : "On")
-            det_buoy_adjmaxpower.innerText = ": " + (get_atoninfo['bms_cond'] == 0 ? "Normal" : "Fail")          
+            det_alarm_active.innerText = ": " + (get_atoninfo['alarm_active'] == 0 ? "Normal" : "Fail")
+            det_buoy_led_power.innerText = ": " + (get_atoninfo['buoy_led_power'] == 0 ? "Off" : "On")
+            det_buoy_low_vin.innerText = ": " + (get_atoninfo['buoy_low_vin'] == 0 ? "Normal" : "Fail")
+            det_buoy_photocell.innerText = ": " + (get_atoninfo['buoy_photocell'] == 0 ? "Off" : "On")
+            det_buoy_temp.innerText = ": " + (get_atoninfo['buoy_temp'] == 0 ? "Normal" : "Fail")
+            det_buoy_force_off.innerText = ": " + (get_atoninfo['buoy_force_off'] == 0 ? "Off" : "On")
+            det_buoy_islight.innerText = ": " + (get_atoninfo['buoy_islight'] == 0 ? "Off" : "On")
+            det_buoy_errled_short.innerText = ": " + (get_atoninfo['buoy_errled_short'] == 0 ? "Normal" : "Fail")
+            det_buoy_errled_open.innerText = ": " + (get_atoninfo['buoy_errled_open'] == 0 ? "Off" : "On")
+            det_buoy_errled_voltlow.innerText = ": " + (get_atoninfo['buoy_errled_voltlow'] == 0 ? "Normal" : "Fail")
+            det_buoy_errled_vinlow.innerText = ": " + (get_atoninfo['buoy_errled_vinlow'] == 0 ? "Close" : "Open")
+            det_buoy_errled_power.innerText = ": " + (get_atoninfo['buoy_errled_power'] == 0 ? "Off" : "On")
+            det_buoy_adjmaxpower.innerText = ": " + (get_atoninfo['buoy_adjmaxpower'] == 0 ? "Normal" : "Fail")          
         }
 
         if (dac == 533 && fid == 4){
