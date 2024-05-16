@@ -1,7 +1,7 @@
 from Nav_Analytics import *
 from Nav_ClickHouse import *
 
-import websockets
+from websockets.server import serve
 import asyncio
 import json
 import pandas as pd
@@ -234,6 +234,52 @@ async def handler(websocket, path):
                 await websocket.send(json.dumps(data))  
 
 
+            if msg[0] == 'getatonstatistic':
+                # Process last 24 hours statistical data
+                atons_statistic = PyCH.get_aton_statistic()
+                data_cnt = 0
+
+                for i in atons_statistic:
+                    data_cnt += 1
+
+                    data = {
+                        'payload': 'getatonstatistic',
+                        'no': data_cnt
+                    }
+
+                    data.update(i)
+                    await websocket.send(json.dumps(data))  
+
+                data = {
+                    'payload': 'getatonstatistic_done'
+                } 
+
+                await websocket.send(json.dumps(data)) 
+
+
+            if msg[0] == 'getdailystatisticstartfrom':
+                # Process last 24 hours statistical data
+                atons_statistic = PyCH.get_aton_statistic_dailyStartFrom(msg[1] + ":" + msg[2])
+                data_cnt = 0
+
+                for i in atons_statistic:
+                    data_cnt += 1
+
+                    data = {
+                        'payload': 'getdailystatisticstartfrom',
+                        'no': data_cnt
+                    }
+
+                    data.update(i)
+                    await websocket.send(json.dumps(data))  
+
+                data = {
+                    'payload': 'getdailystatisticstartfrom_done'
+                } 
+
+                await websocket.send(json.dumps(data))  
+
+
             if msg[0] == 'getweatherwaterlevel':
                 waterlevel_result = PyCH.get_weather_waterLevel()
                 data = {
@@ -260,8 +306,10 @@ async def send_ping(websocket):
 
 
 # Create a WebSocket server using the handler function
-# server = websockets.serve(handler, "localhost", 38381)
-server = websockets.serve(handler, "10.10.20.200", 38389)
+# server = serve(handler, "localhost", 38381)
+# server = serve(handler, "10.10.20.200", 38389)
+# server = serve(handler, "60.54.119.42", 38389)
+server = serve(handler, "0.0.0.0", 38389)
 
 # Run the server using the asyncio event loop
 asyncio.get_event_loop().run_until_complete(server)

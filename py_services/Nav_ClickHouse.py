@@ -426,7 +426,136 @@ class PyCH:
 
             ret_result.append(data)   
 
-        return ret_result   
+        return ret_result  
+
+
+    # get daily statisitcal data
+    def get_aton_statistic_dailyStartFrom(dt):
+        startdatetime = datetime.strptime(dt.replace('T', ' '), '%Y-%m-%d %H:%M') - timedelta(hours=8)
+        enddatetime = startdatetime + timedelta(hours=24)
+
+        # now = datetime.now() 
+        #today = datetime(now.year, now.month, now.day)
+        # utc_today = now - timedelta(hours=0)
+        # utc_last24 = utc_today - timedelta(hours=168)
+        # utc_last24x = utc_today - timedelta(hours=192)
+
+        url = 'https://script.google.com/macros/s/AKfycby_0eK24X153QquX7gb-KIvczqFlEcscRd8U70PyY-wPN5sUvHJYycLczwtfKppoMj2/exec?op=lastmtndate'
+
+        headers = {
+                    'Content-type': 'application/json', 
+                }
+
+
+        resp = requests.get(url, headers=headers)
+        result = json.loads(resp.text)
+
+        lst_mmsi = result['mmsi']
+        lst_rslt = result['result']
+
+        client = clickhouse_connect.get_client(host='10.10.20.50', port=8123)
+        result = client.query(
+        f'''
+            with 
+            anal as (
+                select 
+                ts,  
+                mmsi,
+                min(volt_ex2) over (PARTITION BY mmsi) as minTemp,
+                max(volt_ex2) over (PARTITION BY mmsi) as maxTemp,
+                
+                min(volt_int) over (PARTITION BY mmsi) as minBattAton,
+                max(volt_int) over (PARTITION BY mmsi) as maxBattAton,
+                avg(volt_int) over (PARTITION BY mmsi) as meanBattAton,
+                median(volt_int) over (PARTITION BY mmsi) as medianBattAton,
+                stddevPop(volt_int) over (PARTITION BY mmsi) as stddevBattAton,
+                skewPop(volt_int) over (PARTITION BY mmsi) as skewBattAton,
+                kurtPop(volt_int) over (PARTITION BY mmsi) as kurtBattAton,
+                
+                min(volt_ex1) over (PARTITION BY mmsi) as minBattLant,
+                max(volt_ex1) over (PARTITION BY mmsi) as maxBattLant,
+                avg(volt_ex1) over (PARTITION BY mmsi) as meanBattLant,
+                median(volt_ex1) over (PARTITION BY mmsi) as medianBattLant,
+                stddevPop(volt_ex1) over (PARTITION BY mmsi) as stddevBattLant,
+                skewPop(volt_ex1) over (PARTITION BY mmsi) as skewBattLant,
+                kurtPop(volt_ex1) over (PARTITION BY mmsi) as kurtBattLant,
+                
+                sum(off_pos) over (PARTITION BY mmsi) as off_pos,
+                count() over (PARTITION BY mmsi) as msg6,
+                row_number() over (PARTITION BY mmsi  order by ts desc) as rownum
+                
+                from pnav.ais_type6_533
+                where ts >= '{startdatetime.strftime("%Y-%m-%d %H:%M:%S")}' and ts < '{enddatetime.strftime("%Y-%m-%d %H:%M:%S")}' 
+            ),
+            aton_alive as (
+                select ts, mmsi,
+                row_number() over (PARTITION BY mmsi  order by ts desc) as rownum
+                from pnav.ais_type6_533
+                where ts >= '{startdatetime.strftime("%Y-%m-%d %H:%M:%S")}' and ts < '{enddatetime.strftime("%Y-%m-%d %H:%M:%S")}' 
+            )
+            select *, age('second', toDateTime(at.ts), now()) as lastseen
+            from anal aa
+            join aton_alive at on aa.rownum=1 and at.rownum=1 and aa.mmsi=at.mmsi
+            right join pnav.atonlist al on al.mmsi=at.mmsi
+            order by al.mmsi
+        '''
+        )
+
+        ret_result = []  
+
+        for i in result.result_rows:
+            if len(lst_mmsi) > 0 and len(lst_rslt) > 0:
+                try:
+                    search_idx = lst_mmsi.index(str(i[1]))
+
+                    if search_idx >= 0 :
+                        search = lst_rslt[search_idx]
+                        items = search.split(' ')
+                        mtn_date = datetime.strptime(items[1], "%d/%m/%Y").date().strftime("%Y-%m-%d")
+                    else:
+                        mtn_date = ''
+                except:
+                    mtn_date = ''
+            else:
+                mtn_date = ''
+
+
+            data = {
+                'ts': i[0].strftime("%Y-%m-%d %H:%M:%S"),
+                'mmsi':	i[26],
+                'minTemp': round(i[2], 2),
+                'maxTemp': round(i[3], 2),
+                'minBattAton': round(i[4], 2),
+                'maxBattAton': round(i[5], 2),
+                'meanBattAton':	round(i[6], 2),
+                'medianBattAton': round(i[7], 2),
+                'stddevBattAton': round(i[8], 2),
+                'skewBattAton':	round(i[9], 2) if not math.isnan(i[9]) else -999,
+                'kurtBattAton':	round(i[10], 2) if not math.isnan(i[10]) else -999,
+                'minBattLant':	round(i[11], 2),
+                'maxBattLant':	round(i[12], 2),
+                'meanBattLant':	round(i[13], 2),
+                'medianBattLant': round(i[14], 2),
+                'stddevBattLant': round(i[15], 2),
+                'skewBattLant':	round(i[16], 2) if not math.isnan(i[16]) else -999, 
+                'kurtBattLant':	round(i[17], 2) if not math.isnan(i[16]) else -999,
+                'off_pos': 'NG' if i[18] > 0 else 'OK',
+                'msg6Count': i[19],
+                'siteTx': 'OK' if i[19] > 0 else 'NG',
+                'rownum': i[20],
+                'at_ts': (i[21] + timedelta(hours=8)).strftime("%Y-%m-%d %H:%M:%S"),
+                'al_name': i[25],
+                'al_mmsi': i[26],
+                'al_region': i[27],
+                'al_type': i[28],
+                'lastseen':	i[29],
+                'last_maintain': mtn_date
+            }
+
+            ret_result.append(data)   
+
+        return ret_result 
+
 
     # get aton volt data for last 7 days
     def get_aton_voltdata(mmsi):

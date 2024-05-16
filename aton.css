@@ -544,7 +544,7 @@ nav .nav-content {
   .tabulate-container {
     position: absolute;
     top: 65px;
-    left: -2000px;
+    left: -3000px;
     /* color: rgb(198, 172, 254); */
     width: 96%;
     height: 100vh;
@@ -560,7 +560,7 @@ nav .nav-content {
 
   .tabulate-container.openwide {
     opacity: 1;
-    transform: translateX(2080px);
+    transform: translateX(3080px);
   }
 
   #chart-data {

@@ -4,6 +4,7 @@ lst_atoninfo = {};
 lst_ngatoninfo = {};
 lst_atonData = {};
 lst_statistic = [];
+lst_statistic_daily = [];
 lst_voltdata = [];
 
 lst_light_err = {};
@@ -90,6 +91,7 @@ const dashboard_title_label = document.getElementById('dashboard-title-label')
 const fieldEl = document.getElementById("filter-field");
 const typeEl = document.getElementById("filter-type");
 const valueEl = document.getElementById("filter-value");
+const daily_type = document.getElementById("daily-type");
 
 
 // Javascript show hide sidebar menu
@@ -455,11 +457,24 @@ document.getElementById("filter-field").addEventListener("change", updateFilter)
 document.getElementById("filter-type").addEventListener("change", updateFilter);
 document.getElementById("filter-value").addEventListener("keyup", updateFilter);
 
+daily_type.addEventListener('change', function(){
+    if (daily_type.value == '') {
+        analytic_table = build_tabulator_table(lst_statistic)
+    }
+    else
+    {
+        lst_statistic_daily = []
+        ws2.send('getdailystatisticstartfrom:' + daily_type.value)        
+    }
+})
+
+
 //Clear filters on "Clear Filters" button click
 document.getElementById("filter-clear").addEventListener("click", function(){
   fieldEl.value = "";
   typeEl.value = "=";
   valueEl.value = "";
+//   daily_type.value = "";
 
   analytic_table.clearFilter();
 });
@@ -2060,7 +2075,8 @@ function update_aton_on_map(elem, dataNo) {
 // Create a WebSocket object for historical data
 /////////////////////////////////////////////////////////
 // const ws2_URL = "ws://localhost:38381";
-const ws2_URL = "ws://10.10.20.200:38389";
+// const ws2_URL = "ws://10.10.20.200:38389";
+const ws2_URL = "ws://60.54.119.42:38389";
 
 // Define a heartbeat interval in milliseconds
 const HEARTBEAT_INTERVAL2 = 30000;
@@ -2237,7 +2253,16 @@ function init_WebSocket2(){
         }
 
         if (obj['payload'] === 'getatonstatistic_done') {
-            analytic_table = build_tabulator_table()
+            analytic_table = build_tabulator_table(lst_statistic)
+        } 
+
+        if (obj['payload'] === 'getdailystatisticstartfrom') {
+            lst_statistic_daily.push(obj) 
+        }
+
+        if (obj['payload'] === 'getdailystatisticstartfrom_done') {
+            analytic_table = build_tabulator_table(lst_statistic_daily)
+            alert('The data in the table has been refresh...')
         } 
         
         if (obj['payload'] === 'getallatonvoltdata') {
@@ -2419,7 +2444,7 @@ var customAccessor = function(value, data, type, params, column, row){
     return analytic_row_number
 }
 
-function build_tabulator_table() {
+function build_tabulator_table(statistic_data) {
     //Build Tabulator
     var table = new Tabulator("#data-table", {
         height: "86%",
@@ -2427,7 +2452,7 @@ function build_tabulator_table() {
         renderHorizontal:"virtual",
         clipboard:true,
         // responsiveLayout:"hide",
-        data:lst_statistic,
+        data:statistic_data,
         columns:[
             {title:"No", field:"no", formatter:"rownum", accessor:customAccessor},
             {title:"Site Name", field:"al_name", headerFilter:"input", width:100},
