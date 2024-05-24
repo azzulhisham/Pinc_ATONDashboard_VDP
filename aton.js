@@ -77,12 +77,19 @@ const dialogShowChart = document.getElementById('dialogShowChart');
 dialogShowChart.classList.add("hidden");
 const closeChartButton = document.getElementById('closeChart');
 
+//chart dialogue on map
 const showReport = document.getElementById('showReport');
 const dialogShowReport = document.getElementById('dialogShowReport');
 dialogShowReport.classList.add("hidden");
 const closeReportButton = document.getElementById('closeReport');
-
 const chart_data = document.getElementById('chart-data')
+
+
+//chart dialogue on tabulate
+const dialogShowReportOnTable = document.getElementById('dialogShowReportOnTable');
+dialogShowReportOnTable.classList.add("hidden");
+const closeReportOnTableButton = document.getElementById('closeReportOnTable');
+const chartOnTable_data = document.getElementById('chartOnTable-data')
 
 
 //Define variables for input elements
@@ -445,6 +452,10 @@ showReport.addEventListener('click', () => {
 
 closeReportButton.addEventListener('click', () => {
     dialogShowReport.classList.add('hidden');
+});
+
+closeReportOnTableButton.addEventListener('click', () => {
+    dialogShowReportOnTable.classList.add('hidden');
 });
 
 btn_search_clear.addEventListener('click', () => {
@@ -2076,7 +2087,8 @@ function update_aton_on_map(elem, dataNo) {
 /////////////////////////////////////////////////////////
 // const ws2_URL = "ws://localhost:38381";
 // const ws2_URL = "ws://10.10.20.200:38389";
-const ws2_URL = "ws://60.54.119.42:38389";
+// const ws2_URL = "ws://60.54.119.42:38389";
+const ws2_URL = "wss://dash.datainsight.my/wss/";
 
 // Define a heartbeat interval in milliseconds
 const HEARTBEAT_INTERVAL2 = 30000;
@@ -2254,6 +2266,14 @@ function init_WebSocket2(){
 
         if (obj['payload'] === 'getatonstatistic_done') {
             analytic_table = build_tabulator_table(lst_statistic)
+
+            analytic_table.on("rowDblClick", function(e, row){
+                //e - the click event object
+                //cell - cell component
+                rowData = row.getData()
+                lst_voltdata = []
+                ws2.send('getallatonvoltdata:' + rowData.al_mmsi)
+            });
         } 
 
         if (obj['payload'] === 'getdailystatisticstartfrom') {
@@ -2270,10 +2290,18 @@ function init_WebSocket2(){
         }
 
         if (obj['payload'] === 'getallatonvoltdata_done') {
-            chart_data.innerHTML = ''
-            chart_data.classList.add("highcharts-dark")
-            build_chart()
-            dialogShowReport.classList.remove('hidden');
+            if (tabulate_container.classList.contains('openwide')) {
+                chartOnTable_data.innerHTML = ''
+                chartOnTable_data.classList.add("highcharts-dark")
+                build_chart()
+                dialogShowReportOnTable.classList.remove('hidden');
+            }
+            else {
+                chart_data.innerHTML = ''
+                chart_data.classList.add("highcharts-dark")
+                build_chart()
+                dialogShowReport.classList.remove('hidden');
+            }
         }  
 
         if (obj['payload'] === 'getallatonbeatdata') {
@@ -2564,7 +2592,12 @@ function build_chart(){
         y2.push(elem.volt_ex1)
     })
 
-    Highcharts.chart('chart-data', {
+    chartDivId = 'chart-data' 
+    if (tabulate_container.classList.contains('openwide')) {
+        chartDivId = 'chartOnTable-data' 
+    }
+
+    Highcharts.chart(chartDivId, {
         chart: {
             styledMode: true
         },

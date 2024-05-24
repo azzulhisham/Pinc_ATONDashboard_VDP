@@ -569,6 +569,12 @@ nav .nav-content {
     margin-top: 15px;
   }
 
+  #chartOnTable-data {
+    width: 1200px;
+    font-size: smaller !important;
+    margin-top: 15px;
+  }
+
   #data-table {
     /* width: 95%; */
     font-size: smaller !important;
