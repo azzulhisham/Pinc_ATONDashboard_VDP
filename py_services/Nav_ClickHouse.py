@@ -13,15 +13,21 @@ class PyCH:
     def get_init_msg_count():
         now = datetime.now() 
         today = datetime(now.year, now.month, now.day)
-        utc_today = today - timedelta(hours=0)
-        utc_now = now - timedelta(hours=0)
+        utc_today = today - timedelta(hours=8)
+        utc_now = now - timedelta(hours=8)
         utc_yesterday = utc_today - timedelta(hours=24)  
         utc_last24 = utc_now - timedelta(hours=24)        
 
 
         try:
             # total sites
-            client = clickhouse_connect.get_client(host='10.10.20.50', port=8123)
+            client = clickhouse_connect.get_client(
+                host='rvzcoivsbu.ap-southeast-1.aws.clickhouse.cloud',
+                user='default',
+                password='qV.hN9sw.AjPF',
+                secure=True
+            )
+
 
             # message counting today
             result = client.query(
@@ -102,7 +108,7 @@ class PyCH:
             }
 
         except:
-             result = {
+            result = {
                 'ts': '',
                 'msg21_cnt': 0,
                 'msg6_cnt': 0,
@@ -112,6 +118,7 @@ class PyCH:
                 'msg8_cnt_yesterday': 0,
             }
 
+
         return result           
 
 
@@ -119,11 +126,17 @@ class PyCH:
     def get_all_aton():
         now = datetime.now()
         today = datetime(now.year, now.month, now.day)
-        utc_now = now - timedelta(hours=0)
+        utc_now = now - timedelta(hours=8)
         utc_n_day_b4 = utc_now - timedelta(hours=168)
         utc_n_day_b4_x = utc_now - timedelta(hours=192)
 
-        client = clickhouse_connect.get_client(host='10.10.20.50', port=8123)
+        client = clickhouse_connect.get_client(
+            host='rvzcoivsbu.ap-southeast-1.aws.clickhouse.cloud',
+            user='default',
+            password='qV.hN9sw.AjPF',
+            secure=True
+        )
+
         result = client.query(
         f'''
             with 
@@ -240,10 +253,16 @@ class PyCH:
     def get_all_aton_msg():
         now = datetime.now()
         today = datetime(now.year, now.month, now.day)
-        utc_today = today - timedelta(hours=0)
+        utc_today = today - timedelta(hours=8)
         utc_next_day = utc_today + timedelta(hours=48)
 
-        client = clickhouse_connect.get_client(host='10.10.20.50', port=8123)
+        client = clickhouse_connect.get_client(
+            host='rvzcoivsbu.ap-southeast-1.aws.clickhouse.cloud',
+            user='default',
+            password='qV.hN9sw.AjPF',
+            secure=True
+        )
+
         result = client.query(
         f'''
             with rowcountdata as (
@@ -308,7 +327,7 @@ class PyCH:
     def get_aton_statistic():
         now = datetime.now() 
         #today = datetime(now.year, now.month, now.day)
-        utc_today = now - timedelta(hours=0)
+        utc_today = now - timedelta(hours=8)
         utc_last24 = utc_today - timedelta(hours=168)
         utc_last24x = utc_today - timedelta(hours=192)
 
@@ -325,7 +344,13 @@ class PyCH:
         lst_mmsi = result['mmsi']
         lst_rslt = result['result']
 
-        client = clickhouse_connect.get_client(host='10.10.20.50', port=8123)
+        client = clickhouse_connect.get_client(
+            host='rvzcoivsbu.ap-southeast-1.aws.clickhouse.cloud',
+            user='default',
+            password='qV.hN9sw.AjPF',
+            secure=True
+        )
+
         result = client.query(
         f'''
             with 
@@ -453,7 +478,13 @@ class PyCH:
         lst_mmsi = result['mmsi']
         lst_rslt = result['result']
 
-        client = clickhouse_connect.get_client(host='10.10.20.50', port=8123)
+        client = clickhouse_connect.get_client(
+            host='rvzcoivsbu.ap-southeast-1.aws.clickhouse.cloud',
+            user='default',
+            password='qV.hN9sw.AjPF',
+            secure=True
+        )
+
         result = client.query(
         f'''
             with 
@@ -561,11 +592,17 @@ class PyCH:
     def get_aton_voltdata(mmsi):
         now = datetime.now() 
         #today = datetime(now.year, now.month, now.day)
-        utc_today = now - timedelta(hours=0)
+        utc_today = now - timedelta(hours=8)
         utc_last24 = utc_today - timedelta(hours=168)
 
 
-        client = clickhouse_connect.get_client(host='10.10.20.50', port=8123)
+        client = clickhouse_connect.get_client(
+            host='rvzcoivsbu.ap-southeast-1.aws.clickhouse.cloud',
+            user='default',
+            password='qV.hN9sw.AjPF',
+            secure=True
+        )
+
         result = client.query(
         f'''
             select ts, volt_int, volt_ex1, al.name 
@@ -594,11 +631,17 @@ class PyCH:
     def get_aton_beatdata(mmsi):
         now = datetime.now() 
         #today = datetime(now.year, now.month, now.day)
-        utc_today = now - timedelta(hours=0)
+        utc_today = now - timedelta(hours=8)
         utc_last24 = utc_today - timedelta(hours=168)
 
 
-        client = clickhouse_connect.get_client(host='10.10.20.50', port=8123)
+        client = clickhouse_connect.get_client(
+            host='rvzcoivsbu.ap-southeast-1.aws.clickhouse.cloud',
+            user='default',
+            password='qV.hN9sw.AjPF',
+            secure=True
+        )
+
         result = client.query(
         f'''
             select ts, beat, al.name 
@@ -625,7 +668,13 @@ class PyCH:
 
     # get water level
     def get_weather_waterLevel():
-        client = clickhouse_connect.get_client(host='10.10.20.50', port=8123)
+        client = clickhouse_connect.get_client(
+            host='rvzcoivsbu.ap-southeast-1.aws.clickhouse.cloud',
+            user='default',
+            password='qV.hN9sw.AjPF',
+            secure=True
+        )
+
         result = client.query(
         f'''
             with rowcountdata as (
